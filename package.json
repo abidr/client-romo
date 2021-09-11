@@ -9,9 +9,6 @@
     "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
-    "next": "11.1.2",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
     "@mollie/api-client": "^3.5.1",
     "bcrypt": "^5.0.1",
     "bluebird": "^3.7.2",
@@ -26,9 +23,12 @@
     "express-validator": "^6.10.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
+    "next": "11.1.2",
     "node-cron": "^3.0.0",
     "nodemailer": "^6.6.1",
     "paypal-node-sdk": "^2.0.3",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "request-promise": "^4.2.6",
     "sequelize": "^6.6.2",
     "sequelize-query": "^1.0.3",
@@ -39,6 +39,12 @@
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-next": "11.1.2",
-    "eslint-plugin-import": "^2.24.2"
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-react": "^7.25.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.2.1"
   }
 }
