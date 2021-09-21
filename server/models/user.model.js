@@ -36,21 +36,6 @@ module.exports = (sequelize) => {
     reset: {
       type: DataTypes.STRING,
     },
-    perfect_money: {
-      type: DataTypes.STRING,
-    },
-    payeer: {
-      type: DataTypes.STRING,
-    },
-    paypal: {
-      type: DataTypes.STRING,
-    },
-    mobile: {
-      type: DataTypes.STRING,
-    },
-    paystack: {
-      type: DataTypes.STRING,
-    },
   });
   return User;
 };

@@ -26,8 +26,17 @@ exports.isAdmin = (req, res, next) => {
   if (req.user.role === 0) {
     return next();
   }
-  return res.status(403).json({
-    message: 'You are not an admin',
+  return res.status(401).json({
+    message: 'Unauthorized',
+  });
+};
+
+exports.isMerchant = (req, res, next) => {
+  if (req.user.role === 2) {
+    return next();
+  }
+  return res.status(401).json({
+    message: 'Unauthorized',
   });
 };
 
@@ -44,7 +53,7 @@ exports.checkAuth = async (req, res) => {
     return res.status(200).json({
       login: true,
       isAdmin: role === 0,
-      isRestaurant: false,
+      isMerchant: role === 2,
       user: {
         id,
         name,

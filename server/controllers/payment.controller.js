@@ -4,7 +4,6 @@ const db = require('../config/db.config');
 
 const Gateway = db.gateways;
 const Deposit = db.deposits;
-const Buy = db.buys;
 const Log = db.logs;
 const Setting = db.settings;
 
@@ -19,10 +18,6 @@ exports.verifyMollie = async (req, res) => {
       if (data.metadata.type === 'deposit') {
         await Deposit.update({ payment_status: true }, { where: { id: data.metadata.id } });
         await Log.create({ message: `Mollie confirmed payment for deposit #${data.metadata.id}` });
-      } else {
-        const buy = await Buy.findOne({ where: { id: data.metadata.id } });
-        await Buy.update({ payment_status: true }, { where: { id: data.metadata.id } });
-        await Log.create({ message: `Mollie confirmed payment for Exchange #${buy.exchangeId}` });
       }
     }
     return res.json(data);
@@ -39,13 +34,6 @@ exports.verifyCoinbase = async (req, res) => {
           { where: { id: req.body.event.data.metadata.id } },
         );
         await Log.create({ message: `Coinbase confirmed payment for deposit #${req.body.event.data.metadata.id}` });
-      } else {
-        const buy = await Buy.findOne({ where: { id: req.body.event.data.metadata.id } });
-        await Buy.update(
-          { payment_status: true },
-          { where: { id: req.body.event.data.metadata.id } },
-        );
-        await Log.create({ message: `Coinbase confirmed payment for Exchange #${buy.exchangeId}` });
       }
     }
     return res.json({ message: 'Confirmed Payment' });
