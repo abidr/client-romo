@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import features1 from '../images/features/1.png';
 import features2 from '../images/features/2.png';
@@ -24,7 +25,7 @@ const Features = () => (
           <div className="col-xl-3 col-lg-3 col-sm-6">
             <div className="single-features-box">
               <div className="img">
-                <img src={features1} alt="" />
+                <img src={features1.src} alt="" />
               </div>
               <div className="content">
                 <h3>User Panel</h3>
@@ -35,7 +36,7 @@ const Features = () => (
           <div className="col-xl-3 col-lg-3 col-sm-6">
             <div className="single-features-box">
               <div className="img">
-                <img src={features2} alt="" />
+                <img src={features2.src} alt="" />
               </div>
               <div className="content">
                 <h3>Add Money</h3>
@@ -46,7 +47,7 @@ const Features = () => (
           <div className="col-xl-3 col-lg-3 col-sm-6">
             <div className="single-features-box">
               <div className="img">
-                <img src={features3} alt="" />
+                <img src={features3.src} alt="" />
               </div>
               <div className="content">
                 <h3>Request Money</h3>
@@ -57,7 +58,7 @@ const Features = () => (
           <div className="col-xl-3 col-lg-3 col-sm-6">
             <div className="single-features-box">
               <div className="img">
-                <img src={features4} alt="" />
+                <img src={features4.src} alt="" />
               </div>
               <div className="content">
                 <h3>Send Money</h3>
@@ -68,7 +69,7 @@ const Features = () => (
           <div className="col-xl-3 col-lg-3 col-sm-6">
             <div className="single-features-box">
               <div className="img">
-                <img src={features5} alt="" />
+                <img src={features5.src} alt="" />
               </div>
               <div className="content">
                 <h3>Exchange</h3>
@@ -79,7 +80,7 @@ const Features = () => (
           <div className="col-xl-3 col-lg-3 col-sm-6">
             <div className="single-features-box">
               <div className="img">
-                <img src={features6} alt="" />
+                <img src={features6.src} alt="" />
               </div>
               <div className="content">
                 <h3>User To User</h3>
@@ -90,7 +91,7 @@ const Features = () => (
           <div className="col-xl-3 col-lg-3 col-sm-6">
             <div className="single-features-box">
               <div className="img">
-                <img src={features7} alt="" />
+                <img src={features7.src} alt="" />
               </div>
               <div className="content">
                 <h3>Withdraw</h3>
@@ -101,7 +102,7 @@ const Features = () => (
           <div className="col-xl-3 col-lg-3 col-sm-6">
             <div className="single-features-box">
               <div className="img">
-                <img src={features8} alt="" />
+                <img src={features8.src} alt="" />
               </div>
               <div className="content">
                 <h3>Referral</h3>

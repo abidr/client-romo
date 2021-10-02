@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { BiLogIn, BiUserPlus } from 'react-icons/bi';
 import banner from '../images/banner-bg.jpg';
@@ -5,7 +6,7 @@ import bannerimg from '../images/mobile.png';
 
 const Banner = () => (
   <>
-    <section className="banner blue-overlay-2" style={{ backgroundImage: `url(${banner})` }}>
+    <section className="banner blue-overlay-2" style={{ backgroundImage: `url(${banner.src})` }}>
       <div className="borders">
         <div className="singleBorder one" />
         <div className="singleBorder two" />
@@ -30,7 +31,7 @@ const Banner = () => (
           </div>
           <div className="col-xl-5 col-md-5 col-12">
             <div className="banner-content img">
-              <img src={bannerimg} alt="" />
+              <img src={bannerimg.src} alt="" />
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ import statup from '../images/stat-up.png';
 
 const RecentExchange = () => (
   <>
-    <Table striped hover className="dark-color">
+    <Table striped hover className="dark-color" responsive>
       <thead>
         <tr>
           <th scope="col">Date</th>

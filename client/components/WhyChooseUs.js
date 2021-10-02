@@ -1,6 +1,7 @@
+/* eslint-disable max-len */
 import React from 'react';
 import {
-    BiBitcoin, BiDroplet, BiGroup, BiMoney, BiShare, BiUser, BiWallet
+  BiBitcoin, BiDroplet, BiGroup, BiMoney, BiShare, BiUser, BiWallet
 } from 'react-icons/bi';
 
 const WhyChooseUs = () => (

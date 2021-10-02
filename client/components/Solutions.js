@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import solution1 from '../images/solutions/1.jpg';
 import solution2 from '../images/solutions/2.jpg';
@@ -20,7 +21,7 @@ const Solutions = () => (
           <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
             <div className="single-solutions">
               <div className="solutions-img">
-                <img src={solution1} alt="" />
+                <img src={solution1.src} alt="" />
               </div>
               <div className="solutions-title">
                 <h3>Freelancer</h3>
@@ -31,7 +32,7 @@ const Solutions = () => (
           <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
             <div className="single-solutions">
               <div className="solutions-img">
-                <img src={solution2} alt="" />
+                <img src={solution2.src} alt="" />
               </div>
               <div className="solutions-title">
                 <h3>Internet Retailer</h3>
@@ -42,7 +43,7 @@ const Solutions = () => (
           <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
             <div className="single-solutions">
               <div className="solutions-img">
-                <img src={solution3} alt="" />
+                <img src={solution3.src} alt="" />
               </div>
               <div className="solutions-title">
                 <h3>Online Professional</h3>
@@ -53,7 +54,7 @@ const Solutions = () => (
           <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
             <div className="single-solutions">
               <div className="solutions-img">
-                <img src={solution4} alt="" />
+                <img src={solution4.src} alt="" />
               </div>
               <div className="solutions-title">
                 <h3>Affiliate Marketer</h3>

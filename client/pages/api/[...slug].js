@@ -8,6 +8,12 @@ const apiProxy = createProxyMiddleware({
   secure: false,
 });
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export default function proxyInit(req, res) {
   apiProxy(req, res, (result) => {
     if (result instanceof Error) {

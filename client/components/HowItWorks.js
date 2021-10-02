@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { default as howItWorks1, default as howItWorks2 } from '../images/howitworks/2.jpg';
 
@@ -21,10 +22,10 @@ const Howitworks = () => (
             </div>
           </div>
           <div className="col-xl-6 col-sm-6 mb-80">
-            <img src={howItWorks1} alt="" />
+            <img src={howItWorks1.src} alt="" />
           </div>
           <div className="col-xl-6 col-sm-6 order-xl-1 order-2 mb-80">
-            <img src={howItWorks2} alt="" />
+            <img src={howItWorks2.src} alt="" />
           </div>
           <div className="col-xl-6 col-sm-6 order-xl-2 order-1 mb-80">
             <div className="single-howitworks">
@@ -41,10 +42,10 @@ const Howitworks = () => (
             </div>
           </div>
           <div className="col-xl-6 col-sm-6 mb-80">
-            <img src={howItWorks1} alt="" />
+            <img src={howItWorks1.src} alt="" />
           </div>
           <div className="col-xl-6 col-sm-6 order-xl-1 order-2 mb-80">
-            <img src={howItWorks2} alt="" />
+            <img src={howItWorks2.src} alt="" />
           </div>
           <div className="col-xl-6 col-sm-6 order-xl-2 order-1 mb-80">
             <div className="single-howitworks">

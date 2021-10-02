@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+import React from 'react';
 import Faq from 'react-faq-component';
 import { BiEnvelope } from 'react-icons/bi';
 

@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import React from 'react';
 import About from '../components/About';
 import Banner from '../components/Banner';
 import Contact from '../components/Contact';

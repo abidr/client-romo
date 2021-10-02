@@ -5,8 +5,9 @@ import Refferal from '../components/Refferal';
 import Sidebar from '../components/Sidebar';
 import UserHeader from '../components/UserHeader';
 import Welcome from '../components/Welcome';
+import withAuth from '../hoc/withAuth';
 
-const Dashboard = () => (
+const Dashboard = ({ userData, settings }) => (
   <>
     <UserHeader />
     <Sidebar />
@@ -17,10 +18,10 @@ const Dashboard = () => (
             <div className="basic-card ">
               <div className="row">
                 <div className="col-xl-6 col-md-3 col-sm-6">
-                  <Welcome />
+                  <Welcome userData={userData} settings={settings} />
                 </div>
                 <div className="col-xl-6 col-md-6 col-sm-6">
-                  <Refferal />
+                  <Refferal userData={userData} settings={settings} />
                 </div>
               </div>
             </div>
@@ -48,4 +49,4 @@ const Dashboard = () => (
   </>
 );
 
-export default Dashboard;
+export default withAuth(Dashboard);

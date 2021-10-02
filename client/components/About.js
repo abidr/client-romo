@@ -1,5 +1,6 @@
+/* eslint-disable max-len */
 import React from 'react';
-import aboutImg from '../images/aboutImg.jpg';
+import aboutImg from '../images/aboutimg.jpg';
 
 const About = () => (
   <>
@@ -8,7 +9,7 @@ const About = () => (
         <div className="row">
           <div className="col-xl-6 col-lg-6 col-sm-12">
             <div className="about-img">
-              <img src={aboutImg} alt="" />
+              <img src={aboutImg.src} alt="" />
             </div>
           </div>
           <div className="col-xl-6 col-lg-6 col-sm-12">

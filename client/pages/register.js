@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import checkAuthAccess from '../hoc/checkAuthAccess';
 import siteLogo from '../images/weblos-logo.png';
 
 const Signup = () => (
@@ -20,7 +21,7 @@ const Signup = () => (
                 <input className="box-input" type="text" placeholder="Phone Number" />
                 <input className="box-input" type="password" placeholder="Password" />
                 <input className="box-input" type="password" placeholder="Re-Password" />
-                <button className="bttn-mid btn-ylo w-100">Register Now</button>
+                <button className="bttn-mid btn-ylo w-100" type="button">Register Now</button>
               </form>
               <div className="form-bottom mt-20">
                 <Link href="/login"><a>Already have account?</a></Link>
@@ -33,4 +34,4 @@ const Signup = () => (
   </>
 );
 
-export default Signup;
+export default checkAuthAccess(Signup);

@@ -1,18 +1,45 @@
-import React from 'react';
+import cogoToast from 'cogo-toast';
+import copy from 'copy-to-clipboard';
+import React, { useRef } from 'react';
 import { BiLink } from 'react-icons/bi';
 
-const Refferal = () => (
-  <>
-    <div className="refferal-box">
-      <h4 className="box-title">Refferal Link</h4>
-      <p>Share this refferal link to your friends and earn money</p>
-      <div className="refferal-form">
-        <input type="text" value="https://wallet.tdevs.co/signup?refer=24" className="input-text input-box" />
-        <button className="input-box btn-blue"><BiLink /></button>
+const Refferal = ({ userData, settings }) => {
+  const inputRef = useRef(null);
+
+  const copyToClipboard = () => {
+    copy(`${settings?.app_url?.param1}/register?refer=${userData?.id}`);
+    cogoToast.success('Refferal Link Copied!', { position: 'bottom-center' });
+  };
+
+  return (
+    <>
+      <div className="refferal-box">
+        <h4 className="box-title">Refferal Link</h4>
+        <p>Share this refferal link to your friends and earn money</p>
+        <div className="refferal-form">
+          <input
+            type="text"
+            disabled
+            ref={inputRef}
+            defaultValue={`${settings?.app_url?.param1}/register?refer=${userData?.id}`}
+            className="input-text input-box"
+          />
+          <button
+            type="button"
+            onClick={() => copyToClipboard()}
+            className="input-box btn-blue"
+          >
+            <BiLink />
+          </button>
+        </div>
+        <p className="mb-0 mt-10">
+          {userData?.referCount}
+          {' '}
+          user joined from your refferal
+        </p>
       </div>
-      <p className="mb-0 mt-10">0 user joined from your refferal</p>
-    </div>
-  </>
-);
+    </>
+  );
+};
 
 export default Refferal;

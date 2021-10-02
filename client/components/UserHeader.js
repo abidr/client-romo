@@ -4,6 +4,7 @@ import {
   BiCog, BiLinkAlt, BiLogOut, BiUser
 } from 'react-icons/bi';
 import siteLogo from '../images/weblos-logo.png';
+import { signOutRequest } from '../lib/authRequest';
 
 const Header = () => (
   <>
@@ -34,7 +35,7 @@ const Header = () => (
                         <BiLinkAlt />
                         Linked Account
                       </Dropdown.Item>
-                      <Dropdown.Item href="/login">
+                      <Dropdown.Item onClick={() => signOutRequest()}>
                         <BiLogOut />
                         Logout
                       </Dropdown.Item>
