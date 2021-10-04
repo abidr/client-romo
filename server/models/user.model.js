@@ -26,10 +26,6 @@ module.exports = (sequelize) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    balance_usd: {
-      type: DataTypes.DOUBLE,
-      defaultValue: 0.00,
-    },
     reffered_by: {
       type: DataTypes.INTEGER,
     },

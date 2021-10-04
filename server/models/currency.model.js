@@ -11,18 +11,15 @@ module.exports = (sequelize) => {
     icon: {
       type: DataTypes.STRING,
     },
-    rate_usd_prev: {
-      type: DataTypes.DOUBLE,
-    },
-    rate_usd: {
+    rateUsd: {
       type: DataTypes.DOUBLE,
       defaultValue: 0.00,
     },
-    rate_from_api: {
+    ratefromApi: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
-    custom: {
+    crypto: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
@@ -32,9 +29,6 @@ module.exports = (sequelize) => {
     active: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
-    },
-    wallet_id: {
-      type: DataTypes.STRING,
     },
   });
   return Currency;

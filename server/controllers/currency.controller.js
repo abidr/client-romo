@@ -7,6 +7,7 @@ const db = require('../config/db.config');
 const queryParser = sequelizeQuery(db);
 const Currency = db.currencies;
 const Log = db.logs;
+const Setting = db.settings;
 
 exports.getAllCurrencies = async (req, res) => {
   const query = await queryParser.parse(req);
@@ -38,20 +39,38 @@ exports.getCurrencyById = async (req, res) => {
 
 const currencyRatesFetcher = async () => {
   const data = await Currency.findAll();
-  const filteredData = data.filter((coin) => coin.rate_from_api);
+  const currencyApi = await Setting.findOne({ where: { value: 'freecurrencyapi' } });
+  const filteredDataCrypto = data.filter((coin) => (coin.ratefromApi && coin.crypto));
+  const filteredDataFiat = data.filter((coin) => (coin.ratefromApi && !coin.crypto));
   const apiData = await rp({
     uri: 'https://api.coingecko.com/api/v3/coins',
     json: true,
     gzip: true,
   });
-  filteredData.forEach(async (coin) => {
+  const fiatData = await rp({
+    uri: `https://freecurrencyapi.net/api/v2/latest?apikey=${currencyApi.param1}`,
+    json: true,
+    gzip: true,
+  });
+  filteredDataCrypto.forEach(async (coin) => {
     const updatedRate = apiData.find((rate) => rate.symbol === coin.symbol.toLowerCase());
     if (updatedRate) {
       await Currency.update({
         // eslint-disable-next-line max-len
-        rate_usd_prev: (coin.rate_usd === updatedRate.market_data.current_price.usd) ? coin.rate_usd_prev : coin.rate_usd,
-        rate_usd: updatedRate.market_data.current_price.usd,
+        rateUsd: updatedRate.market_data.current_price.usd,
         metadata: JSON.stringify(updatedRate),
+      }, { where: { id: coin.id } });
+    }
+  });
+  filteredDataFiat.forEach(async (coin) => {
+    const updatedRate = fiatData.data[coin.symbol.toUpperCase()];
+    if (updatedRate) {
+      await Currency.update({
+        rateUsd: updatedRate,
+      }, { where: { id: coin.id } });
+    } else {
+      await Currency.update({
+        rateUsd: 1,
       }, { where: { id: coin.id } });
     }
   });
@@ -74,11 +93,12 @@ exports.fetchCurrencyRates = async (req, res) => {
 exports.createCurrency = async (req, res) => {
   try {
     const {
-      name, symbol, icon, rate_usd, active, wallet_id, rate_from_api, custom,
+      name, symbol, icon, rateUsd, active, rateFromApi, crypto,
     } = req.body;
     const data = await Currency.create({
-      name, symbol, icon, rate_usd, active, wallet_id, rate_from_api, custom,
+      name, symbol, icon, rateUsd, active, rateFromApi, crypto,
     });
+    currencyRatesFetcher();
     await Log.create({ message: `Admin #${req.user.id} created currency #${data.id}` });
     return res.json(data);
   } catch (err) {

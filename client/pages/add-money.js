@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Col, Dropdown, Image, Nav, Row, Tab
 } from 'react-bootstrap';
@@ -10,20 +10,29 @@ import Sidebar from '../components/Sidebar';
 import TransactionSteps from '../components/TransactionSteps';
 import UserHeader from '../components/UserHeader';
 import useCurrency from '../data/useCurrency';
+import useWallet from '../data/useWallet';
 import withAuth from '../hoc/withAuth';
-import bitcoin from '../images/bitcoin.png';
-import bnb from '../images/bnb.png';
-import doge from '../images/doge.png';
-import ethereum from '../images/ethereum.png';
-import fil from '../images/fil.png';
 import usd from '../images/usd.png';
 
 const AddMoney = () => {
-  const [selectedCurrency, setSelectedCurrency] = useState('USD');
+  const [selectedCurrency, setSelectedCurrency] = useState();
+  const [currentBalance, setCurrentBalance] = useState(0);
   const { data, loading } = useCurrency();
-  if (loading) {
+  const { data: walletData, loading: walletLoading } = useWallet();
+
+  useEffect(() => {
+    setSelectedCurrency(data?.data[0]);
+  }, [data]);
+
+  useEffect(() => {
+    const walletFind = walletData?.find((wallet) => wallet.currency === selectedCurrency?.symbol);
+    setCurrentBalance(walletFind?.balance);
+  }, [selectedCurrency, walletData]);
+
+  if (loading || walletLoading) {
     return <Loader />;
   }
+
   return (
     <>
       <UserHeader />
@@ -58,22 +67,18 @@ const AddMoney = () => {
                         <div className="deposit-box basic-card">
                           <TransactionSteps />
                           <div className="currency-amount">
-                            <label htmlFor="currencySelector">Currency</label>
+                            <label htmlFor="currencySelector">Wallet</label>
                             <Dropdown id="currencySelector">
                               <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
                                 <Image src={usd.src} rounded />
-                                {selectedCurrency}
+                                {selectedCurrency?.symbol}
                               </Dropdown.Toggle>
 
                               <Dropdown.Menu>
-                                <Dropdown.Item onClick={() => setSelectedCurrency('USD')}>
-                                  <Image src={usd.src} rounded />
-                                  USD
-                                </Dropdown.Item>
                                 {data?.data?.map((currency) => (
                                   <Dropdown.Item
                                     key={currency.id}
-                                    onClick={() => setSelectedCurrency(currency.symbol)}
+                                    onClick={() => setSelectedCurrency(currency)}
                                   >
                                     <Image src={currency.icon} rounded />
                                     {currency.symbol}
@@ -81,46 +86,19 @@ const AddMoney = () => {
                                 ))}
                               </Dropdown.Menu>
                               <p className="available-balance">
-                                Available balance:
-                                <span>$2,654.48</span>
+                                Available Balance:
+                                <span>
+                                  {' '}
+                                  {currentBalance}
+                                  {' '}
+                                  {selectedCurrency?.symbol}
+                                </span>
                               </p>
                             </Dropdown>
                           </div>
                           <div className="currency-amount">
-                            <label>Enter Amount</label>
+                            <label>Amount</label>
                             <input type="text" />
-                          </div>
-                          <div className="currency-amount">
-                            <label>Payment Method</label>
-                            <Dropdown>
-                              <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
-                                <Image src={bitcoin} rounded />
-                                BTC
-                              </Dropdown.Toggle>
-
-                              <Dropdown.Menu>
-                                <Dropdown.Item href="#/action-1">
-                                  <Image src={usd} rounded />
-                                  USD
-                                </Dropdown.Item>
-                                <Dropdown.Item href="#/action-2">
-                                  <Image src={ethereum} rounded />
-                                  ETH
-                                </Dropdown.Item>
-                                <Dropdown.Item href="#/action-3">
-                                  <Image src={fil} rounded />
-                                  FIL
-                                </Dropdown.Item>
-                                <Dropdown.Item href="#/action-4">
-                                  <Image src={bnb} rounded />
-                                  BNB
-                                </Dropdown.Item>
-                                <Dropdown.Item href="#/action-5">
-                                  <Image src={doge} rounded />
-                                  DOGE
-                                </Dropdown.Item>
-                              </Dropdown.Menu>
-                            </Dropdown>
                           </div>
                           <div className="bttns mt-30">
                             <a href="/#" className="bttn-mid btn-ylo">
