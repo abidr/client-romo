@@ -120,29 +120,24 @@ exports.createDeposit = async (req, res) => {
       currency,
     });
 
-    if (currency === 'USD' || currencyCustom?.custom) {
-      if (payment_method === 'mollie') {
-        const payment = await molliePayment(currencyCustom?.custom ? amount * currencyCustom.rate_usd : amount, data.id, 'deposit');
-        // eslint-disable-next-line no-underscore-dangle
-        returnedObj = { ...data.dataValues, redirect: payment._links.checkout.href };
-      } else if (payment_method === 'coinbase') {
-        const payment = await coinbasePayment(currencyCustom?.custom ? amount * currencyCustom.rate_usd : amount, data.id, 'deposit');
-        returnedObj = { ...data.dataValues, redirect: payment.hosted_url };
-      } else if (payment_method === 'paypal') {
-        const payment = await paypalPayment(currencyCustom?.custom ? amount * currencyCustom.rate_usd : amount, data.id, 'deposit');
-        returnedObj = { ...data.dataValues, redirect: payment };
-      } else if (payment_method === 'stripe') {
-        const payment = await stripePayment(currencyCustom?.custom ? amount * currencyCustom.rate_usd : amount, data.id, 'deposit');
-        returnedObj = { ...data.dataValues, redirect: payment };
-      }
-    } else {
-      const payment = await coinPayments({
-        symbol: currency,
-        amount,
-        id: data.id,
-      }, user, 'deposit');
+    if (payment_method === 'mollie') {
+      const payment = await molliePayment(amount, data.id, currency);
+      // eslint-disable-next-line no-underscore-dangle
+      returnedObj = { ...data.dataValues, redirect: payment._links.checkout.href };
+    } else if (payment_method === 'coinbase') {
+      const payment = await coinbasePayment(amount, data.id, currency);
+      returnedObj = { ...data.dataValues, redirect: payment.hosted_url };
+    } else if (payment_method === 'paypal') {
+      const payment = await paypalPayment(amount, data.id, currency);
+      returnedObj = { ...data.dataValues, redirect: payment };
+    } else if (payment_method === 'stripe') {
+      const payment = await stripePayment(amount, data.id, currency.toLowerCase());
+      returnedObj = { ...data.dataValues, redirect: payment };
+    } else if (payment_method === 'coinpayments') {
+      const payment = await coinPayments({ symbol: currency, amount, id: data.id }, user);
       returnedObj = { ...data.dataValues, redirect: payment.checkout_url };
     }
+
     await Log.create({ message: `User #${id} requested deposit of ${amount} via ${payment_method}` });
     return res.json(returnedObj);
   } catch (err) {

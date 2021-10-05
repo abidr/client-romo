@@ -5,7 +5,7 @@ const db = require('../../config/db.config');
 const Gateway = db.gateways;
 const Setting = db.settings;
 
-exports.stripePayment = async (value, id) => {
+exports.stripePayment = async (value, id, currency) => {
   try {
     const data = await Gateway.findOne({ where: { value: 'stripe' } });
     const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
@@ -17,7 +17,7 @@ exports.stripePayment = async (value, id) => {
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency,
             product_data: {
               name: `Deposit Request #${id}`,
             },
@@ -28,8 +28,8 @@ exports.stripePayment = async (value, id) => {
       ],
       mode: 'payment',
       metadata: { depositId: id },
-      success_url: `${appUrl.param1}/deposits`,
-      cancel_url: `${appUrl.param1}/deposits`,
+      success_url: `${appUrl.param1}/add-money?status=success`,
+      cancel_url: `${appUrl.param1}/add-money?status=failed`,
     });
     return session.url;
   } catch (err) {

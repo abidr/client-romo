@@ -7,7 +7,7 @@ const { withAuth, isAdmin } = require('../middlewares/auth.middleware');
 const {
   updateFees, updateGateways, getSettingByValue, getSettings, getDashboard, updateSettingByValue,
   getLogs, updateRewards, updateGeneral, getGateways, getGatewaysAdmin, getGatewayByValueAdmin,
-  updateAdjustments, getDashboardUser,
+  updateAdjustments, getDashboardUser, getGatewayCurrencies,
 } = require('../controllers/setting.controller');
 
 router.get('/settings', getSettings);
@@ -22,6 +22,7 @@ router.put('/settings/adjustments', withAuth, isAdmin, updateAdjustments);
 router.put('/settings/general', withAuth, isAdmin, updateGeneral);
 router.put('/payments/:value', updateGateways);
 router.get('/gateways', getGateways);
+router.get('/gateways/currencies', getGatewayCurrencies);
 router.get('/gateways/admin', withAuth, isAdmin, getGatewaysAdmin);
 router.get('/gateways/:value', withAuth, isAdmin, getGatewayByValueAdmin);
 

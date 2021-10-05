@@ -4,7 +4,7 @@ const db = require('../../config/db.config');
 const Gateway = db.gateways;
 const Setting = db.settings;
 
-exports.paypalPayment = async (value, id) => {
+exports.paypalPayment = async (value, id, currency) => {
   try {
     const data = await Gateway.findOne({ where: { value: 'paypal' } });
     const apiUrl = await Setting.findOne({ where: { value: 'api_url' } });
@@ -30,12 +30,12 @@ exports.paypalPayment = async (value, id) => {
             name: `Deposit #${id}`,
             sku: `${id}`,
             price: value.toFixed(2),
-            currency: 'USD',
+            currency,
             quantity: 1,
           }],
         },
         amount: {
-          currency: 'USD',
+          currency,
           total: value.toFixed(2),
         },
         description: 'Deposit Request',

@@ -59,6 +59,7 @@ const currencyRatesFetcher = async () => {
         // eslint-disable-next-line max-len
         rateUsd: updatedRate.market_data.current_price.usd,
         metadata: JSON.stringify(updatedRate),
+        icon: coin.icon ? undefined : updatedRate.image.small,
       }, { where: { id: coin.id } });
     }
   });

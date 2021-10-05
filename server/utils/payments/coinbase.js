@@ -4,7 +4,7 @@ const db = require('../../config/db.config');
 const Gateway = db.gateways;
 const Setting = db.settings;
 
-exports.coinbasePayment = async (value, id, type) => {
+exports.coinbasePayment = async (value, id, currency) => {
   try {
     const data = await Gateway.findOne({ where: { value: 'coinbase' } });
     const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
@@ -13,16 +13,16 @@ exports.coinbasePayment = async (value, id, type) => {
     const { Charge } = coinbase.resources;
 
     const payment = await Charge.create({
-      name: type === 'deposit' ? `Deposit #${id}` : `Buy #${id}`,
-      description: type === 'deposit' ? 'Deposit Request to Wallet' : 'Buy Request',
+      name: `Deposit #${id}`,
+      description: 'Deposit Request to Wallet',
       pricing_type: 'fixed_price',
-      metadata: { id, type },
+      metadata: { id },
       local_price: {
         amount: value.toFixed(2),
-        currency: 'USD',
+        currency,
       },
-      redirect_url: type === 'deposit' ? `${appUrl.param1}/deposits` : `${appUrl.param1}/buy-sell`,
-      cancel_url: type === 'deposit' ? `${appUrl.param1}/deposits` : `${appUrl.param1}/buy-sell`,
+      redirect_url: `${appUrl.param1}/add-money?status=success`,
+      cancel_url: `${appUrl.param1}/add-money?status=failed`,
     });
     return payment;
   } catch (err) {

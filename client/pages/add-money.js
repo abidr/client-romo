@@ -1,37 +1,27 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import {
-  Col, Dropdown, Image, Nav, Row, Tab
+  Col, Nav, Row, Tab
 } from 'react-bootstrap';
-import { BiErrorCircle, BiRightArrowAlt, BiWallet } from 'react-icons/bi';
+import { BiErrorCircle, BiWallet } from 'react-icons/bi';
+import DepositStep from '../components/DepositStep';
 import DepositHistory from '../components/history/DepositHistory';
-import Loader from '../components/Loader';
 import Sidebar from '../components/Sidebar';
 import TransactionSteps from '../components/TransactionSteps';
 import UserHeader from '../components/UserHeader';
-import useCurrency from '../data/useCurrency';
-import useWallet from '../data/useWallet';
 import withAuth from '../hoc/withAuth';
-import usd from '../images/usd.png';
 
 const AddMoney = () => {
-  const [selectedCurrency, setSelectedCurrency] = useState();
-  const [currentBalance, setCurrentBalance] = useState(0);
-  const { data, loading } = useCurrency();
-  const { data: walletData, loading: walletLoading } = useWallet();
+  const [step, setStep] = useState(1);
+  const router = useRouter();
+  const { status } = router.query;
 
   useEffect(() => {
-    setSelectedCurrency(data?.data[0]);
-  }, [data]);
-
-  useEffect(() => {
-    const walletFind = walletData?.find((wallet) => wallet.currency === selectedCurrency?.symbol);
-    setCurrentBalance(walletFind?.balance);
-  }, [selectedCurrency, walletData]);
-
-  if (loading || walletLoading) {
-    return <Loader />;
-  }
+    if (status === 'success' || status === 'failed') {
+      setStep(3);
+    }
+  }, []);
 
   return (
     <>
@@ -65,47 +55,8 @@ const AddMoney = () => {
                     <Tab.Content>
                       <Tab.Pane eventKey="first">
                         <div className="deposit-box basic-card">
-                          <TransactionSteps />
-                          <div className="currency-amount">
-                            <label htmlFor="currencySelector">Wallet</label>
-                            <Dropdown id="currencySelector">
-                              <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
-                                <Image src={usd.src} rounded />
-                                {selectedCurrency?.symbol}
-                              </Dropdown.Toggle>
-
-                              <Dropdown.Menu>
-                                {data?.data?.map((currency) => (
-                                  <Dropdown.Item
-                                    key={currency.id}
-                                    onClick={() => setSelectedCurrency(currency)}
-                                  >
-                                    <Image src={currency.icon} rounded />
-                                    {currency.symbol}
-                                  </Dropdown.Item>
-                                ))}
-                              </Dropdown.Menu>
-                              <p className="available-balance">
-                                Available Balance:
-                                <span>
-                                  {' '}
-                                  {currentBalance}
-                                  {' '}
-                                  {selectedCurrency?.symbol}
-                                </span>
-                              </p>
-                            </Dropdown>
-                          </div>
-                          <div className="currency-amount">
-                            <label>Amount</label>
-                            <input type="text" />
-                          </div>
-                          <div className="bttns mt-30">
-                            <a href="/#" className="bttn-mid btn-ylo">
-                              <BiRightArrowAlt />
-                              Next
-                            </a>
-                          </div>
+                          <TransactionSteps step={step} />
+                          <DepositStep step={step} setStep={setStep} status={status} />
                         </div>
                       </Tab.Pane>
                       <Tab.Pane eventKey="second">

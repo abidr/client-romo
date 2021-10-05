@@ -4,7 +4,7 @@ const db = require('../../config/db.config');
 const Gateway = db.gateways;
 const Setting = db.settings;
 
-exports.molliePayment = async (value, id, type) => {
+exports.molliePayment = async (value, id, currency) => {
   try {
     const data = await Gateway.findOne({ where: { value: 'mollie' } });
     const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
@@ -13,11 +13,11 @@ exports.molliePayment = async (value, id, type) => {
     const payment = await mollieClient.payments.create({
       amount: {
         value: value.toFixed(2),
-        currency: 'USD',
+        currency,
       },
-      metadata: { id, type },
-      description: type === 'deposit' ? 'Deposit Request' : 'Exchange Request',
-      redirectUrl: type === 'deposit' ? `${appUrl.param1}/deposits` : `${appUrl.param1}/buy-sell`,
+      metadata: { id },
+      description: 'Deposit Request',
+      redirectUrl: `${appUrl.param1}/add-money?status=success`,
       webhookUrl: `${apiUrl.param1}/payments/mollie`,
     });
     return payment;

@@ -197,6 +197,13 @@ exports.getGateways = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
+exports.getGatewayCurrencies = async (req, res) => {
+  try {
+    return res.json(fieldData);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
 
 exports.getGatewaysAdmin = async (req, res) => {
   try {

@@ -4,7 +4,7 @@ const db = require('../../config/db.config');
 const Gateway = db.gateways;
 const Setting = db.settings;
 
-exports.coinPayments = async (data, user, type) => {
+exports.coinPayments = async (data, user) => {
   try {
     const gateway = await Gateway.findOne({ where: { value: 'coinpayments' } });
     const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
@@ -21,10 +21,10 @@ exports.coinPayments = async (data, user, type) => {
       amount: data.amount,
       buyer_email: user.email,
       invoice: data.id,
-      custom: type,
+      custom: 'deposit',
       ipn_url: `${apiUrl.param1}/payments/coinpayments`,
-      success_url: type === 'deposit' ? `${appUrl.param1}/deposits` : `${appUrl.param1}/buy-sell`,
-      cancel_url: type === 'deposit' ? `${appUrl.param1}/deposits` : `${appUrl.param1}/buy-sell`,
+      success_url: `${appUrl.param1}/add-money?status=success`,
+      cancel_url: `${appUrl.param1}/add-money?status=failed`,
     });
     return payment;
   } catch (err) {
