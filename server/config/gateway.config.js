@@ -23,6 +23,14 @@ const fieldData = {
     ex2: { status: false, label: 'N/A' },
     supportedCurrencies: ['BTC', 'ETH'],
   },
+  coingate: {
+    api_key: true,
+    secret_key: false,
+    email: false,
+    ex1: { status: true, label: 'Mode' },
+    ex2: { status: false, label: 'N/A' },
+    supportedCurrencies: ['BTC', 'ETH'],
+  },
   paypal: {
     api_key: true,
     secret_key: true,
@@ -38,6 +46,22 @@ const fieldData = {
     ex1: { status: true, label: 'Signing Secret' },
     ex2: { status: false, label: 'N/A' },
     supportedCurrencies: ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'SGD'],
+  },
+  paystack: {
+    api_key: true,
+    secret_key: false,
+    email: false,
+    ex1: { status: false, label: 'N/A' },
+    ex2: { status: false, label: 'N/A' },
+    supportedCurrencies: ['USD', 'NGN'],
+  },
+  voguepay: {
+    api_key: false,
+    secret_key: false,
+    email: false,
+    ex1: { status: true, label: 'Merchant ID' },
+    ex2: { status: false, label: 'N/A' },
+    supportedCurrencies: ['USD', 'NGN', 'EUR', 'GBP', 'ZAR', 'JPY', 'INR', 'AUD'],
   },
 };
 

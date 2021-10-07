@@ -23,6 +23,10 @@ const fiatData = [
     name: 'Singapore Dollar',
     symbol: 'SGD',
   },
+  {
+    name: 'Nigerian Naira',
+    symbol: 'NGN',
+  },
 ];
 
 module.exports = fiatData;

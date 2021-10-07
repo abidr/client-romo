@@ -16,6 +16,9 @@ const { coinPayments } = require('../utils/payments/coinpayments');
 const { paypalPayment } = require('../utils/payments/paypal');
 const { addBalance } = require('../utils/wallet');
 const { stripePayment } = require('../utils/payments/stripe');
+const { coingatePayment } = require('../utils/payments/coingate');
+const { paystackPayment } = require('../utils/payments/paystack');
+const { voguePayment } = require('../utils/payments/voguepay');
 
 exports.getAllDeposits = async (req, res) => {
   const query = await queryParser.parse(req);
@@ -136,6 +139,15 @@ exports.createDeposit = async (req, res) => {
     } else if (payment_method === 'coinpayments') {
       const payment = await coinPayments({ symbol: currency, amount, id: data.id }, user);
       returnedObj = { ...data.dataValues, redirect: payment.checkout_url };
+    } else if (payment_method === 'coingate') {
+      const payment = await coingatePayment(amount, data.id, currency);
+      returnedObj = { ...data.dataValues, redirect: payment };
+    } else if (payment_method === 'paystack') {
+      const payment = await paystackPayment(data, user);
+      returnedObj = { ...data.dataValues, redirect: payment };
+    } else if (payment_method === 'voguepay') {
+      const payment = await voguePayment(data, user);
+      returnedObj = { ...data.dataValues, redirect: payment };
     }
 
     await Log.create({ message: `User #${id} requested deposit of ${amount} via ${payment_method}` });
