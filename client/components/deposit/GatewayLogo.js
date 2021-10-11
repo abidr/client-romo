@@ -1,12 +1,12 @@
 import React from 'react';
-import Coinbase from '../images/gateway/coinbase.svg';
-import Coingate from '../images/gateway/coingate.png';
-import Coinpayments from '../images/gateway/coinpayments.png';
-import Mollie from '../images/gateway/mollie.svg';
-import Paypal from '../images/gateway/paypal.svg';
-import Paystack from '../images/gateway/paystack.png';
-import Stripe from '../images/gateway/stripe.svg';
-import Voguepay from '../images/gateway/voguepay.svg';
+import Coinbase from '../../images/gateway/coinbase.svg';
+import Coingate from '../../images/gateway/coingate.png';
+import Coinpayments from '../../images/gateway/coinpayments.png';
+import Mollie from '../../images/gateway/mollie.svg';
+import Paypal from '../../images/gateway/paypal.svg';
+import Paystack from '../../images/gateway/paystack.png';
+import Stripe from '../../images/gateway/stripe.svg';
+import Voguepay from '../../images/gateway/voguepay.svg';
 
 const GatewayLogo = ({ name }) => {
   if (name === 'stripe') {

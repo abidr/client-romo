@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Col, Dropdown, Image, Nav, Row, Tab
+  Col, Dropdown, Image, Nav, Row, Tab
 } from 'react-bootstrap';
 import { BiErrorCircle, BiRightArrowAlt, BiWallet } from 'react-icons/bi';
 import RecentExchange from '../components/RecentExchange';

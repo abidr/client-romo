@@ -1,12 +1,16 @@
+/* eslint-disable max-len */
 import React from 'react';
 import {
-    Col, Form, FormControl, InputGroup, Nav, Row, Tab
+  Col, Form, FormControl, InputGroup, Nav, Row, Tab
 } from 'react-bootstrap';
 import { BiDollar, BiErrorCircle, BiWallet } from 'react-icons/bi';
+import Kyc from '../components/settings/Kyc';
+import ProfileSettings from '../components/settings/ProfileSettings';
 import Sidebar from '../components/Sidebar';
 import UserHeader from '../components/UserHeader';
+import withAuth from '../hoc/withAuth';
 
-const Settings = () => (
+const Settings = ({ userData }) => (
   <>
     <UserHeader />
     <Sidebar />
@@ -38,65 +42,15 @@ const Settings = () => (
                         Linked Account
                       </Nav.Link>
                     </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link className="bttn-mid btn-grad w-100" eventKey="fourth">
-                        <BiErrorCircle />
-                        Security
-                      </Nav.Link>
-                    </Nav.Item>
                   </Nav>
                 </Col>
                 <Col sm={9}>
                   <Tab.Content>
                     <Tab.Pane eventKey="first">
-                      <div className="basic-card">
-                        <h3 className="box-title">Account Settings</h3>
-                        <div className="settings-box">
-                          <div className="single-profile">
-                            <lebel>Full name</lebel>
-                            <input type="text" value="User name" />
-                          </div>
-                          <div className="single-profile">
-                            <lebel>Phone</lebel>
-                            <input type="text" value="Phone Number" />
-                          </div>
-                          <div className="single-profile">
-                            <lebel>Address</lebel>
-                            <input type="text" value="Your address here" />
-                          </div>
-                          <div className="single-profile">
-                            <lebel>Email</lebel>
-                            <input type="email" value="exchanger.email.com" disabled />
-                          </div>
-                          <button className="bttn-mid btn-ylo">
-                            <BiErrorCircle />
-                            Update Profile
-                          </button>
-                        </div>
-                      </div>
+                      <ProfileSettings userData={userData} />
                     </Tab.Pane>
                     <Tab.Pane eventKey="second">
-                      <div className="basic-card">
-                        <h4 className="box-title">KYC</h4>
-                        <div className="settings-box">
-                          <div className="single-profile">
-                            <lebel>Upload NID</lebel>
-                            <input type="file" />
-                          </div>
-                          <div className="single-profile">
-                            <lebel>Upload Passport</lebel>
-                            <input type="file" />
-                          </div>
-                          <div className="single-profile">
-                            <lebel>Upload Driving Licence</lebel>
-                            <input type="file" />
-                          </div>
-                          <button className="bttn-mid btn-ylo">
-                            <BiErrorCircle />
-                            Update KYC
-                          </button>
-                        </div>
-                      </div>
+                      <Kyc />
                     </Tab.Pane>
                     <Tab.Pane eventKey="third">
                       <div className="basic-card">
@@ -142,32 +96,9 @@ const Settings = () => (
                               />
                             </InputGroup>
                           </div>
-                          <button className="bttn-mid btn-ylo">
+                          <button type="button" className="bttn-mid btn-ylo">
                             <BiErrorCircle />
                             Update KYC
-                          </button>
-                        </div>
-                      </div>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="fourth">
-                      <div className="basic-card">
-                        <h4 className="box-title">Security</h4>
-                        <div className="settings-box">
-                          <div className="single-profile">
-                            <lebel>Upload NID</lebel>
-                            <input type="file" />
-                          </div>
-                          <div className="single-profile">
-                            <lebel>Upload Passport</lebel>
-                            <input type="file" />
-                          </div>
-                          <div className="single-profile">
-                            <lebel>Upload Driving Licence</lebel>
-                            <input type="file" />
-                          </div>
-                          <button className="bttn-mid btn-ylo">
-                            <BiErrorCircle />
-                            Save Changes
                           </button>
                         </div>
                       </div>
@@ -183,4 +114,4 @@ const Settings = () => (
   </>
 );
 
-export default Settings;
+export default withAuth(Settings);

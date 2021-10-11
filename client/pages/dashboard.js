@@ -10,7 +10,7 @@ import withAuth from '../hoc/withAuth';
 const Dashboard = ({ userData, settings }) => (
   <>
     <UserHeader />
-    <Sidebar />
+    <Sidebar settings={settings} />
     <div className="content-body">
       <div className="container-fluid">
         <div className="row mb-40">

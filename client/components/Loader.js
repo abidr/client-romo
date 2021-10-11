@@ -1,12 +1,12 @@
 import React from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
-const Loader = () => (
+const Loader = ({ height }) => (
   <div style={{
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh'
+    height
   }}
   >
     <Spinner animation="border" role="status" size="lg" />

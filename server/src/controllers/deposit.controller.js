@@ -116,6 +116,7 @@ exports.createDeposit = async (req, res) => {
   try {
     let returnedObj;
     const currencyCustom = await Currency.findOne({ where: { symbol: currency } });
+
     const data = await Deposit.create({
       payment_method: (currency === 'USD' || currencyCustom?.custom) ? payment_method : 'coinpayments',
       amount,
@@ -150,7 +151,7 @@ exports.createDeposit = async (req, res) => {
       returnedObj = { ...data.dataValues, redirect: payment };
     }
 
-    await Log.create({ message: `User #${id} requested deposit of ${amount} via ${payment_method}` });
+    await Log.create({ message: `User #${id} requested deposit of ${amount} ${currency} via ${payment_method}` });
     return res.json(returnedObj);
   } catch (err) {
     return res.status(500).json({ message: err.message });

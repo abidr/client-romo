@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt');
 
 module.exports = (sequelize) => {
   const User = sequelize.define('user', {
@@ -17,12 +18,19 @@ module.exports = (sequelize) => {
     },
     password: {
       type: DataTypes.STRING,
+      set(val) {
+        this.setDataValue('password', bcrypt.hashSync(val, 10));
+      },
     },
     role: {
       type: DataTypes.INTEGER,
       defaultValue: 1,
     },
     active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    kyc: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },

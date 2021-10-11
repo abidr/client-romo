@@ -1,20 +1,22 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const Transfer = sequelize.define('transfer', {
+  const Kyc = sequelize.define('kyc', {
     type: {
       type: DataTypes.STRING,
     },
-    email: {
+    front: {
       type: DataTypes.STRING,
     },
-    amount: {
-      type: DataTypes.FLOAT,
-    },
-    currency: {
+    back: {
       type: DataTypes.STRING,
-      defaultValue: 'USD',
+    },
+    selfie: {
+      type: DataTypes.STRING,
+    },
+    status: {
+      type: DataTypes.STRING,
     },
   });
-  return Transfer;
+  return Kyc;
 };

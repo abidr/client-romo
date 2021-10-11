@@ -8,7 +8,7 @@ const checkAuthAccess = (WrappedComponent) => (props) => {
   const { data, loading } = useCheckAuth();
 
   if (loading) {
-    return <Loader />;
+    return <Loader height="100vh" />;
   }
 
   if (!data) {

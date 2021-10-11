@@ -1,28 +1,24 @@
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import cogoToast from 'cogo-toast';
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Image, Table } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import {
-  BiCheckCircle, BiRightArrowAlt, BiXCircle
+  BiCheckCircle, BiLeftArrowAlt, BiRightArrowAlt
 } from 'react-icons/bi';
-import useCurrency from '../data/useCurrency';
-import useGateways, { useGatewayCurrencies } from '../data/useGateways';
-import useWallet from '../data/useWallet';
-import depositRequest from '../lib/depositRequest';
-import GatewayLogo from './GatewayLogo';
+import useCurrency from '../../data/useCurrency';
+import useWallet from '../../data/useWallet';
+import transferRequest from '../../lib/transferRequest';
+import Loader from '../Loader';
 
-const DepositStep = ({ step, setStep, status }) => {
+const TransferStep = ({ step, setStep }) => {
   const [selectedCurrency, setSelectedCurrency] = useState();
   const [currentBalance, setCurrentBalance] = useState(0);
-  const [amount, setAmount] = useState();
-  const [payment, setPayment] = useState();
+  const [amount, setAmount] = useState('');
+  const [email, setEmail] = useState('');
   const [actionLoader, setActionLoader] = useState(false);
   const { data, loading } = useCurrency();
   const { data: walletData, loading: walletLoading } = useWallet();
-  const { data: gatewayData, loading: gatewayLoading } = useGateways();
-  const { data: currencyData, loading: currencyLoading } = useGatewayCurrencies();
 
   useEffect(() => {
     setSelectedCurrency(data?.data[0]);
@@ -39,29 +35,15 @@ const DepositStep = ({ step, setStep, status }) => {
   };
 
   const handleDeposit = () => {
-    if (payment) {
-      depositRequest({
-        payment_method: payment,
-        amount: parseFloat(amount, 10),
-        currency: selectedCurrency?.symbol
-      }, setActionLoader);
-    } else {
-      cogoToast.error('Please select a payment method', { position: 'bottom-center' });
-    }
+    transferRequest({
+      email,
+      amount: parseFloat(amount, 10),
+      currency: selectedCurrency?.symbol,
+    }, setActionLoader, setStep);
   };
 
-  if (loading || walletLoading || gatewayLoading || currencyLoading) {
-    return (
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '200px'
-      }}
-      >
-        <Spinner animation="border" role="status" size="lg" />
-      </div>
-    );
+  if (loading || walletLoading) {
+    return <Loader />;
   }
 
   if (step === 1) {
@@ -108,6 +90,16 @@ const DepositStep = ({ step, setStep, status }) => {
             />
           </div>
 
+          <div className="currency-amount">
+            <label>Recipient&apos;s Email</label>
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              type="email"
+              required
+            />
+          </div>
+
           <div className="bttns mt-30">
             <button
               type="submit"
@@ -128,23 +120,13 @@ const DepositStep = ({ step, setStep, status }) => {
           <Table striped hover responsive className="dark-color">
             <tbody>
               <tr>
+                <td>Recipient</td>
+                <td style={{ color: 'white', fontWeight: 'bold' }}>
+                  {email}
+                </td>
+              </tr>
+              <tr>
                 <td>Amount</td>
-                <td style={{ color: 'white', fontWeight: 'bold' }}>
-                  {amount}
-                  {' '}
-                  {selectedCurrency?.symbol}
-                </td>
-              </tr>
-              <tr>
-                <td>Fee</td>
-                <td style={{ color: 'white', fontWeight: 'bold' }}>
-                  {amount}
-                  {' '}
-                  {selectedCurrency?.symbol}
-                </td>
-              </tr>
-              <tr>
-                <td>Total</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount}
                   {' '}
@@ -153,26 +135,16 @@ const DepositStep = ({ step, setStep, status }) => {
               </tr>
             </tbody>
           </Table>
-          <div className="payment-method">
-            <h4>Payment Method</h4>
-            {gatewayData?.map((gateway) => {
-              const isCurrencyAvailable = currencyData[gateway?.value].supportedCurrencies.some((cur) => cur === selectedCurrency?.symbol);
-              if (isCurrencyAvailable) {
-                return (
-                  <button
-                    type="button"
-                    onClick={() => setPayment(gateway.value)}
-                    className={`gateway ${(payment === gateway.value) ? 'active' : ''}`}
-                  >
-                    <GatewayLogo name={gateway.value} />
-                  </button>
-                );
-              }
-              return <></>;
-            })}
-          </div>
         </div>
         <div className="bttns mt-30">
+          <button
+            type="button"
+            onClick={() => setStep(step - 1)}
+            className="bttn-mid btn-grey mr-10"
+          >
+            <BiLeftArrowAlt />
+            Back
+          </button>
           <button
             type="button"
             onClick={() => handleDeposit()}
@@ -188,7 +160,7 @@ const DepositStep = ({ step, setStep, status }) => {
             ) : (
               <>
                 <BiRightArrowAlt />
-                Make Payment
+                Send
               </>
             )}
           </button>
@@ -198,26 +170,25 @@ const DepositStep = ({ step, setStep, status }) => {
   } if (step === 3) {
     return (
       <div className="transaction-success">
-        {status === 'success' ? (
-          <BiCheckCircle color="green" size={70} />
-        ) : (
-          <BiXCircle color="red" size={70} />)}
+        <BiCheckCircle color="green" size={70} />
         <h2>
-          Deposit
-          {' '}
-          {status === 'success' ? 'Successful' : 'Failed'}
+          Transfer Successful
         </h2>
-        {status === 'success' ? (
-          <p>Your requested amount has been added to your desired wallet.</p>
-        ) : (
-          <p>Your deposit request declined by the payment gateway.</p>
-        )}
+        <p>
+          {amount}
+          {' '}
+          {selectedCurrency?.symbol}
+          {' '}
+          sent to
+          {' '}
+          {email}
+        </p>
         <button
           type="button"
           onClick={() => setStep(1)}
           className="bttn-mid btn-ylo"
         >
-          Make Another Deposit
+          Make Another Transfer
         </button>
       </div>
     );
@@ -225,4 +196,4 @@ const DepositStep = ({ step, setStep, status }) => {
   return <></>;
 };
 
-export default DepositStep;
+export default TransferStep;

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import {
   Col, Dropdown, Image, Nav, Row, Tab

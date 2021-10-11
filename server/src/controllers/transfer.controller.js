@@ -1,4 +1,5 @@
 const sequelizeQuery = require('sequelize-query');
+const { customAlphabet } = require('nanoid');
 const db = require('../config/db.config');
 const mailer = require('../utils/mailer');
 
@@ -62,18 +63,20 @@ exports.getAllTransfersByUser = async (req, res) => {
 exports.createTransfer = async (req, res) => {
   const { id } = req.user;
   const { amount, currency, email } = req.body;
+
   try {
+    const nanoId = customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 12);
+    const trxId = nanoId();
+
     const sendingUser = await User.findByPk(id);
 
-    if (currency === 'USD') {
-      if (!(sendingUser.balance_usd >= amount)) {
-        return res.status(400).json({ message: 'Insufficient balance' });
-      }
-    } else {
-      const wallet = await Wallet.findOne({ where: { userId: id, currency } });
-      if (!(wallet.balance >= amount)) {
-        return res.status(400).json({ message: 'Insufficient balance' });
-      }
+    const wallet = await Wallet.findOne({ where: { userId: id, currency } });
+
+    if (!wallet) {
+      return res.status(400).json({ message: 'Insufficient balance' });
+    }
+    if (!(wallet.balance >= amount)) {
+      return res.status(400).json({ message: 'Insufficient balance' });
     }
 
     const receivingUser = await User.findOne({ where: { email } });
@@ -82,7 +85,7 @@ exports.createTransfer = async (req, res) => {
       await addBalance(amount, currency, receivingUser.id);
       await removeBalance(amount, currency, id);
     } else {
-      return res.status(500).json({ message: 'User not found' });
+      return res.status(400).json({ message: 'User not found' });
     }
 
     const data = await Transfer.create({
@@ -90,6 +93,7 @@ exports.createTransfer = async (req, res) => {
       amount,
       currency,
       email,
+      trxId,
       userId: id,
     });
 
@@ -98,6 +102,7 @@ exports.createTransfer = async (req, res) => {
       amount,
       currency,
       email: sendingUser.email,
+      trxId,
       userId: receivingUser.id,
     });
 
@@ -109,7 +114,7 @@ exports.createTransfer = async (req, res) => {
 
     mailer({
       user: receivingUser.id,
-      subject: 'Receive Transfer',
+      subject: 'Received Transfer',
       message: `You received ${data.amount} ${data.currency} from ${sendingUser.email}`,
     });
 

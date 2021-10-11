@@ -1,8 +1,8 @@
 const config = {
-  HOST: process.env.DB_HOST || 'localhost',
-  USER: process.env.DB_USER || 'root',
-  PASSWORD: process.env.DB_PASSWORD || '',
-  DB: process.env.DB || 'nodecom',
+  HOST: process.env.DB_HOST,
+  USER: process.env.DB_USER,
+  PASSWORD: process.env.DB_PASSWORD,
+  DB: process.env.DB,
   dialect: process.env.DIALECT || 'mysql',
   pool: {
     max: 5,
@@ -39,6 +39,7 @@ db.transfers = require('../models/transfer.model')(sequelize);
 db.currencies = require('../models/currency.model')(sequelize);
 db.exchanges = require('../models/exchange.model')(sequelize);
 db.wallets = require('../models/wallet.model')(sequelize);
+db.kycs = require('../models/kyc.model')(sequelize);
 
 // Withdraw Relation
 db.users.hasMany(db.withdraws, { as: 'withdraws' });
@@ -67,6 +68,12 @@ db.exchanges.belongsTo(db.users, {
 // Wallet Relation
 db.users.hasMany(db.wallets, { as: 'wallets' });
 db.wallets.belongsTo(db.users, {
+  foreignKey: 'userId',
+  as: 'user',
+});
+// KYC Relation
+db.users.hasMany(db.kycs, { as: 'kycs' });
+db.kycs.belongsTo(db.users, {
   foreignKey: 'userId',
   as: 'user',
 });

@@ -32,15 +32,13 @@ exports.signUp = async (req, res) => {
     });
   }
 
-  // Generating a hashed password and saving user in DB
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const random = uuid.v4();
 
   const user = {
     name: req.body.name,
     email: req.body.email,
     reffered_by: req.body.reffered_by,
-    password: hashedPassword,
+    password: req.body.password,
     active: false,
     reset: random,
   };
@@ -122,13 +120,10 @@ exports.signUpAdmin = async (req, res) => {
     });
   }
 
-  // Generating a hashed password and saving user in DB
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
   const user = {
     name: req.body.name,
     email: req.body.email,
-    password: hashedPassword,
+    password: req.body.password,
     role: 0,
     active: true,
   };
@@ -246,11 +241,9 @@ exports.resetInit = async (req, res) => {
     });
   }
 
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
   try {
     await User.update(
-      { password: hashedPassword, reset: null },
+      { password: req.body.password, reset: null },
       { where: { id: data.id } },
     );
     return res.json({ message: 'Password Updated' });

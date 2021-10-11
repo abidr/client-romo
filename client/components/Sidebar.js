@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  BiCog, BiDollarCircle, BiHomeSmile, BiMoney, BiPaperPlane, BiPlusCircle, BiTransferAlt, BiWallet
+  BiCog, BiDollarCircle, BiHomeSmile, BiPaperPlane, BiPlusCircle, BiTransferAlt, BiWallet
 } from 'react-icons/bi';
 import SidebarMenu from './SidebarMenu';
 
-const Sidebar = () => (
+const Sidebar = ({ settings }) => (
   <>
     <div className="sidebar">
       {/* <a href="/" className="brand-logo">
@@ -24,10 +24,6 @@ const Sidebar = () => (
             <BiPaperPlane />
             <span>Send Money</span>
           </SidebarMenu>
-          <SidebarMenu href="/request-money">
-            <BiMoney />
-            <span>Request Money</span>
-          </SidebarMenu>
           <SidebarMenu href="/withdraw">
             <BiWallet />
             <span>Withdraw</span>
@@ -45,7 +41,11 @@ const Sidebar = () => (
             <span>Settings</span>
           </SidebarMenu>
         </ul>
-        <div className="copyright">&copy;Wallet</div>
+        <div className="copyright">
+          &copy;
+          {' '}
+          {settings?.site?.param1}
+        </div>
       </div>
     </div>
   </>

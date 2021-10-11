@@ -9,6 +9,7 @@ $red: #fd005d;
 $yellow: #ffc300;
 $green: #2a9d8f;
 $white: #fff;
+$grey: #585858;
 
 $siteFont: "Jost", sans-serif;
 $headdingFont: "Open Sans", sans-serif;
@@ -394,6 +395,16 @@ img {
 .btn-ylo {
   background: $yellow;
   color: $blue2;
+  box-shadow: 0px 0px 16px 4px rgba(0, 0, 0, 0.05);
+  &:hover {
+    background: $blue;
+    color: rgba($white, $alpha: 0.9);
+  }
+}
+
+.btn-grey {
+  background: $grey;
+  color: $white;
   box-shadow: 0px 0px 16px 4px rgba(0, 0, 0, 0.05);
   &:hover {
     background: $blue;

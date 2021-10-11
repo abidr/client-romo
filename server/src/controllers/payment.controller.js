@@ -68,8 +68,8 @@ exports.verifyCoinPayments = async (req, res) => {
 };
 exports.verifyPaypal = async (req, res) => {
   const { PayerID, paymentId } = req.query;
+  const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
   try {
-    const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
     const payment = await executePaymentPaypal(PayerID, paymentId);
     if (payment.state === 'approved') {
       const depositId = payment.transactions[0].item_list.items[0].sku;
@@ -79,9 +79,9 @@ exports.verifyPaypal = async (req, res) => {
         { where: { id: depositId } });
       await Log.create({ message: `Paypal confirmed payment for Deposit #${depositId}` });
     }
-    return res.redirect(`${appUrl.param1}/deposits`);
+    return res.redirect(`${appUrl.param1}/add-money?status=success`);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.redirect(`${appUrl.param1}/add-money?status=failed`);
   }
 };
 exports.verifyStripe = async (req, res) => {

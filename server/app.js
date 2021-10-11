@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const db = require('./config/db.config');
+const db = require('./src/config/db.config');
 
 const server = express();
 
@@ -15,17 +15,19 @@ server.use(express.urlencoded({ extended: true }));
 server.use(express.text());
 server.use(cookieParser());
 server.use(cors({ origin: true, credentials: true }));
+server.use('/public', express.static('public'));
 
-const authRoutes = require('./routes/auth.route');
-const userRoutes = require('./routes/user.route');
-const withdrawRoutes = require('./routes/withdraw.route');
-const depositRoutes = require('./routes/deposit.route');
-const transferRoutes = require('./routes/transfer.route');
-const paymentRoutes = require('./routes/payment.route');
-const settingRoutes = require('./routes/setting.route');
-const currencyRoutes = require('./routes/currency.route');
-const exchangeRoutes = require('./routes/exchange.route');
-const walletRoutes = require('./routes/wallet.route');
+const authRoutes = require('./src/routes/auth.route');
+const userRoutes = require('./src/routes/user.route');
+const withdrawRoutes = require('./src/routes/withdraw.route');
+const depositRoutes = require('./src/routes/deposit.route');
+const transferRoutes = require('./src/routes/transfer.route');
+const paymentRoutes = require('./src/routes/payment.route');
+const settingRoutes = require('./src/routes/setting.route');
+const currencyRoutes = require('./src/routes/currency.route');
+const exchangeRoutes = require('./src/routes/exchange.route');
+const walletRoutes = require('./src/routes/wallet.route');
+const kycRoutes = require('./src/routes/kyc.route');
 
 server.use('/', authRoutes);
 server.use('/', userRoutes);
@@ -37,6 +39,7 @@ server.use('/', settingRoutes);
 server.use('/', currencyRoutes);
 server.use('/', exchangeRoutes);
 server.use('/', walletRoutes);
+server.use('/', kycRoutes);
 
 const port = process.env.PORT || 8000;
 

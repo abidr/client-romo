@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-    Col, Dropdown, Image, Nav, Row, Tab
+  Col, Dropdown, Image, Nav, Row, Tab
 } from 'react-bootstrap';
 import { BiErrorCircle, BiRightArrowAlt, BiWallet } from 'react-icons/bi';
 import RecentExchange from '../components/RecentExchange';
 import Sidebar from '../components/Sidebar';
 import TransactionSteps from '../components/TransactionSteps';
 import UserHeader from '../components/UserHeader';
+import withAuth from '../hoc/withAuth';
 import bitcoin from '../images/bitcoin.png';
 import bnb from '../images/bnb.png';
 import doge from '../images/doge.png';
@@ -14,10 +15,10 @@ import ethereum from '../images/ethereum.png';
 import fil from '../images/fil.png';
 import usd from '../images/usd.png';
 
-const Withdraw = () => (
+const Withdraw = ({ settings }) => (
   <>
     <UserHeader />
-    <Sidebar />
+    <Sidebar settings={settings} />
     <div className="content-body">
       <div className="container-fluid">
         <div className="row">
@@ -31,13 +32,13 @@ const Withdraw = () => (
                     <Nav.Item className="mb-10">
                       <Nav.Link className="bttn-mid btn-grad w-100" eventKey="first">
                         <BiWallet />
-                        Withdraw Money
+                        Withdraw
                       </Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
                       <Nav.Link className="bttn-mid btn-grad w-100" eventKey="second">
                         <BiErrorCircle />
-                        Withdraw Log
+                        Withdraw Logs
                       </Nav.Link>
                     </Nav.Item>
                   </Nav>
@@ -144,4 +145,4 @@ const Withdraw = () => (
   </>
 );
 
-export default Withdraw;
+export default withAuth(Withdraw);

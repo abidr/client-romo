@@ -5,14 +5,14 @@ import {
   Col, Nav, Row, Tab
 } from 'react-bootstrap';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
-import DepositStep from '../components/DepositStep';
-import DepositHistory from '../components/history/DepositHistory';
+import DepositHistory from '../components/deposit/DepositHistory';
+import DepositStep from '../components/deposit/DepositStep';
 import Sidebar from '../components/Sidebar';
 import TransactionSteps from '../components/TransactionSteps';
 import UserHeader from '../components/UserHeader';
 import withAuth from '../hoc/withAuth';
 
-const AddMoney = () => {
+const AddMoney = ({ settings }) => {
   const [step, setStep] = useState(1);
   const router = useRouter();
   const { status } = router.query;
@@ -26,7 +26,7 @@ const AddMoney = () => {
   return (
     <>
       <UserHeader />
-      <Sidebar />
+      <Sidebar settings={settings} />
       <div className="content-body">
         <div className="container-fluid">
           <div className="row">

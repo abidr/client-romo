@@ -13,7 +13,7 @@ const withAuth = (WrappedComponent) => (props) => {
   const { data: settings, loading: settingsLoading } = useSettings();
 
   if (loading || userLoading || settingsLoading) {
-    return <Loader />;
+    return <Loader height="100vh" />;
   }
 
   if (data) {
