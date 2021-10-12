@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { BiCheck, BiX } from 'react-icons/bi';
 import { useDepositAll } from '../data/useDeposits';
@@ -27,34 +28,40 @@ const Welcome = ({ userData, settings }) => {
         </p>
         <ul>
           <li>
-            <a href="/#">
-              {userData?.kyc ? (
-                <BiCheck className="check" />
-              ) : (
-                <BiX className="cross" />
-              )}
-              KYC Verified
-            </a>
+            <Link href="/settings?tab=kyc">
+              <a>
+                {userData?.kyc ? (
+                  <BiCheck className="check" />
+                ) : (
+                  <BiX className="cross" />
+                )}
+                KYC Verified
+              </a>
+            </Link>
           </li>
           <li>
-            <a href="/#">
-              {data?.count ? (
-                <BiCheck className="check" />
-              ) : (
-                <BiX className="cross" />
-              )}
-              Deposit Money
-            </a>
+            <Link href="/add-money">
+              <a>
+                {data?.count ? (
+                  <BiCheck className="check" />
+                ) : (
+                  <BiX className="cross" />
+                )}
+                Deposit Money
+              </a>
+            </Link>
           </li>
           <li>
-            <a href="/#">
-              {data?.count ? (
-                <BiCheck className="check" />
-              ) : (
-                <BiX className="cross" />
-              )}
-              Connect Withdrawal Method
-            </a>
+            <Link href="/settings?tab=linked">
+              <a>
+                {data?.count ? (
+                  <BiCheck className="check" />
+                ) : (
+                  <BiX className="cross" />
+                )}
+                Connect Withdrawal Method
+              </a>
+            </Link>
           </li>
         </ul>
       </div>

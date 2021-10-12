@@ -22,7 +22,7 @@ const Sidebar = ({ settings }) => (
           </SidebarMenu>
           <SidebarMenu href="/send-money">
             <BiPaperPlane />
-            <span>Send Money</span>
+            <span>Transfer</span>
           </SidebarMenu>
           <SidebarMenu href="/withdraw">
             <BiWallet />
@@ -30,7 +30,7 @@ const Sidebar = ({ settings }) => (
           </SidebarMenu>
           <SidebarMenu href="/exchange">
             <BiTransferAlt />
-            <span>Currency Exchanger</span>
+            <span>Exchange</span>
           </SidebarMenu>
           <SidebarMenu href="/make-payment">
             <BiDollarCircle />

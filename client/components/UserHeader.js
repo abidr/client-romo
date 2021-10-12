@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import {
@@ -27,14 +28,18 @@ const Header = () => (
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                      <Dropdown.Item href="/settings">
-                        <BiCog />
-                        Settings
-                      </Dropdown.Item>
-                      <Dropdown.Item href="#/action-2">
-                        <BiLinkAlt />
-                        Linked Account
-                      </Dropdown.Item>
+                      <Link href="/settings">
+                        <a className="dropdown-item">
+                          <BiCog />
+                          Settings
+                        </a>
+                      </Link>
+                      <Link href="/settings?tab=linked">
+                        <a className="dropdown-item">
+                          <BiLinkAlt />
+                          Linked Accounts
+                        </a>
+                      </Link>
                       <Dropdown.Item onClick={() => signOutRequest()}>
                         <BiLogOut />
                         Logout

@@ -39,7 +39,7 @@ exports.createKyc = async (req, res) => {
       type: req.body.type,
       front: req.files.front ? req.files.front[0].filename : undefined,
       back: req.files.back ? req.files.back[0].filename : undefined,
-      selfie: req.files.selfie ? req.files.selfie[0].selfie : undefined,
+      selfie: req.files.selfie ? req.files.selfie[0].filename : undefined,
       status: 'submitted',
       userId: req.user.id,
     });
@@ -83,9 +83,9 @@ exports.declineKyc = async (req, res) => {
     const num = await Kyc.update({ status: 'declined' }, { where: { id } });
     const ifUpdated = parseInt(num, 10);
     if (ifUpdated === 1) {
-      return res.json({ message: 'KYC Accepted' });
+      return res.json({ message: 'KYC Declined' });
     }
-    return res.status(500).json({ message: 'Cannot Accept KYC' });
+    return res.status(500).json({ message: 'Cannot Decline KYC' });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

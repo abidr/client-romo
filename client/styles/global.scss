@@ -1388,6 +1388,13 @@
   justify-content: space-between;
 }
 
+.dropdown-method {
+  min-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 #documentSelector {
   .dropdown-menu {
     width: 250px;
@@ -1419,4 +1426,94 @@
   .image-item {
     height: 100%;
   }
+}
+
+.linked-card {
+  background: $blue2;
+  padding: 25px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  h4 {
+    color: $white;
+  }
+  h5 {
+    margin-bottom: 0;
+  }
+  .action {
+    button {
+      background: transparent;
+      font-size: 36px;
+      margin-left: 15px;
+      &:hover {
+        transform: scale(1.1);
+      }
+      &:first-child {
+        color: $blue;
+      }
+      &:last-child {
+        color: $red;
+      }
+    }
+  }
+}
+
+.react-confirm-alert-overlay {
+  background: rgba(48, 48, 48, 0.9);
+}
+.react-confirm-alert-blur {
+  position: absolute;
+  height: 100vh;
+}
+.react-confirm-alert-body {
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+}
+.react-confirm-alert-button-group {
+  button {
+    width: 100%;
+    padding: 12px 20px;
+    background: $blue2;
+    &:hover {
+      background: $blue;
+    }
+    &:first-child {
+      background: $red;
+    }
+  }
+}
+
+.modal-content {
+  background: $blue2;
+}
+.modal-header {
+  border-bottom: 0px;
+  .close {
+    background: #495aff;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    border-radius: 50%;
+    span {
+      height: 50px;
+    }
+    &:hover {
+      background: $yellow;
+      color: $black;
+    }
+    .sr-only {
+      display: none;
+    }
+  }
+}
+.modal-footer {
+  border-top: 0;
 }

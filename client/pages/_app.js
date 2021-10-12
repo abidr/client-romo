@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import React from 'react';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import { SWRConfig } from 'swr';
 import request from '../config/api';
 import '../styles/global.scss';

@@ -8,7 +8,6 @@ const Deposit = db.deposits;
 const User = db.users;
 const Log = db.logs;
 const Setting = db.settings;
-const Currency = db.currencies;
 
 const { molliePayment } = require('../utils/payments/mollie');
 const { coinbasePayment } = require('../utils/payments/coinbase');
@@ -115,10 +114,9 @@ exports.createDeposit = async (req, res) => {
   const user = await User.findByPk(id);
   try {
     let returnedObj;
-    const currencyCustom = await Currency.findOne({ where: { symbol: currency } });
 
     const data = await Deposit.create({
-      payment_method: (currency === 'USD' || currencyCustom?.custom) ? payment_method : 'coinpayments',
+      payment_method,
       amount,
       userId: id,
       currency,

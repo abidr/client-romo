@@ -1,10 +1,9 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const Withdraw = sequelize.define('withdraw', {
-    status: {
+  const Method = sequelize.define('method', {
+    name: {
       type: DataTypes.STRING,
-      defaultValue: 'pending',
     },
     params: {
       type: DataTypes.TEXT,
@@ -15,18 +14,30 @@ module.exports = (sequelize) => {
         this.setDataValue('params', JSON.stringify(value));
       },
     },
+    minAmount: {
+      type: DataTypes.DOUBLE,
+      defaultValue: 0.00,
+    },
+    maxAmount: {
+      type: DataTypes.DOUBLE,
+      defaultValue: 20000.00,
+    },
     currency: {
       type: DataTypes.STRING,
+      defaultValue: 'USD',
     },
-    amount: {
+    fixedCharge: {
       type: DataTypes.DOUBLE,
+      defaultValue: 0,
     },
-    fee: {
+    percentageCharge: {
       type: DataTypes.DOUBLE,
+      defaultValue: 0,
     },
-    total: {
-      type: DataTypes.DOUBLE,
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
   });
-  return Withdraw;
+  return Method;
 };
