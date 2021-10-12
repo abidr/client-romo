@@ -36,6 +36,5 @@ yarn-error.log*
 node_modules
 
 # public
-/public
 /public/*
 
