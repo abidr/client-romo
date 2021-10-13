@@ -8,26 +8,30 @@ import {
 } from 'react-icons/bi';
 import useCurrency from '../../data/useCurrency';
 import useWallet from '../../data/useWallet';
-import transferRequest from '../../lib/transferRequest';
+import exchangeRequest from '../../lib/exchangeRequest';
 import Loader from '../Loader';
 
-const TransferStep = ({ step, setStep }) => {
+const ExchangeStep = ({ step, setStep, settings }) => {
   const [selectedCurrency, setSelectedCurrency] = useState();
+  const [selectedToCurrency, setSelectedToCurrency] = useState();
   const [currentBalance, setCurrentBalance] = useState(0);
+  const [currentToBalance, setCurrentToBalance] = useState(0);
   const [amount, setAmount] = useState('');
-  const [email, setEmail] = useState('');
   const [actionLoader, setActionLoader] = useState(false);
   const { data, loading } = useCurrency();
   const { data: walletData, loading: walletLoading } = useWallet();
 
   useEffect(() => {
     setSelectedCurrency(data?.data[0]);
+    setSelectedToCurrency(data?.data[1]);
   }, [data]);
 
   useEffect(() => {
     const walletFind = walletData?.find((wallet) => wallet.currency === selectedCurrency?.symbol);
     setCurrentBalance(walletFind?.balance);
-  }, [selectedCurrency, walletData]);
+    const walletToFind = walletData?.find((wallet) => wallet.currency === selectedToCurrency?.symbol);
+    setCurrentToBalance(walletToFind?.balance);
+  }, [selectedCurrency, selectedToCurrency, walletData]);
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -35,10 +39,10 @@ const TransferStep = ({ step, setStep }) => {
   };
 
   const handleSubmit = () => {
-    transferRequest({
-      email,
-      amount: parseFloat(amount, 10),
-      currency: selectedCurrency?.symbol,
+    exchangeRequest({
+      from: selectedCurrency?.symbol,
+      to: selectedToCurrency?.symbol,
+      amountFrom: parseFloat(amount, 10)
     }, setActionLoader, setStep);
   };
 
@@ -46,12 +50,20 @@ const TransferStep = ({ step, setStep }) => {
     return <Loader />;
   }
 
+  const fromPriceUsd = selectedCurrency?.rateUsd;
+  const toPriceUsd = selectedToCurrency?.rateUsd;
+  const cryptoCondition = selectedToCurrency?.crypto || selectedCurrency?.crypto;
+  const exchangeRate = cryptoCondition ? fromPriceUsd / toPriceUsd : toPriceUsd / fromPriceUsd;
+  const amountTo = amount * exchangeRate;
+  const fee = amountTo * (parseFloat(settings?.adjustments?.param1, 10) / 100);
+  const total = amountTo - fee;
+
   if (step === 1) {
     return (
       <>
         <form onSubmit={handleNext}>
           <div className="currency-amount">
-            <label htmlFor="currencySelector">Wallet</label>
+            <label htmlFor="currencySelector">From</label>
             <Dropdown id="currencySelector">
               <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
                 <Image src={selectedCurrency?.icon} rounded />
@@ -81,6 +93,36 @@ const TransferStep = ({ step, setStep }) => {
             </Dropdown>
           </div>
           <div className="currency-amount">
+            <label htmlFor="currencyToSelector">To</label>
+            <Dropdown id="currencyToSelector">
+              <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
+                <Image src={selectedToCurrency?.icon} rounded />
+                {selectedToCurrency?.symbol}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                {data?.data?.map((currency) => (
+                  <Dropdown.Item
+                    key={currency.id}
+                    onClick={() => setSelectedToCurrency(currency)}
+                  >
+                    <Image src={currency.icon} rounded />
+                    {currency.symbol}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+              <p className="available-balance">
+                Available Balance:
+                <span>
+                  {' '}
+                  {currentToBalance}
+                  {' '}
+                  {selectedToCurrency?.symbol}
+                </span>
+              </p>
+            </Dropdown>
+          </div>
+          <div className="currency-amount">
             <label>Amount</label>
             <input
               onChange={(e) => setAmount(e.target.value)}
@@ -89,17 +131,6 @@ const TransferStep = ({ step, setStep }) => {
               required
             />
           </div>
-
-          <div className="currency-amount">
-            <label>Recipient&apos;s Email</label>
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              type="email"
-              required
-            />
-          </div>
-
           <div className="bttns mt-30">
             <button
               type="submit"
@@ -120,17 +151,45 @@ const TransferStep = ({ step, setStep }) => {
           <Table striped hover responsive className="dark-color">
             <tbody>
               <tr>
-                <td>Recipient</td>
+                <td>Exchange Rate</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
-                  {email}
+                  {exchangeRate}
+                  {' '}
+                  {selectedToCurrency?.symbol}
                 </td>
               </tr>
               <tr>
-                <td>Amount</td>
+                <td>Exchange From</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount}
                   {' '}
                   {selectedCurrency?.symbol}
+                </td>
+              </tr>
+              <tr>
+                <td>Exchange To</td>
+                <td style={{ color: 'white', fontWeight: 'bold' }}>
+                  {amountTo}
+                  {' '}
+                  {selectedToCurrency?.symbol}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Fee
+                </td>
+                <td style={{ color: 'white', fontWeight: 'bold' }}>
+                  {fee}
+                  {' '}
+                  {selectedToCurrency?.symbol}
+                </td>
+              </tr>
+              <tr>
+                <td>You Get</td>
+                <td style={{ color: 'white', fontWeight: 'bold' }}>
+                  {total}
+                  {' '}
+                  {selectedToCurrency?.symbol}
                 </td>
               </tr>
             </tbody>
@@ -160,7 +219,7 @@ const TransferStep = ({ step, setStep }) => {
             ) : (
               <>
                 <BiRightArrowAlt />
-                Send
+                Exchange
               </>
             )}
           </button>
@@ -172,23 +231,18 @@ const TransferStep = ({ step, setStep }) => {
       <div className="transaction-success">
         <BiCheckCircle color="green" size={70} />
         <h2>
-          Transfer Successful
+          Exchange Request Submitted
         </h2>
         <p>
-          {amount}
-          {' '}
-          {selectedCurrency?.symbol}
-          {' '}
-          sent to
-          {' '}
-          {email}
+          We will review your exchange request and add the fund to your desired wallet,
+          please allow upto 24 hours for us to review.
         </p>
         <button
           type="button"
           onClick={() => setStep(1)}
           className="bttn-mid btn-ylo"
         >
-          Make Another Transfer
+          Make Another Exchange
         </button>
       </div>
     );
@@ -196,4 +250,4 @@ const TransferStep = ({ step, setStep }) => {
   return <></>;
 };
 
-export default TransferStep;
+export default ExchangeStep;

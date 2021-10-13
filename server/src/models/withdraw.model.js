@@ -6,6 +6,9 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       defaultValue: 'pending',
     },
+    method: {
+      type: DataTypes.STRING,
+    },
     params: {
       type: DataTypes.TEXT,
       get() {

@@ -5,7 +5,6 @@ const mailer = require('../utils/mailer');
 
 const queryParser = sequelizeQuery(db);
 const Exchange = db.exchanges;
-const User = db.users;
 const Log = db.logs;
 const Setting = db.settings;
 const Currency = db.currencies;
@@ -88,42 +87,34 @@ exports.createExchange = async (req, res) => {
   try {
     const currencyFrom = await Currency.findOne({ where: { symbol: from } });
     const currencyTo = await Currency.findOne({ where: { symbol: to } });
-    const fromPriceUsd = from === 'USD' ? 1.0 : currencyFrom.rate_usd;
-    const toPriceUsd = to === 'USD' ? 1.0 : currencyTo.rate_usd;
-    const exchangeRate = fromPriceUsd / toPriceUsd;
-    const user = await User.findByPk(id);
+    const fromPriceUsd = currencyFrom.rateUsd;
+    const toPriceUsd = currencyTo.rateUsd;
+    const cryptoCondition = currencyTo.crypto || currencyFrom.crypto;
+    const exchangeRate = cryptoCondition ? fromPriceUsd / toPriceUsd : toPriceUsd / fromPriceUsd;
     const adjustments = await Setting.findOne({ where: { value: 'adjustments' } });
     const amountTo = amountFrom * exchangeRate;
-    const fee = amountFrom * (parseFloat(adjustments.param1, 10) / 100);
-    const total = amountFrom + fee;
+    const fee = amountTo * (parseFloat(adjustments.param1, 10) / 100);
+    const total = amountTo - fee;
 
-    if (from === 'USD') {
-      if (!(user.balance_usd >= total)) {
-        return res.status(404).json({
-          message: 'Insufficient balance',
-        });
-      }
-    } else {
-      const wallet = await Wallet.findOne({ where: { userId: id, currency: from } });
-      if (!(wallet.balance >= total)) {
-        return res.status(400).json({ message: 'Insufficient balance' });
-      }
+    const wallet = await Wallet.findOne({ where: { userId: id, currency: from } });
+    if (!wallet || (wallet.balance < amountFrom)) {
+      return res.status(400).json({ message: 'Insufficient balance' });
     }
 
-    await removeBalance(total, from, id);
-    await Exchange.create({
+    await removeBalance(amountFrom, from, id);
+    const data = await Exchange.create({
       userId: id,
       from,
       to,
-      exchange_rate: exchangeRate,
-      amount_from: amountFrom,
-      amount_to: amountTo,
+      exchangeRate,
+      amountFrom,
+      amountTo,
       fee,
       total,
     });
 
     await Log.create({ message: `User #${id} requested exchange of ${amountFrom} ${from} to ${amountTo} ${to}` });
-    return res.json({ message: 'Exchange Request Sent' });
+    return res.json(data);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

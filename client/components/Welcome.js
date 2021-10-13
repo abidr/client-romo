@@ -2,12 +2,14 @@ import Link from 'next/link';
 import React from 'react';
 import { BiCheck, BiX } from 'react-icons/bi';
 import { useDepositAll } from '../data/useDeposits';
+import useLinkeds from '../data/useLinkeds';
 import Loader from './Loader';
 
 const Welcome = ({ userData, settings }) => {
   const { data, loading } = useDepositAll(1, 10);
+  const { data: linkedAcc, loading: linkedLoading } = useLinkeds();
 
-  if (loading) {
+  if (loading || linkedLoading) {
     return <Loader height="225px" />;
   }
 
@@ -54,7 +56,7 @@ const Welcome = ({ userData, settings }) => {
           <li>
             <Link href="/settings?tab=linked">
               <a>
-                {data?.count ? (
+                {linkedAcc?.count ? (
                   <BiCheck className="check" />
                 ) : (
                   <BiX className="cross" />

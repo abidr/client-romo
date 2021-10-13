@@ -8,21 +8,19 @@ module.exports = (sequelize) => {
     },
     from: {
       type: DataTypes.STRING,
-      defaultValue: 'USD',
     },
     to: {
       type: DataTypes.STRING,
-      defaultValue: 'BTC',
     },
-    exchange_rate: {
+    exchangeRate: {
       type: DataTypes.DOUBLE,
       defaultValue: 0.00,
     },
-    amount_from: {
+    amountFrom: {
       type: DataTypes.DOUBLE,
       defaultValue: 0.00,
     },
-    amount_to: {
+    amountTo: {
       type: DataTypes.DOUBLE,
       defaultValue: 0.00,
     },

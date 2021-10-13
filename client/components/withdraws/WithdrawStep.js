@@ -7,18 +7,20 @@ import {
   BiCheckCircle, BiLeftArrowAlt, BiRightArrowAlt
 } from 'react-icons/bi';
 import useCurrency from '../../data/useCurrency';
+import useMethods from '../../data/useMethods';
 import useWallet from '../../data/useWallet';
-import transferRequest from '../../lib/transferRequest';
+import withdrawRequest from '../../lib/withdrawRequest';
 import Loader from '../Loader';
 
-const TransferStep = ({ step, setStep }) => {
+const WithdrawStep = ({ step, setStep }) => {
   const [selectedCurrency, setSelectedCurrency] = useState();
+  const [method, setMethod] = useState();
   const [currentBalance, setCurrentBalance] = useState(0);
   const [amount, setAmount] = useState('');
-  const [email, setEmail] = useState('');
   const [actionLoader, setActionLoader] = useState(false);
   const { data, loading } = useCurrency();
   const { data: walletData, loading: walletLoading } = useWallet();
+  const { data: methods, loading: methodsLoading } = useMethods();
 
   useEffect(() => {
     setSelectedCurrency(data?.data[0]);
@@ -27,6 +29,7 @@ const TransferStep = ({ step, setStep }) => {
   useEffect(() => {
     const walletFind = walletData?.find((wallet) => wallet.currency === selectedCurrency?.symbol);
     setCurrentBalance(walletFind?.balance);
+    setMethod();
   }, [selectedCurrency, walletData]);
 
   const handleNext = (e) => {
@@ -35,14 +38,14 @@ const TransferStep = ({ step, setStep }) => {
   };
 
   const handleSubmit = () => {
-    transferRequest({
-      email,
+    withdrawRequest({
+      methodId: method?.id,
       amount: parseFloat(amount, 10),
       currency: selectedCurrency?.symbol,
     }, setActionLoader, setStep);
   };
 
-  if (loading || walletLoading) {
+  if (loading || walletLoading || methodsLoading) {
     return <Loader />;
   }
 
@@ -89,21 +92,44 @@ const TransferStep = ({ step, setStep }) => {
               required
             />
           </div>
-
           <div className="currency-amount">
-            <label>Recipient&apos;s Email</label>
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              type="email"
-              required
-            />
-          </div>
+            <label htmlFor="methodSelector">Withdraw Method</label>
+            <Dropdown id="methodSelector">
+              <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
+                {method?.name || 'Please Select'}
+              </Dropdown.Toggle>
 
+              <Dropdown.Menu>
+                {methods?.data?.map((methodData) => {
+                  if (!(methodData?.currency === selectedCurrency?.symbol)) {
+                    return <></>;
+                  }
+                  return (
+                    <Dropdown.Item
+                      key={methodData?.id}
+                      onClick={() => setMethod(methodData)}
+                    >
+                      {methodData?.name}
+                    </Dropdown.Item>
+                  );
+                })}
+              </Dropdown.Menu>
+              {method && (
+              <p className="available-balance">
+                Fee:
+                {' '}
+                <span>
+                  {`${method?.percentageCharge}% + ${method?.fixedCharge} ${method?.currency}`}
+                </span>
+              </p>
+              )}
+            </Dropdown>
+          </div>
           <div className="bttns mt-30">
             <button
               type="submit"
               className="bttn-mid btn-ylo"
+              disabled={!(selectedCurrency && method)}
             >
               <BiRightArrowAlt />
               Next
@@ -120,15 +146,35 @@ const TransferStep = ({ step, setStep }) => {
           <Table striped hover responsive className="dark-color">
             <tbody>
               <tr>
-                <td>Recipient</td>
+                <td>Withdraw Method</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
-                  {email}
+                  {method?.name}
                 </td>
               </tr>
               <tr>
                 <td>Amount</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount}
+                  {' '}
+                  {selectedCurrency?.symbol}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Fee (
+                  {`${method?.percentageCharge}% + ${method?.fixedCharge} ${method?.currency}`}
+                  )
+                </td>
+                <td style={{ color: 'white', fontWeight: 'bold' }}>
+                  {amount * (method?.percentageCharge / 100) + method?.fixedCharge}
+                  {' '}
+                  {selectedCurrency?.symbol}
+                </td>
+              </tr>
+              <tr>
+                <td>You Get</td>
+                <td style={{ color: 'white', fontWeight: 'bold' }}>
+                  {amount - (amount * (method?.percentageCharge / 100) + method?.fixedCharge)}
                   {' '}
                   {selectedCurrency?.symbol}
                 </td>
@@ -160,7 +206,7 @@ const TransferStep = ({ step, setStep }) => {
             ) : (
               <>
                 <BiRightArrowAlt />
-                Send
+                Withdraw
               </>
             )}
           </button>
@@ -172,23 +218,18 @@ const TransferStep = ({ step, setStep }) => {
       <div className="transaction-success">
         <BiCheckCircle color="green" size={70} />
         <h2>
-          Transfer Successful
+          Withdraw Request Submitted
         </h2>
         <p>
-          {amount}
-          {' '}
-          {selectedCurrency?.symbol}
-          {' '}
-          sent to
-          {' '}
-          {email}
+          We will review your withdraw request and send the fund to your desired account,
+          please allow upto 24 hours for us to review.
         </p>
         <button
           type="button"
           onClick={() => setStep(1)}
           className="bttn-mid btn-ylo"
         >
-          Make Another Transfer
+          Make Another Withdraw
         </button>
       </div>
     );
@@ -196,4 +237,4 @@ const TransferStep = ({ step, setStep }) => {
   return <></>;
 };
 
-export default TransferStep;
+export default WithdrawStep;
