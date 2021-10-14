@@ -30,7 +30,7 @@ const Welcome = ({ userData, settings }) => {
         </p>
         <ul>
           <li>
-            <Link href="/settings?tab=kyc">
+            <Link href="/settings?tab=1">
               <a>
                 {userData?.kyc ? (
                   <BiCheck className="check" />
@@ -41,20 +41,35 @@ const Welcome = ({ userData, settings }) => {
               </a>
             </Link>
           </li>
+          {userData?.role === 2 ? (
+            <li>
+              <Link href="/add-money">
+                <a>
+                  {data?.count ? (
+                    <BiCheck className="check" />
+                  ) : (
+                    <BiX className="cross" />
+                  )}
+                  Store Creation
+                </a>
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <Link href="/add-money">
+                <a>
+                  {data?.count ? (
+                    <BiCheck className="check" />
+                  ) : (
+                    <BiX className="cross" />
+                  )}
+                  Deposit Money
+                </a>
+              </Link>
+            </li>
+          )}
           <li>
-            <Link href="/add-money">
-              <a>
-                {data?.count ? (
-                  <BiCheck className="check" />
-                ) : (
-                  <BiX className="cross" />
-                )}
-                Deposit Money
-              </a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/settings?tab=linked">
+            <Link href="/settings?tab=2">
               <a>
                 {linkedAcc?.count ? (
                   <BiCheck className="check" />

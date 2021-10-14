@@ -32,7 +32,7 @@ exports.getUserDetails = async (req, res) => {
     const data = await User.findByPk(id, {
       attributes: { exclude: ['password'] },
     });
-    const referCount = await User.count({ where: { reffered_by: id } });
+    const referCount = await User.count({ where: { refferedBy: id } });
     return res.json({ ...data.dataValues, referCount });
   } catch (err) {
     return res.status(500).json({ message: err.message });

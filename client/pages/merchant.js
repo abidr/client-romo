@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
 import Kyc from '../components/settings/Kyc';
-import LinkedAcc from '../components/settings/LinkedAcc';
 import ProfileSettings from '../components/settings/ProfileSettings';
 import Sidebar from '../components/Sidebar';
 import TabModule from '../components/tabs/TabModule';
@@ -11,7 +10,7 @@ import UserTab from '../components/tabs/UserTab';
 import UserHeader from '../components/UserHeader';
 import withAuth from '../hoc/withAuth';
 
-const Settings = ({ userData, settings }) => {
+const Merchant = ({ userData, settings }) => {
   const router = useRouter();
   const { tab } = router.query;
 
@@ -24,18 +23,15 @@ const Settings = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title="Settings"
+                title="Merchant"
                 description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa incidunt, qui, id consequatur unde debitis in fuga vel accusamus architecto hic error veritatis expedita recusandae aliquid cupiditate maxime placeat sit?"
                 defaultTab={parseInt(tab, 10)}
               >
-                <TabModule icon={<BiWallet />} name="Account Settings">
+                <TabModule icon={<BiWallet />} name="Request Payment">
                   <ProfileSettings userData={userData} />
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="KYC">
+                <TabModule icon={<BiErrorCircle />} name="Store Settings">
                   <Kyc />
-                </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="Linked Accounts">
-                  <LinkedAcc />
                 </TabModule>
               </UserTab>
             </div>
@@ -46,4 +42,4 @@ const Settings = ({ userData, settings }) => {
   );
 };
 
-export default withAuth(Settings);
+export default withAuth(Merchant);

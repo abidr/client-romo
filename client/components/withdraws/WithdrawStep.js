@@ -102,7 +102,7 @@ const WithdrawStep = ({ step, setStep }) => {
               <Dropdown.Menu>
                 {methods?.data?.map((methodData) => {
                   if (!(methodData?.currency === selectedCurrency?.symbol)) {
-                    return <></>;
+                    return null;
                   }
                   return (
                     <Dropdown.Item

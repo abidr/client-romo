@@ -34,7 +34,7 @@ const Header = () => (
                           Settings
                         </a>
                       </Link>
-                      <Link href="/settings?tab=linked">
+                      <Link href="/settings?tab=2">
                         <a className="dropdown-item">
                           <BiLinkAlt />
                           Linked Accounts

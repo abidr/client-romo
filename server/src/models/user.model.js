@@ -34,7 +34,7 @@ module.exports = (sequelize) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    reffered_by: {
+    refferedBy: {
       type: DataTypes.INTEGER,
     },
     reset: {

@@ -37,10 +37,11 @@ exports.signUp = async (req, res) => {
   const user = {
     name: req.body.name,
     email: req.body.email,
-    reffered_by: req.body.reffered_by,
+    refferedBy: req.body.refferedBy,
     password: req.body.password,
     active: false,
     reset: random,
+    role: req.body.merchant ? 2 : 1,
   };
 
   try {
@@ -55,7 +56,7 @@ exports.signUp = async (req, res) => {
     };
 
     mailer(mailOptions);
-    await Log.create({ message: `New User ${data.id} with ${data.email} signed up` });
+    await Log.create({ message: `New User #${data.id} with ${data.email} signed up` });
     return res.json(data);
   } catch (err) {
     return res.status(500).json({
@@ -85,8 +86,8 @@ exports.activateAccount = async (req, res) => {
       { where: { id: data.id } },
     );
     const refferal = await Setting.findOne({ where: { value: 'refferal' } });
-    if (data.reffered_by && refferal.param2 === 'onsignup') {
-      const referData = await User.findOne({ where: { id: data.reffered_by } });
+    if (data.refferedBy && refferal.param2 === 'onsignup') {
+      const referData = await User.findOne({ where: { id: data.refferedBy } });
       const newBalance = referData.balance_usd + parseFloat(refferal.param1, 10);
       await User.update({ balance_usd: newBalance }, { where: { id: referData.id } });
       await Log.create({ message: `User #${referData.id} rewarded ${refferal.param1} for reffering User #${data.id}` });
@@ -140,13 +141,19 @@ exports.signUpAdmin = async (req, res) => {
 
 exports.signIn = async (req, res) => {
   const { admin } = req.query;
+
   const user = await User.findOne({
     where: {
       email: req.body.email,
-      role: admin ? 0 : 1,
       active: true,
     },
   });
+
+  if (!admin && user.role === 0) {
+    return res.status(404).json({
+      message: 'Wrong Credentials',
+    });
+  }
 
   if (!user) {
     return res.status(404).json({

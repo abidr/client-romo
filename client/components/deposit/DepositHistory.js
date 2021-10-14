@@ -3,10 +3,15 @@ import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import Pagination from 'react-js-pagination';
 import { useDepositAll } from '../../data/useDeposits';
+import Loader from '../Loader';
 
 const DepositHistory = () => {
   const [page, setPage] = useState(1);
-  const { data } = useDepositAll(page, 10);
+  const { data, loading } = useDepositAll(page, 10);
+
+  if (loading) {
+    return <Loader height="300px" />;
+  }
 
   return (
     <>

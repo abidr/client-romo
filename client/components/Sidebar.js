@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  BiCog, BiDollarCircle, BiHomeSmile, BiPaperPlane, BiPlusCircle, BiTransferAlt, BiWallet
+  BiCog, BiDollarCircle, BiHomeSmile, BiPaperPlane, BiPlusCircle, BiStore, BiTransferAlt, BiWallet
 } from 'react-icons/bi';
 import SidebarMenu from './SidebarMenu';
 
-const Sidebar = ({ settings }) => (
+const Sidebar = ({ userData, settings }) => (
   <>
     <div className="sidebar">
       {/* <a href="/" className="brand-logo">
@@ -34,8 +34,14 @@ const Sidebar = ({ settings }) => (
           </SidebarMenu>
           <SidebarMenu href="/make-payment">
             <BiDollarCircle />
-            <span>Make Payment</span>
+            <span>Payment</span>
           </SidebarMenu>
+          {userData?.role === 2 && (
+          <SidebarMenu href="/merchant">
+            <BiStore />
+            <span>Merchant</span>
+          </SidebarMenu>
+          )}
           <SidebarMenu href="/settings">
             <BiCog />
             <span>Settings</span>

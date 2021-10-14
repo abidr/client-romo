@@ -1,64 +1,42 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
-import {
-  Col, Nav, Row, Tab
-} from 'react-bootstrap';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
 import ExchangeHistory from '../components/exchanges/ExchangeHistory';
 import ExchangeStep from '../components/exchanges/ExchangeStep';
 import Sidebar from '../components/Sidebar';
+import TabModule from '../components/tabs/TabModule';
+import UserTab from '../components/tabs/UserTab';
 import TransactionSteps from '../components/TransactionSteps';
 import UserHeader from '../components/UserHeader';
 import withAuth from '../hoc/withAuth';
 
-const Exchange = ({ settings }) => {
+const Exchange = ({ userData, settings }) => {
   const [step, setStep] = useState(1);
   return (
     <>
       <UserHeader />
-      <Sidebar settings={settings} />
+      <Sidebar userData={userData} settings={settings} />
       <div className="content-body">
         <div className="container-fluid">
           <div className="row">
             <div className="col">
-              <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-                <Row>
-                  <Col sm={3}>
-                    <h3 className="mb-30">Exchange Money</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa incidunt, qui, id consequatur unde debitis in fuga vel accusamus architecto hic error veritatis expedita recusandae aliquid cupiditate maxime placeat sit?</p>
-                    <Nav variant="pills" className="flex-column mb-30">
-                      <Nav.Item className="mb-10">
-                        <Nav.Link className="bttn-mid btn-grad w-100" eventKey="first">
-                          <BiWallet />
-                          Exchange Money
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item>
-                        <Nav.Link className="bttn-mid btn-grad w-100" eventKey="second">
-                          <BiErrorCircle />
-                          Exchange Log
-                        </Nav.Link>
-                      </Nav.Item>
-                    </Nav>
-                  </Col>
-                  <Col sm={9}>
-                    <Tab.Content>
-                      <Tab.Pane eventKey="first">
-                        <div className="deposit-box basic-card">
-                          <TransactionSteps step={step} />
-                          <ExchangeStep step={step} setStep={setStep} settings={settings} />
-                        </div>
-                      </Tab.Pane>
-                      <Tab.Pane eventKey="second">
-                        <div className="basic-card">
-                          <h4 className="box-title">Exchange Logs</h4>
-                          <ExchangeHistory />
-                        </div>
-                      </Tab.Pane>
-                    </Tab.Content>
-                  </Col>
-                </Row>
-              </Tab.Container>
+              <UserTab
+                title="Exchange Money"
+                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa incidunt, qui, id consequatur unde debitis in fuga vel accusamus architecto hic error veritatis expedita recusandae aliquid cupiditate maxime placeat sit"
+              >
+                <TabModule icon={<BiWallet />} name="Exchange">
+                  <div className="deposit-box basic-card">
+                    <TransactionSteps step={step} />
+                    <ExchangeStep step={step} setStep={setStep} settings={settings} />
+                  </div>
+                </TabModule>
+                <TabModule icon={<BiErrorCircle />} name="Exchange Logs">
+                  <div className="basic-card">
+                    <h4 className="box-title">Exchange Logs</h4>
+                    <ExchangeHistory />
+                  </div>
+                </TabModule>
+              </UserTab>
             </div>
           </div>
         </div>

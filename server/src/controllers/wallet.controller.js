@@ -10,7 +10,7 @@ exports.getWallet = async (req, res) => {
     const currencies = await Currency.findAll({ where: { active: true } });
     await currencies.forEach((item) => {
       const balance = data.find((x) => x.currency === item.symbol);
-      wallet.push({ balance: balance?.balance || 0.00, currency: item.symbol });
+      wallet.push({ balance: balance?.balance || 0.00, currency: item.symbol, icon: item.icon });
     });
     res.json(wallet);
   } catch (err) {

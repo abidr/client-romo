@@ -1,34 +1,31 @@
 import React from 'react';
-import { BiShare, BiWallet } from 'react-icons/bi';
+import useWallet from '../data/useWallet';
+import Loader from './Loader';
 
-const Wallet = () => (
-  <>
-    <div className="wallet-box">
-      <h4 className="box-title">My Wallet</h4>
-      <p>Available Balance</p>
-      <div className="currency-amount">
-        <label htmlFor="">12456</label>
-        <select name="" id="" className="currency-select">
-          <option value="">USD</option>
-          <option value="">BTC</option>
-          <option value="">ETH</option>
-          <option value="">FIL</option>
-          <option value="">BNB</option>
-          <option value="">DOGE</option>
-        </select>
-      </div>
-      <div className="bttns">
-        <a href="/addmoney" className="bttn-small btn-blue">
-          <BiWallet />
-          Add Money
-        </a>
-        <a href="/withdraw" className="bttn-small btn-ylo">
-          <BiShare />
-          Withdraw
-        </a>
-      </div>
-    </div>
-  </>
-);
+const Wallet = () => {
+  const { data, loading } = useWallet();
+  if (loading) {
+    return <Loader height="250px" />;
+  }
+  return (
+    <>
+      {data?.map((wallet) => (
+        <div className="single-coin" key={wallet?.currency}>
+          <div className="coin-title">
+            {wallet?.icon && (
+            <img src={wallet?.icon} alt="" />
+            )}
+            <h5 className="d-inline-block">{wallet?.currency}</h5>
+          </div>
+          <h4>
+            {wallet?.balance.toFixed(6)}
+            {' '}
+            {wallet?.currency}
+          </h4>
+        </div>
+      ))}
+    </>
+  );
+};
 
 export default Wallet;
