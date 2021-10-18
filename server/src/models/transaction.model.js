@@ -1,17 +1,19 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const Deposit = sequelize.define('deposit', {
+  const Transaction = sequelize.define('transaction', {
     status: {
       type: DataTypes.STRING,
       defaultValue: 'pending',
     },
-    payment_method: {
+    customerName: {
       type: DataTypes.STRING,
     },
-    payment_status: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
+    customerMail: {
+      type: DataTypes.STRING,
+    },
+    trxId: {
+      type: DataTypes.STRING,
     },
     amount: {
       type: DataTypes.DOUBLE,
@@ -22,5 +24,5 @@ module.exports = (sequelize) => {
       defaultValue: 'USD',
     },
   });
-  return Deposit;
+  return Transaction;
 };

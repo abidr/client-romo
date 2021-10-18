@@ -2,7 +2,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
-import Kyc from '../components/settings/Kyc';
+import StoreSettings from '../components/merchant/StoreSettings';
+import TransactionHistory from '../components/merchant/TransactionHistory';
 import ProfileSettings from '../components/settings/ProfileSettings';
 import Sidebar from '../components/Sidebar';
 import TabModule from '../components/tabs/TabModule';
@@ -30,8 +31,14 @@ const Merchant = ({ userData, settings }) => {
                 <TabModule icon={<BiWallet />} name="Request Payment">
                   <ProfileSettings userData={userData} />
                 </TabModule>
+                <TabModule icon={<BiErrorCircle />} name="Recent Transactions">
+                  <div className="basic-card">
+                    <h4 className="box-title">Recent Transactions</h4>
+                    <TransactionHistory />
+                  </div>
+                </TabModule>
                 <TabModule icon={<BiErrorCircle />} name="Store Settings">
-                  <Kyc />
+                  <StoreSettings userData={userData} />
                 </TabModule>
               </UserTab>
             </div>

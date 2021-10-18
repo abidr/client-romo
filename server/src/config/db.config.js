@@ -42,6 +42,7 @@ db.wallets = require('../models/wallet.model')(sequelize);
 db.kycs = require('../models/kyc.model')(sequelize);
 db.methods = require('../models/method.model')(sequelize);
 db.linkeds = require('../models/linked.model')(sequelize);
+db.merchants = require('../models/merchant.model')(sequelize);
 
 // Withdraw Relation
 db.users.hasMany(db.withdraws, { as: 'withdraws' });
@@ -88,6 +89,12 @@ db.linkeds.belongsTo(db.users, {
 db.linkeds.belongsTo(db.methods, {
   foreignKey: 'methodId',
   as: 'method',
+});
+// Merchant Relation
+db.users.hasOne(db.merchants, { as: 'merchant', foreignKey: 'userId' });
+db.merchants.belongsTo(db.users, {
+  foreignKey: 'userId',
+  as: 'user',
 });
 
 db.sequelize = sequelize;

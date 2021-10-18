@@ -6,6 +6,7 @@ const db = require('../config/db.config');
 const mailer = require('../utils/mailer');
 
 const User = db.users;
+const Merchant = db.merchants;
 const Setting = db.settings;
 const Log = db.logs;
 
@@ -48,6 +49,16 @@ exports.signUp = async (req, res) => {
     const data = await User.create(user);
     const site = await Setting.findOne({ where: { value: 'site' } });
     const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
+
+    if (req.body.merchant) {
+      Merchant.create({
+        name: req.body.merchantName,
+        email: req.body.merchantEmail,
+        address: req.body.merchantAddress,
+        proof: req.body.merchantProof,
+        userId: data.id,
+      });
+    }
 
     const mailOptions = {
       user: data.id,
@@ -147,7 +158,14 @@ exports.signIn = async (req, res) => {
       email: req.body.email,
       active: true,
     },
+    include: ['merchant'],
   });
+
+  if (!user) {
+    return res.status(404).json({
+      message: 'Wrong Credentials',
+    });
+  }
 
   if (!admin && user.role === 0) {
     return res.status(404).json({
@@ -155,9 +173,15 @@ exports.signIn = async (req, res) => {
     });
   }
 
-  if (!user) {
-    return res.status(404).json({
-      message: 'Wrong Credentials',
+  if (user.role === 2 && !(user.merchant)) {
+    return res.status(403).json({
+      message: 'Merchant Error! Contact Support.',
+    });
+  }
+
+  if (user.role === 2 && !(user.merchant.status === 'verified')) {
+    return res.status(403).json({
+      message: 'Merchant Not Verified',
     });
   }
 
