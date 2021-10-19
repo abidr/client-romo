@@ -1525,3 +1525,17 @@
 .tab-wrapper.not-active {
   display: none;
 }
+
+.checkout-cont {
+  margin-top: 70px;
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl,
+  .container-xxl {
+    @media (min-width: 1400px) {
+      max-width: 900px;
+    }
+  }
+}

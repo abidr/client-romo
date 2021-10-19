@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import Head from 'next/head';
 import React, { useState } from 'react';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
 import Sidebar from '../components/Sidebar';
@@ -14,6 +15,13 @@ const Withdraw = ({ userData, settings }) => {
   const [step, setStep] = useState(1);
   return (
     <>
+      <Head>
+        <title>
+          Withdraw -
+          {' '}
+          {settings?.site?.param1}
+        </title>
+      </Head>
       <UserHeader />
       <Sidebar userData={userData} settings={settings} />
       <div className="content-body">

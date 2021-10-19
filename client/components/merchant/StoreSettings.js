@@ -10,7 +10,6 @@ const StoreSettings = ({ userData }) => {
     e.preventDefault();
     const params = {
       name: e.target?.name?.value,
-      email: e.target?.phone?.value,
       address: e.target?.address?.value,
     };
     storeUpdate(params, setActionLoader);
@@ -22,12 +21,23 @@ const StoreSettings = ({ userData }) => {
       <div className="settings-box">
         <form onSubmit={handleUpdate}>
           <div className="single-profile">
+            <label htmlFor="merId">Merchant ID</label>
+            <input id="merId" name="merId" type="text" disabled placeholder="Merchant ID" defaultValue={userData?.merchant?.merId} />
+          </div>
+          <div className="single-profile">
             <label htmlFor="name">Name</label>
             <input id="name" name="name" type="text" placeholder="Store Name" defaultValue={userData?.merchant?.name} />
           </div>
           <div className="single-profile">
             <label htmlFor="emailField">Email</label>
-            <input id="emailField" name="email" type="email" placeholder="Store Email Address" defaultValue={userData?.merchant?.email} />
+            <input
+              id="emailField"
+              name="email"
+              disabled
+              type="email"
+              placeholder="Store Email Address"
+              defaultValue={userData?.merchant?.email}
+            />
           </div>
           <div className="single-profile">
             <label htmlFor="addressField">Address</label>

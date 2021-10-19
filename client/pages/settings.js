@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
@@ -17,6 +18,13 @@ const Settings = ({ userData, settings }) => {
 
   return (
     <>
+      <Head>
+        <title>
+          Settings -
+          {' '}
+          {settings?.site?.param1}
+        </title>
+      </Head>
       <UserHeader />
       <Sidebar userData={userData} settings={settings} />
       <div className="content-body">

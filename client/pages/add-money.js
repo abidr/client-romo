@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
@@ -24,6 +25,13 @@ const AddMoney = ({ userData, settings }) => {
 
   return (
     <>
+      <Head>
+        <title>
+          Deposit -
+          {' '}
+          {settings?.site?.param1}
+        </title>
+      </Head>
       <UserHeader />
       <Sidebar userData={userData} settings={settings} />
       <div className="content-body">

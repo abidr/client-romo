@@ -13,11 +13,10 @@ const sendMail = async (mail) => {
       name: site.param1,
       address: site.param2,
     },
-    to: user.email,
+    to: user ? user.email : mail.email,
     subject: mail.subject,
     html: mail.message,
   };
-
   transporter.sendMail(mailOptions);
 };
 

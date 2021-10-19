@@ -31,6 +31,8 @@ const kycRoutes = require('./src/routes/kyc.route');
 const methodRoutes = require('./src/routes/method.route');
 const linkedRoutes = require('./src/routes/linked.route');
 const merchantRoutes = require('./src/routes/merchant.route');
+const requestRoutes = require('./src/routes/request.route');
+const payRoutes = require('./src/routes/pay.route');
 
 server.use('/', authRoutes);
 server.use('/', userRoutes);
@@ -46,6 +48,8 @@ server.use('/', kycRoutes);
 server.use('/', methodRoutes);
 server.use('/', linkedRoutes);
 server.use('/', merchantRoutes);
+server.use('/', requestRoutes);
+server.use('/', payRoutes);
 
 const port = process.env.PORT || 8000;
 

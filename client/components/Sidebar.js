@@ -7,9 +7,9 @@ import SidebarMenu from './SidebarMenu';
 const Sidebar = ({ userData, settings }) => (
   <>
     <div className="sidebar">
-      {/* <a href="/" className="brand-logo">
-        <img src={siteLogo.src} alt="" />
-      </a> */}
+      <a href="/" className="brand-logo">
+        <img src="https://docs.nestjs.com/assets/logo-small.svg" alt="" />
+      </a>
       <div className="menu">
         <ul>
           <SidebarMenu href="/dashboard">

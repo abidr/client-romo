@@ -1,10 +1,11 @@
 /* eslint-disable max-len */
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
+import RequestPayment from '../components/merchant/RequestPayment';
 import StoreSettings from '../components/merchant/StoreSettings';
 import TransactionHistory from '../components/merchant/TransactionHistory';
-import ProfileSettings from '../components/settings/ProfileSettings';
 import Sidebar from '../components/Sidebar';
 import TabModule from '../components/tabs/TabModule';
 import UserTab from '../components/tabs/UserTab';
@@ -17,6 +18,13 @@ const Merchant = ({ userData, settings }) => {
 
   return (
     <>
+      <Head>
+        <title>
+          Merchant -
+          {' '}
+          {settings?.site?.param1}
+        </title>
+      </Head>
       <UserHeader />
       <Sidebar userData={userData} settings={settings} />
       <div className="content-body">
@@ -29,7 +37,7 @@ const Merchant = ({ userData, settings }) => {
                 defaultTab={parseInt(tab, 10)}
               >
                 <TabModule icon={<BiWallet />} name="Request Payment">
-                  <ProfileSettings userData={userData} />
+                  <RequestPayment />
                 </TabModule>
                 <TabModule icon={<BiErrorCircle />} name="Recent Transactions">
                   <div className="basic-card">

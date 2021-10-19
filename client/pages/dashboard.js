@@ -1,5 +1,7 @@
+import Head from 'next/head';
 import React from 'react';
 import DepositHistory from '../components/deposit/DepositHistory';
+import TransactionHistory from '../components/merchant/TransactionHistory';
 import Refferal from '../components/Refferal';
 import Sidebar from '../components/Sidebar';
 import UserHeader from '../components/UserHeader';
@@ -9,6 +11,13 @@ import withAuth from '../hoc/withAuth';
 
 const Dashboard = ({ userData, settings }) => (
   <>
+    <Head>
+      <title>
+        Dashboard -
+        {' '}
+        {settings?.site?.param1}
+      </title>
+    </Head>
     <UserHeader />
     <Sidebar userData={userData} settings={settings} />
     <div className="content-body">
@@ -34,12 +43,21 @@ const Dashboard = ({ userData, settings }) => (
               <Wallet />
             </div>
           </div>
-          <div className="col-xl-9 col-lg-9 col-sm-12">
-            <div className="basic-card">
-              <h4 className="box-title">Recent Deposits</h4>
-              <DepositHistory />
+          {userData?.role === 2 ? (
+            <div className="col-xl-9 col-lg-9 col-sm-12">
+              <div className="basic-card">
+                <h4 className="box-title">Recent Transactions</h4>
+                <TransactionHistory />
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="col-xl-9 col-lg-9 col-sm-12">
+              <div className="basic-card">
+                <h4 className="box-title">Recent Deposits</h4>
+                <DepositHistory />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

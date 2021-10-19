@@ -43,6 +43,8 @@ db.kycs = require('../models/kyc.model')(sequelize);
 db.methods = require('../models/method.model')(sequelize);
 db.linkeds = require('../models/linked.model')(sequelize);
 db.merchants = require('../models/merchant.model')(sequelize);
+db.requests = require('../models/request.model')(sequelize);
+db.pays = require('../models/pay.model')(sequelize);
 
 // Withdraw Relation
 db.users.hasMany(db.withdraws, { as: 'withdraws' });
@@ -93,6 +95,18 @@ db.linkeds.belongsTo(db.methods, {
 // Merchant Relation
 db.users.hasOne(db.merchants, { as: 'merchant', foreignKey: 'userId' });
 db.merchants.belongsTo(db.users, {
+  foreignKey: 'userId',
+  as: 'user',
+});
+// Request Relation
+db.merchants.hasMany(db.requests, { as: 'requests' });
+db.requests.belongsTo(db.merchants, {
+  foreignKey: 'merchantId',
+  as: 'merchant',
+});
+// Pays Relation
+db.users.hasMany(db.pays, { as: 'pays' });
+db.pays.belongsTo(db.users, {
   foreignKey: 'userId',
   as: 'user',
 });

@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import Head from 'next/head';
 import React, { useState } from 'react';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
 import ExchangeHistory from '../components/exchanges/ExchangeHistory';
@@ -14,6 +15,13 @@ const Exchange = ({ userData, settings }) => {
   const [step, setStep] = useState(1);
   return (
     <>
+      <Head>
+        <title>
+          Exchange -
+          {' '}
+          {settings?.site?.param1}
+        </title>
+      </Head>
       <UserHeader />
       <Sidebar userData={userData} settings={settings} />
       <div className="content-body">

@@ -2,11 +2,11 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import Pagination from 'react-js-pagination';
-import useRequests from '../../data/useRequests';
+import usePayments from '../../data/usePayments';
 
-const TransactionHistory = () => {
+const PaymentHistory = () => {
   const [page, setPage] = useState(1);
-  const { data } = useRequests(page, 10);
+  const { data } = usePayments(page, 10);
 
   return (
     <>
@@ -15,7 +15,7 @@ const TransactionHistory = () => {
           <tr>
             <th scope="col">Date</th>
             <th scope="col">Status</th>
-            <th scope="col">Customer</th>
+            <th scope="col">Merchant</th>
             <th scope="col">Trx ID</th>
             <th scope="col">Amount</th>
           </tr>
@@ -24,10 +24,10 @@ const TransactionHistory = () => {
           {data?.data?.map((history) => (
             <tr key={history?.id}>
               <td><span>{dayjs(history?.createdAt).format('DD/MM/YYYY')}</span></td>
-              <td><strong className={`status ${history?.status === 'failed' ? 'danger' : 'success'}`}>{history?.status}</strong></td>
+              <td><strong className="status success">{history?.status}</strong></td>
               <td>
                 <strong>
-                  {history?.customer}
+                  {history?.merchant}
                 </strong>
               </td>
               <td>
@@ -36,7 +36,8 @@ const TransactionHistory = () => {
                 </strong>
               </td>
               <td>
-                <strong>
+                <strong className="cl-red">
+                  -
                   {history?.amount}
                   {' '}
                   {history?.currency}
@@ -59,4 +60,4 @@ const TransactionHistory = () => {
   );
 };
 
-export default TransactionHistory;
+export default PaymentHistory;

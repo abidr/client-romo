@@ -1,13 +1,15 @@
 import React from 'react';
 import { BiCheck } from 'react-icons/bi';
 
-const TransactionSteps = ({ step }) => (
+const TransactionSteps = ({ step, checkout }) => (
   <>
     <div className="transaction-steps">
+      {!checkout && (
       <div className={`single-step ${(step === 1) ? 'active' : null}`}>
         {step === 1 ? <span /> : <span><BiCheck /></span>}
         Amount
       </div>
+      )}
       <div className={`single-step ${(step === 2) ? 'active' : null}`}>
         {(step === 1 || step === 2) ? <span /> : <span><BiCheck /></span>}
         Review

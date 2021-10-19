@@ -41,33 +41,18 @@ const Welcome = ({ userData, settings }) => {
               </a>
             </Link>
           </li>
-          {userData?.role === 2 ? (
-            <li>
-              <Link href="/add-money">
-                <a>
-                  {data?.count ? (
-                    <BiCheck className="check" />
-                  ) : (
-                    <BiX className="cross" />
-                  )}
-                  Store Creation
-                </a>
-              </Link>
-            </li>
-          ) : (
-            <li>
-              <Link href="/add-money">
-                <a>
-                  {data?.count ? (
-                    <BiCheck className="check" />
-                  ) : (
-                    <BiX className="cross" />
-                  )}
-                  Deposit Money
-                </a>
-              </Link>
-            </li>
-          )}
+          <li>
+            <Link href="/add-money">
+              <a>
+                {data?.count ? (
+                  <BiCheck className="check" />
+                ) : (
+                  <BiX className="cross" />
+                )}
+                Deposit Money
+              </a>
+            </Link>
+          </li>
           <li>
             <Link href="/settings?tab=2">
               <a>
