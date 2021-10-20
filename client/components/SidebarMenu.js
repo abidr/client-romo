@@ -15,7 +15,7 @@ function SidebarMenu({ children, href }) {
         </a>
       </Link>
     </li>
-  )
+  );
 }
 
-export default SidebarMenu
+export default SidebarMenu;

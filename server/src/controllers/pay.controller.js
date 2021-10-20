@@ -17,6 +17,7 @@ exports.getAllPays = async (req, res) => {
   try {
     const data = await Pay.findAll({
       ...query,
+      include: ['user'],
     });
     const count = await Pay.count({
       ...query,

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import Pagination from 'react-js-pagination';
 import useWithdraws from '../../data/useWithdraws';
+import statusColor from '../../utils/statusColor';
 
 const WithdrawHistory = () => {
   const [page, setPage] = useState(1);
@@ -29,7 +30,7 @@ const WithdrawHistory = () => {
               <td>
                 <strong
                   style={{ textTransform: 'capitalize' }}
-                  className={`status ${(history?.status === 'failed') ? 'danger' : 'success'}`}
+                  className={`status ${statusColor(history?.status)}`}
                 >
                   {history?.status}
                 </strong>

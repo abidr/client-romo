@@ -1,0 +1,58 @@
+import React from 'react';
+import {
+  BiCog, BiDollarCircle, BiHomeSmile, BiPaperPlane, BiPlusCircle, BiStore, BiTransferAlt, BiWallet
+} from 'react-icons/bi';
+import SidebarMenu from './SidebarMenu';
+
+const SidebarAdmin = ({ settings }) => (
+  <>
+    <div className="sidebar">
+      <a href="/" className="brand-logo">
+        <img src="https://docs.nestjs.com/assets/logo-small.svg" alt="" />
+      </a>
+      <div className="menu">
+        <ul>
+          <SidebarMenu href="/admin/dashboard">
+            <BiHomeSmile />
+            <span>Dashboard</span>
+          </SidebarMenu>
+          <SidebarMenu href="/admin/deposits">
+            <BiPlusCircle />
+            <span>Deposits</span>
+          </SidebarMenu>
+          <SidebarMenu href="/admin/transfers">
+            <BiPaperPlane />
+            <span>Transfers</span>
+          </SidebarMenu>
+          <SidebarMenu href="/admin/withdraws">
+            <BiWallet />
+            <span>Withdraws</span>
+          </SidebarMenu>
+          <SidebarMenu href="/admin/exchanges">
+            <BiTransferAlt />
+            <span>Exchanges</span>
+          </SidebarMenu>
+          <SidebarMenu href="/admin/pays">
+            <BiDollarCircle />
+            <span>Payments</span>
+          </SidebarMenu>
+          <SidebarMenu href="/admin/merchants">
+            <BiStore />
+            <span>Merchants</span>
+          </SidebarMenu>
+          <SidebarMenu href="/admin/settings">
+            <BiCog />
+            <span>Settings</span>
+          </SidebarMenu>
+        </ul>
+        <div className="copyright">
+          {settings?.site?.param1}
+          {' '}
+          Admin Panel
+        </div>
+      </div>
+    </div>
+  </>
+);
+
+export default SidebarAdmin;

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import Pagination from 'react-js-pagination';
 import usePayments from '../../data/usePayments';
+import statusColor from '../../utils/statusColor';
 
 const PaymentHistory = () => {
   const [page, setPage] = useState(1);
@@ -24,7 +25,14 @@ const PaymentHistory = () => {
           {data?.data?.map((history) => (
             <tr key={history?.id}>
               <td><span>{dayjs(history?.createdAt).format('DD/MM/YYYY')}</span></td>
-              <td><strong className="status success">{history?.status}</strong></td>
+              <td>
+                <strong
+                  style={{ textTransform: 'capitalize' }}
+                  className={`status ${statusColor(history?.status)}`}
+                >
+                  {history?.status}
+                </strong>
+              </td>
               <td>
                 <strong>
                   {history?.merchant}

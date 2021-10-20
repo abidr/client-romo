@@ -173,6 +173,12 @@ exports.signIn = async (req, res) => {
     });
   }
 
+  if (admin && !(user.role === 0)) {
+    return res.status(404).json({
+      message: 'Wrong Credentials',
+    });
+  }
+
   if (user.role === 2 && !(user.merchant)) {
     return res.status(403).json({
       message: 'Merchant Error! Contact Support.',

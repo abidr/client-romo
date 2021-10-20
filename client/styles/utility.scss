@@ -476,6 +476,10 @@ img {
   &.success {
     background: $green;
   }
+  &.info {
+    background: $yellow;
+    color: $black;
+  }
 }
 
 /* Basic Card */

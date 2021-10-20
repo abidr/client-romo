@@ -16,4 +16,20 @@ export function useGatewayCurrencies() {
     error,
   };
 }
+export function useGatewayAdmin() {
+  const { data, error } = useSWR('/gateways/admin');
+  return {
+    data,
+    loading: !data && !error,
+    error,
+  };
+}
+export function useGatewayByValue(value) {
+  const { data, error } = useSWR(`/gateways/${value}`);
+  return {
+    data,
+    loading: !data && !error,
+    error,
+  };
+}
 export default useGateways;

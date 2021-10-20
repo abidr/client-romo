@@ -17,6 +17,7 @@ exports.getAllExchanges = async (req, res) => {
   try {
     const data = await Exchange.findAll({
       ...query,
+      include: ['user'],
     });
     const count = await Exchange.count({
       ...query,
@@ -50,6 +51,7 @@ exports.getExchangeByIdAdmin = async (req, res) => {
   try {
     const data = await Exchange.findByPk(id, {
       ...query,
+      include: ['user'],
     });
     return res.json(data);
   } catch (err) {

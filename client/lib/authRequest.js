@@ -15,6 +15,20 @@ export async function signInRequest(params, setLoading) {
   }
   return null;
 }
+export async function signInAdminRequest(params, setLoading) {
+  setLoading(true);
+  try {
+    const { data } = await request.post('/signin?admin=true', { ...params });
+    setLoading(false);
+    window.location.href = '/admin/dashboard';
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    setLoading(false);
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}
 
 export async function signUpRequest(params, setLoading) {
   setLoading(true);

@@ -167,7 +167,7 @@ exports.acceptWithdraw = async (req, res) => {
   const { id } = req.params;
   try {
     const data = await Withdraw.findByPk(id);
-    const num = await Withdraw.update({ status: 'success' }, { where: { id } });
+    const num = await Withdraw.update({ status: 'success', params: data.params }, { where: { id } });
     const ifUpdated = parseInt(num, 10);
     if (ifUpdated === 1) {
       mailer({
@@ -187,7 +187,8 @@ exports.acceptWithdraw = async (req, res) => {
 exports.declineWithdraw = async (req, res) => {
   const { id } = req.params;
   try {
-    const num = await Withdraw.update({ status: 'failed' }, { where: { id } });
+    const dataWithdraw = await Withdraw.findByPk(id);
+    const num = await Withdraw.update({ status: 'failed', params: dataWithdraw.params }, { where: { id } });
     const ifUpdated = parseInt(num, 10);
     if (ifUpdated === 1) {
       const data = await Withdraw.findByPk(id);

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import Pagination from 'react-js-pagination';
 import { useDepositAll } from '../../data/useDeposits';
+import statusColor from '../../utils/statusColor';
 import Loader from '../Loader';
 
 const DepositHistory = () => {
@@ -29,7 +30,14 @@ const DepositHistory = () => {
           {data?.data?.map((history) => (
             <tr key={history.id}>
               <td><span>{dayjs(history.createdAt).format('DD/MM/YYYY')}</span></td>
-              <td><strong className="status success" style={{ textTransform: 'capitalize' }}>{history.status}</strong></td>
+              <td>
+                <strong
+                  className={`status ${statusColor(history?.status)}`}
+                  style={{ textTransform: 'capitalize' }}
+                >
+                  {history.status}
+                </strong>
+              </td>
               <td>
                 <strong>
                   Deposit Request #
