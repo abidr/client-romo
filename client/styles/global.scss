@@ -658,6 +658,7 @@
     }
     input[type="text"],
     input[type="password"],
+    input[type="number"],
     input[type="email"] {
       width: 100%;
       line-height: 52px;
@@ -1584,6 +1585,9 @@
     background: $yellow;
     color: $black;
   }
+  &.danger {
+    background: $red;
+  }
 }
 .details-table {
   tbody {
@@ -1601,4 +1605,69 @@
     background: $blue2;
     width: 50%;
   }
+}
+
+.editor-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  h2 {
+    margin: 0;
+  }
+  button {
+    background: transparent;
+    color: $white;
+    font-size: 28px;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    padding: 8px;
+    background: $blue;
+    &:hover {
+      background: $yellow;
+      color: $black;
+    }
+    &:active {
+      background: $yellow2;
+    }
+  }
+}
+.single-profile {
+  select {
+    background: $black;
+    color: $white;
+    padding: 5px;
+    width: 100%;
+    border-radius: 4px;
+  }
+}
+.method-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .single-profile {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 15px;
+    select {
+      padding: 15px 10px;
+    }
+    &.toggler {
+      align-items: center;
+      width: 30%;
+    }
+  }
+  .action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+  }
+}
+.btn-new {
+  width: 100%;
+  margin-bottom: 20px;
 }

@@ -8,10 +8,10 @@ import { useWithdrawsAdmin } from '../../../data/useWithdraws';
 import statusColor from '../../../utils/statusColor';
 import Loader from '../../Loader';
 
-const WithdrawHistoryAdmin = () => {
+const WithdrawHistoryAdmin = ({ pending }) => {
   const [page, setPage] = useState(1);
   const [depId, setDepId] = useState('');
-  const [status, setStatus] = useState('all');
+  const [status, setStatus] = useState(pending ? 'pending' : 'all');
   const [perPage, setPerPage] = useState(25);
 
   const { data, loading } = useWithdrawsAdmin(page, perPage, status, depId);
@@ -23,6 +23,7 @@ const WithdrawHistoryAdmin = () => {
           <p>ID </p>
           <input type="text" value={depId} onChange={(e) => setDepId(e.target.value)} />
         </div>
+        {!pending && (
         <div className="filter-box">
           <p>Status </p>
           <select value={status} name="status" onChange={(e) => setStatus(e.target.value)}>
@@ -32,6 +33,7 @@ const WithdrawHistoryAdmin = () => {
             <option value="failed">Failed</option>
           </select>
         </div>
+        )}
         <div className="filter-box">
           <p>Per Page </p>
           <select value={perPage} name="status" onChange={(e) => setPerPage(e.target.value)}>

@@ -21,6 +21,19 @@ exports.getAllMethods = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
+exports.getMethodById = async (req, res) => {
+  const { id } = req.params;
+  const query = await queryParser.parse(req);
+  try {
+    const data = await Method.findByPk(id, {
+      ...query,
+      where: req.user.role === 0 ? {} : { active: true },
+    });
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
 
 exports.createMethod = async (req, res) => {
   try {

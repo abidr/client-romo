@@ -1,5 +1,5 @@
 import React from 'react';
-import { BiErrorCircle } from 'react-icons/bi';
+import { BiAnalyse, BiErrorCircle } from 'react-icons/bi';
 import ExchangeHistoryAdmin from '../../../components/admin/exchange/ExchangeHistoryAdmin';
 import SidebarAdmin from '../../../components/SidebarAdmin';
 import TabModule from '../../../components/tabs/TabModule';
@@ -19,6 +19,12 @@ const Exchanges = ({ userData, settings }) => (
               title="Exchanges"
               description="Manage all currency exchanges of your users from this panel."
             >
+              <TabModule icon={<BiAnalyse />} name="Pending">
+                <div className="basic-card">
+                  <h4 className="box-title">Pending Exchanges</h4>
+                  <ExchangeHistoryAdmin pending />
+                </div>
+              </TabModule>
               <TabModule icon={<BiErrorCircle />} name="History">
                 <div className="basic-card">
                   <h4 className="box-title">Exchange History</h4>

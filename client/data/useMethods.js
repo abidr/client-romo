@@ -8,4 +8,16 @@ function useMethods() {
     error,
   };
 }
+export function useMethodById(id) {
+  const { data, error } = useSWR(`/methods/${id}`, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  });
+  return {
+    data,
+    loading: !data && !error,
+    error,
+  };
+}
 export default useMethods;

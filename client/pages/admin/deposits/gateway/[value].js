@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { BiErrorCircle } from 'react-icons/bi';
 import Toggle from 'react-toggle';
+import EditorHeader from '../../../../components/admin/EditorHeader';
 import Loader from '../../../../components/Loader';
 import SidebarAdmin from '../../../../components/SidebarAdmin';
 import UserHeaderAdmin from '../../../../components/UserHeaderAdmin';
@@ -41,7 +42,7 @@ const GatewayEdit = ({ userData, settings }) => {
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">
         <div className="container-fluid">
-          <h2 className="mb-30">{data?.data?.name}</h2>
+          <EditorHeader name={data?.data?.name} />
           <div className="row">
             <div className="col-12 col-xl-6">
               <div className="basic-card">

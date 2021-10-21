@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Spinner, Table } from 'react-bootstrap';
 import { BiCheck, BiX } from 'react-icons/bi';
+import EditorHeader from '../../../components/admin/EditorHeader';
 import Loader from '../../../components/Loader';
 import SidebarAdmin from '../../../components/SidebarAdmin';
 import UserHeaderAdmin from '../../../components/UserHeaderAdmin';
@@ -31,10 +32,7 @@ const ExchangeEdit = ({ userData, settings }) => {
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">
         <div className="container-fluid">
-          <h2 className="mb-30">
-            Exchange #
-            {data?.id}
-          </h2>
+          <EditorHeader name={`Exchange #${data?.id}`} />
           <div className="row">
             <div className="col-12 col-xl-6">
               <div className="basic-card">
