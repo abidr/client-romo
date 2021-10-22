@@ -9,6 +9,7 @@ exports.getAllMerchants = async (req, res) => {
   try {
     const data = await Merchant.findAll({
       ...query,
+      include: ['user'],
       where: {
         ...query.where,
       },

@@ -109,9 +109,9 @@ exports.createWithdraw = async (req, res) => {
   const { id } = req.user;
   const { methodId, amount, currency } = req.body;
   try {
-    const wallet = await Wallet.findOne({ where: { currency } });
+    const wallet = await Wallet.findOne({ where: { currency, userId: id } });
     const method = await Method.findByPk(methodId);
-    const linkedAcc = await Linked.findOne({ where: { methodId } });
+    const linkedAcc = await Linked.findOne({ where: { methodId, userId: id } });
 
     let percentageCharge = 0;
 
