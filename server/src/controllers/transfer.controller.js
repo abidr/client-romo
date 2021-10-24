@@ -72,6 +72,10 @@ exports.createTransfer = async (req, res) => {
 
     const wallet = await Wallet.findOne({ where: { userId: id, currency } });
 
+    if (!sendingUser.kyc) {
+      return res.status(403).json({ message: 'Please verify KYC to debit from account' });
+    }
+
     if (!wallet) {
       return res.status(400).json({ message: 'Insufficient balance' });
     }

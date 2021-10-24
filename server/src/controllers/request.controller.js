@@ -80,7 +80,7 @@ exports.createRequest = async (req, res) => {
     const nanoId = customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 12);
     const trxId = nanoId();
 
-    const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
+    const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
 
     const data = await Request.create({
       amount,

@@ -7,11 +7,12 @@ const { withAuth, isAdmin } = require('../middlewares/auth.middleware');
 
 const {
   getKycByUser, getAllKyc, createKyc, acceptKyc, declineKyc,
-  resubmitKyc,
+  resubmitKyc, getKycByUserId,
 } = require('../controllers/kyc.controller');
 
 router.get('/kyc', withAuth, isAdmin, getAllKyc);
 router.get('/kyc/me', withAuth, getKycByUser);
+router.get('/kyc/:id', withAuth, isAdmin, getKycByUserId);
 router.post(
   '/kyc',
   withAuth,

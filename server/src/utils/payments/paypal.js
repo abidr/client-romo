@@ -7,12 +7,12 @@ const Setting = db.settings;
 exports.paypalPayment = async (value, id, currency) => {
   try {
     const data = await Gateway.findOne({ where: { value: 'paypal' } });
-    const apiUrl = await Setting.findOne({ where: { value: 'api_url' } });
+    const apiUrl = await Setting.findOne({ where: { value: 'apiUrl' } });
 
     paypal.configure({
       mode: data.ex1,
-      client_id: data.api_key,
-      client_secret: data.secret_key,
+      client_id: data.apiKey,
+      client_secret: data.secretKey,
     });
 
     const paypalPaymentObj = {
@@ -52,8 +52,8 @@ exports.executePaymentPaypal = async (payerId, paymentId) => {
   const data = await Gateway.findOne({ where: { value: 'paypal' } });
   paypal.configure({
     mode: data.ex1,
-    client_id: data.api_key,
-    client_secret: data.secret_key,
+    client_id: data.apiKey,
+    client_secret: data.secretKey,
   });
   const paymentData = await paypal.payment.get(paymentId);
   const paymentObj = {

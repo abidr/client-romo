@@ -7,7 +7,7 @@ const Setting = db.settings;
 exports.paystackPayment = async (data, user) => {
   try {
     const gateway = await Gateway.findOne({ where: { value: 'paystack' } });
-    const apiUrl = await Setting.findOne({ where: { value: 'api_url' } });
+    const apiUrl = await Setting.findOne({ where: { value: 'apiUrl' } });
 
     const apiData = await rp({
       method: 'POST',
@@ -21,7 +21,7 @@ exports.paystackPayment = async (data, user) => {
         callback_url: `${apiUrl.param1}/payments/paystack`,
       },
       headers: {
-        Authorization: `Bearer ${gateway.api_key}`,
+        Authorization: `Bearer ${gateway.apiKey}`,
       },
     });
     return apiData.data.authorization_url;

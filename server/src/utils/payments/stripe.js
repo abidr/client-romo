@@ -8,9 +8,9 @@ const Setting = db.settings;
 exports.stripePayment = async (value, id, currency) => {
   try {
     const data = await Gateway.findOne({ where: { value: 'stripe' } });
-    const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
+    const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
 
-    const stripeInit = stripe(data.secret_key);
+    const stripeInit = stripe(data.secretKey);
 
     const session = await stripeInit.checkout.sessions.create({
       payment_method_types: ['card'],

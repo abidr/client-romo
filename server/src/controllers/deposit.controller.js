@@ -7,7 +7,6 @@ const queryParser = sequelizeQuery(db);
 const Deposit = db.deposits;
 const User = db.users;
 const Log = db.logs;
-const Setting = db.settings;
 
 const { molliePayment } = require('../utils/payments/mollie');
 const { coinbasePayment } = require('../utils/payments/coinbase');
@@ -163,19 +162,8 @@ exports.acceptDeposit = async (req, res) => {
     const ifUpdated = parseInt(num, 10);
     if (ifUpdated === 1) {
       const data = await Deposit.findByPk(id);
-      const user = await User.findByPk(data.userId);
-      const firstDeposit = await Deposit.findAll({ where: { userId: data.userId } });
       await addBalance(data.amount, data.currency, data.userId);
       await Log.create({ message: `Admin #${req.user.id} accepted deposit #${id}` });
-      const refferal = await Setting.findOne({ where: { value: 'refferal' } });
-      if (firstDeposit.length === 1 && refferal.param2 === 'ondeposit') {
-        const referData = await User.findOne({ where: { id: user.reffered_by } });
-        if (referData) {
-          const referBalance = referData.balance_usd + parseFloat(refferal.param1, 10);
-          await User.update({ balance_usd: referBalance }, { where: { id: referData.id } });
-          await Log.create({ message: `User #${referData.id} rewarded ${refferal.param1} for reffering User #${data.userId}` });
-        }
-      }
       mailer({
         user: data.userId,
         subject: 'Deposit Accepted',

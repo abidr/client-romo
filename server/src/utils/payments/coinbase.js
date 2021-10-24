@@ -7,9 +7,9 @@ const Setting = db.settings;
 exports.coinbasePayment = async (value, id, currency) => {
   try {
     const data = await Gateway.findOne({ where: { value: 'coinbase' } });
-    const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
+    const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
     const { Client } = coinbase;
-    Client.init(data.api_key);
+    Client.init(data.apiKey);
     const { Charge } = coinbase.resources;
 
     const payment = await Charge.create({

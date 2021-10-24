@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Col, Row, Tab
+  Col, Row
 } from 'react-bootstrap';
 
 const UserTab = ({
@@ -43,19 +43,19 @@ const UserTab = ({
       </Col>
       <Col sm={9}>
         {Array.isArray(children) ? (
-          <Tab.Content>
+          <div>
             {children?.map((child, index) => (
               <div key={child?.props?.name} className={`tab-wrapper ${tab === index ? 'active' : 'not-active'}`}>
                 {child?.props?.children}
               </div>
             ))}
-          </Tab.Content>
+          </div>
         ) : (
-          <Tab.Content>
+          <div>
             <div key={children?.props?.name} className={`tab-wrapper ${tab === 0 ? 'active' : 'not-active'}`}>
               {children?.props?.children}
             </div>
-          </Tab.Content>
+          </div>
         )}
       </Col>
     </Row>

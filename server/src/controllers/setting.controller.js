@@ -33,25 +33,21 @@ exports.getLogs = async (req, res) => {
 };
 exports.getSettings = async (req, res) => {
   try {
-    const withdrawFee = await Setting.findOne({ where: { value: 'withdraw_fee' } });
-    const app_url = await Setting.findOne({ where: { value: 'app_url' } });
-    const api_url = await Setting.findOne({ where: { value: 'api_url' } });
+    const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
+    const apiUrl = await Setting.findOne({ where: { value: 'apiUrl' } });
     const site = await Setting.findOne({ where: { value: 'site' } });
     const refferal = await Setting.findOne({ where: { value: 'refferal' } });
-    const coinmarketcap = await Setting.findOne({ where: { value: 'coinmarketcap' } });
     const adjustments = await Setting.findOne({ where: { value: 'adjustments' } });
     const tawk = await Setting.findOne({ where: { value: 'tawk' } });
-    const announcement = await Setting.findOne({ where: { value: 'announcement' } });
+    const freecurrencyapi = await Setting.findOne({ where: { value: 'freecurrencyapi' } });
     return res.json({
-      withdraw_fee: withdrawFee,
-      app_url,
-      api_url,
+      appUrl,
+      apiUrl,
       site,
       refferal,
-      coinmarketcap,
       adjustments,
       tawk,
-      announcement,
+      freecurrencyapi,
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
@@ -68,28 +64,28 @@ exports.getSettingByValue = async (req, res) => {
 
 exports.updateGeneral = async (req, res) => {
   const {
-    app_url, api_url, site_name, site_email,
+    appUrl, apiUrl, siteName, siteEmail,
   } = req.body;
   try {
-    const AppUrldataExists = await Setting.findOne({ where: { value: 'app_url' } });
+    const AppUrldataExists = await Setting.findOne({ where: { value: 'appUrl' } });
     if (AppUrldataExists) {
-      await Setting.update({ param1: app_url }, { where: { value: 'app_url' } });
+      await Setting.update({ param1: appUrl }, { where: { value: 'appUrl' } });
     } else {
-      await Setting.create({ value: 'app_url', param1: app_url });
+      await Setting.create({ value: 'appUrl', param1: appUrl });
     }
 
-    const apiUrlDataExists = await Setting.findOne({ where: { value: 'api_url' } });
+    const apiUrlDataExists = await Setting.findOne({ where: { value: 'apiUrl' } });
     if (apiUrlDataExists) {
-      await Setting.update({ param1: api_url }, { where: { value: 'api_url' } });
+      await Setting.update({ param1: apiUrl }, { where: { value: 'apiUrl' } });
     } else {
-      await Setting.create({ value: 'api_url', param1: api_url });
+      await Setting.create({ value: 'apiUrl', param1: apiUrl });
     }
 
     const siteExists = await Setting.findOne({ where: { value: 'site' } });
     if (siteExists) {
-      await Setting.update({ param1: site_name, param2: site_email }, { where: { value: 'site' } });
+      await Setting.update({ param1: siteName, param2: siteEmail }, { where: { value: 'site' } });
     } else {
-      await Setting.create({ value: 'api_url', param1: site_name, param2: site_email });
+      await Setting.create({ value: 'site', param1: siteName, param2: siteEmail });
     }
     return res.json({ message: 'Settings Updated' });
   } catch (err) {
@@ -163,8 +159,8 @@ exports.updateGateways = async (req, res) => {
     if (dataExists) {
       await Gateway.update({
         name: req.body.name,
-        api_key: req.body.api_key,
-        secret_key: req.body.secret_key,
+        apiKey: req.body.apiKey,
+        secretKey: req.body.secretKey,
         email: req.body.email,
         isCrypto: req.body.isCrypto,
         active: req.body.active,
@@ -172,8 +168,8 @@ exports.updateGateways = async (req, res) => {
     } else {
       await Gateway.create({
         name: req.body.name,
-        api_key: req.body.api_key,
-        secret_key: req.body.secret_key,
+        apiKey: req.body.apiKey,
+        secretKey: req.body.secretKey,
         email: req.body.email,
         isCrypto: req.body.isCrypto,
         active: req.body.active,
@@ -188,7 +184,7 @@ exports.updateGateways = async (req, res) => {
 exports.getGateways = async (req, res) => {
   try {
     const data = await Gateway.findAll({
-      attributes: { exclude: ['api_key', 'secret_key', 'email', 'ex1', 'ex2'] },
+      attributes: { exclude: ['apiKey', 'secretKey', 'email', 'ex1', 'ex2'] },
       where: { active: true, isExchangePayment: false },
       order: [['name', 'ASC']],
     });

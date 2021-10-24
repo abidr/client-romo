@@ -47,8 +47,9 @@ exports.getUserById = async (req, res) => {
   try {
     const data = await User.findByPk(id, {
       attributes: { exclude: ['password'] },
+      include: ['merchant'],
     });
-    const referCount = await User.count({ where: { reffered_by: id } });
+    const referCount = await User.count({ where: { refferedBy: id } });
     return res.json({ ...data.dataValues, referCount });
   } catch (err) {
     return res.status(500).json({ message: err.message });
@@ -80,6 +81,8 @@ exports.updateUserAdmin = async (req, res) => {
       password: req.body.password,
       role: req.body.role,
       active: req.body.active,
+      kyc: req.body.kyc,
+      passUpdate: req.body.password ? Math.floor(Date.now() / 1000) : undefined,
     };
     const num = await User.update(updateObj, { where: { id } });
     const ifUpdated = parseInt(num, 10);
@@ -101,6 +104,7 @@ exports.updateUser = async (req, res) => {
       phone: req.body.phone,
       address: req.body.address,
       password: req.body.password,
+      passUpdate: req.body.password ? Math.floor(Date.now() / 1000) : undefined,
     };
     const num = await User.update(updateObj, { where: { id } });
     const ifUpdated = parseInt(num, 10);

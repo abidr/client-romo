@@ -19,7 +19,7 @@ const withAuthAdmin = (WrappedComponent) => (props) => {
   if (data?.isAdmin) {
     return <WrappedComponent {...props} userData={userData} settings={settings} />;
   }
-  Router.replace('/admin/login');
+  Router.replace('/admin');
   return null;
 };
 

@@ -7,8 +7,8 @@ const Setting = db.settings;
 exports.voguePayment = async (data, user) => {
   try {
     const gateway = await Gateway.findOne({ where: { value: 'voguepay' } });
-    const apiUrl = await Setting.findOne({ where: { value: 'api_url' } });
-    const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
+    const apiUrl = await Setting.findOne({ where: { value: 'apiUrl' } });
+    const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
 
     const obj = {
       p: 'linkToken',

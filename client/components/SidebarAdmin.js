@@ -49,6 +49,10 @@ const SidebarAdmin = ({ settings }) => (
             <BiCog />
             <span>Settings</span>
           </SidebarMenu>
+          <SidebarMenu href="/admin/builder">
+            <BiCog />
+            <span>Site Builder</span>
+          </SidebarMenu>
         </ul>
         <div className="copyright">
           {settings?.site?.param1}

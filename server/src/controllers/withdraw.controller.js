@@ -109,11 +109,16 @@ exports.createWithdraw = async (req, res) => {
   const { id } = req.user;
   const { methodId, amount, currency } = req.body;
   try {
+    const user = await User.findByPk(id);
     const wallet = await Wallet.findOne({ where: { currency, userId: id } });
     const method = await Method.findByPk(methodId);
     const linkedAcc = await Linked.findOne({ where: { methodId, userId: id } });
 
     let percentageCharge = 0;
+
+    if (!user.kyc) {
+      return res.status(403).json({ message: 'Please verify KYC to debit from account' });
+    }
 
     if (!wallet || (wallet.balance < amount)) {
       return res.status(400).json({

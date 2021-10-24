@@ -3,6 +3,8 @@ const sequelizeQuery = require('sequelize-query');
 const rp = require('request-promise');
 const cron = require('node-cron');
 const db = require('../config/db.config');
+const cryptoCur = require('../config/crypto.config');
+const fiatCur = require('../config/fiat.config');
 
 const queryParser = sequelizeQuery(db);
 const Currency = db.currencies;
@@ -19,6 +21,15 @@ exports.getAllCurrencies = async (req, res) => {
       ...query,
     });
     return res.json({ count, data });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.getCurrencyList = async (req, res) => {
+  try {
+    const cryptoCurMapped = cryptoCur.map((crypto) => ({ ...crypto, crypto: true }));
+    const fiatCurMapped = fiatCur.map((fiat) => ({ ...fiat, crypto: false }));
+    return res.json([...cryptoCurMapped, ...fiatCurMapped]);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -59,7 +70,6 @@ const currencyRatesFetcher = async () => {
         // eslint-disable-next-line max-len
         rateUsd: updatedRate.market_data.current_price.usd,
         metadata: JSON.stringify(updatedRate),
-        icon: coin.icon ? undefined : updatedRate.image.small,
       }, { where: { id: coin.id } });
     }
   });
@@ -94,10 +104,22 @@ exports.fetchCurrencyRates = async (req, res) => {
 exports.createCurrency = async (req, res) => {
   try {
     const {
-      name, symbol, icon, rateUsd, active, rateFromApi, crypto,
+      name, symbol, rateUsd, active, rateFromApi, crypto,
     } = req.body;
+    const currency = await Currency.findOne({ where: { symbol } });
+    if (currency) {
+      return res.status(400).json({
+        message: 'Currency Already Exists',
+      });
+    }
     const data = await Currency.create({
-      name, symbol, icon, rateUsd, active, rateFromApi, crypto,
+      name,
+      symbol,
+      icon: req.file ? req.file.filename : undefined,
+      rateUsd,
+      active,
+      rateFromApi,
+      crypto,
     });
     currencyRatesFetcher();
     await Log.create({ message: `Admin #${req.user.id} created currency #${data.id}` });

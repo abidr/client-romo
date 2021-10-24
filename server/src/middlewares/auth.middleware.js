@@ -46,6 +46,11 @@ exports.checkAuth = async (req, res) => {
       id: req.user.id,
     },
   });
+  if (user.passUpdate && user.passUpdate > req.user.iat) {
+    return res.status(401).json({
+      message: 'Invalid Token',
+    });
+  }
   if (user) {
     const {
       id, name, email, phone, address, role,

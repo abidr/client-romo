@@ -2,17 +2,12 @@ import cogoToast from 'cogo-toast';
 import { mutate } from 'swr';
 import request from '../config/api';
 
-export default async function kycUpdate(params, setActionLoader) {
+export default async function generalUpdate(params, setActionLoader) {
   setActionLoader(true);
   try {
-    const formData = new FormData();
-    formData.append('front', params.front[0].file, params.front[0].file.name);
-    formData.append('back', params.back[0].file, params.back[0].file.name);
-    formData.append('selfie', params.selfie[0].file, params.selfie[0].file.name);
-    formData.append('type', params.type);
-    const { data } = await request.post('/kyc', formData);
+    const { data } = await request.put('/settings/general', { ...params });
     setActionLoader(false);
-    mutate('/kyc/me');
+    mutate('/settings');
     cogoToast.success(data.message, { position: 'bottom-center' });
     return data;
   } catch (error) {
@@ -22,12 +17,12 @@ export default async function kycUpdate(params, setActionLoader) {
   }
   return null;
 }
-export async function kycResubmit(setActionLoader) {
+export async function settingsUpdate(value, params, setActionLoader) {
   setActionLoader(true);
   try {
-    const { data } = await request.post('/kyc/resubmit');
+    const { data } = await request.put(`/settings/byvalue/${value}`, { ...params });
     setActionLoader(false);
-    mutate('/kyc/me');
+    mutate('/settings');
     cogoToast.success(data.message, { position: 'bottom-center' });
     return data;
   } catch (error) {
@@ -37,13 +32,27 @@ export async function kycResubmit(setActionLoader) {
   }
   return null;
 }
-export async function kycAdminAction(type, id, userId, setActionLoader) {
+export async function profileUpdateAdmin(id, params, setActionLoader) {
   setActionLoader(true);
   try {
-    const { data } = await request.put(`/kyc/${id}/${type}`);
+    const { data } = await request.put(`/users/${id}`, { ...params });
     setActionLoader(false);
-    mutate(`/users/${userId}`);
-    mutate(`/kyc/${id}`);
+    mutate(`/users/${id}`);
+    cogoToast.success(data.message, { position: 'bottom-center' });
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    setActionLoader(false);
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}
+export async function userDelete(id, setActionLoader) {
+  setActionLoader(true);
+  try {
+    const { data } = await request.delete(`/users/${id}`);
+    setActionLoader(false);
+    window.location.href = '/admin/users';
     cogoToast.success(data.message, { position: 'bottom-center' });
     return data;
   } catch (error) {

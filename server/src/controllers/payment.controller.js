@@ -14,10 +14,11 @@ const Setting = db.settings;
 
 const { executePaymentPaypal } = require('../utils/payments/paypal');
 const { addBalance } = require('../utils/wallet');
+const { firstDeposit } = require('../utils/firstDeposit');
 
 exports.verifyMollie = async (req, res) => {
   const mollie = await Gateway.findOne({ where: { value: 'mollie' } });
-  const mollieClient = createMollieClient({ apiKey: mollie.api_key });
+  const mollieClient = createMollieClient({ apiKey: mollie.apiKey });
   try {
     const data = await mollieClient.payments.get(req.body.id);
     if (data.status === 'paid') {
@@ -26,6 +27,7 @@ exports.verifyMollie = async (req, res) => {
         await addBalance(depositData.amount, depositData.currency, depositData.userId);
         await Deposit.update({ payment_status: true, status: 'success' }, { where: { id: data.metadata.id } });
         await Log.create({ message: `Mollie confirmed payment for deposit #${data.metadata.id}` });
+        firstDeposit(depositData.id);
       }
     }
     return res.json(data);
@@ -44,6 +46,7 @@ exports.verifyCoinbase = async (req, res) => {
           { where: { id: req.body.event.data.metadata.id } },
         );
         await Log.create({ message: `Coinbase confirmed payment for deposit #${req.body.event.data.metadata.id}` });
+        firstDeposit(depositData.id);
       }
     }
     return res.json({ message: 'Confirmed Payment' });
@@ -59,6 +62,7 @@ exports.verifyCoinPayments = async (req, res) => {
       await addBalance(depositData.amount, depositData.currency, depositData.userId);
       await Deposit.update({ payment_status: true, status: 'success' }, { where: { id: req.body.invoice } });
       await Log.create({ message: `CoinPayments confirmed payment for Deposit #${req.body.invoice}` });
+      firstDeposit(depositData.id);
       return res.json({ message: 'Payment Verified' });
     }
     return res.json({ message: 'Payment not verified' });
@@ -68,7 +72,7 @@ exports.verifyCoinPayments = async (req, res) => {
 };
 exports.verifyPaypal = async (req, res) => {
   const { PayerID, paymentId } = req.query;
-  const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
+  const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
   try {
     const payment = await executePaymentPaypal(PayerID, paymentId);
     if (payment.state === 'approved') {
@@ -78,6 +82,7 @@ exports.verifyPaypal = async (req, res) => {
       await Deposit.update({ payment_status: true, status: 'success' },
         { where: { id: depositId } });
       await Log.create({ message: `Paypal confirmed payment for Deposit #${depositId}` });
+      firstDeposit(depositData.id);
     }
     return res.redirect(`${appUrl.param1}/add-money?status=success`);
   } catch (err) {
@@ -86,7 +91,7 @@ exports.verifyPaypal = async (req, res) => {
 };
 exports.verifyStripe = async (req, res) => {
   const data = await Gateway.findOne({ where: { value: 'stripe' } });
-  const stripeInit = stripe(data.secret_key);
+  const stripeInit = stripe(data.secretKey);
   const payload = req.body;
   const sig = req.headers['stripe-signature'];
 
@@ -105,13 +110,14 @@ exports.verifyStripe = async (req, res) => {
     await addBalance(depositData.amount, depositData.currency, depositData.userId);
     await Deposit.update({ payment_status: true, status: 'success' }, { where: { id: session.metadata.depositId } });
     await Log.create({ message: `Stripe confirmed payment for Deposit #${session.metadata.depositId}` });
+    firstDeposit(depositData.id);
   }
   return res.json({ message: 'Payment verified' });
 };
 exports.verifyCoingate = async (req, res) => {
   const data = await Gateway.findOne({ where: { value: 'coingate' } });
-  const coingate = client(data.api_key);
-  const testCongate = testClient(data.api_key);
+  const coingate = client(data.apiKey);
+  const testCongate = testClient(data.apiKey);
 
   const clientMain = data.ex1 === 'sandbox' ? testCongate : coingate;
 
@@ -122,6 +128,7 @@ exports.verifyCoingate = async (req, res) => {
       await addBalance(depositData.amount, depositData.currency, depositData.userId);
       await Deposit.update({ payment_status: true, status: 'success' }, { where: { id: req.body.order_id } });
       await Log.create({ message: `Stripe confirmed payment for Deposit #${req.body.order_id}` });
+      firstDeposit(depositData.id);
     }
     return res.json({ message: 'Payment verified' });
   } catch (err) {
@@ -130,10 +137,10 @@ exports.verifyCoingate = async (req, res) => {
 };
 exports.verifyPaystack = async (req, res) => {
   const { reference } = req.query;
-  const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
+  const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
   try {
     const gateway = await Gateway.findOne({ where: { value: 'paystack' } });
-    const paystack = new PayStack(gateway.api_key, process.env.NODE_ENV);
+    const paystack = new PayStack(gateway.apiKey, process.env.NODE_ENV);
 
     const payment = await paystack.verifyTransaction({
       reference: `${reference}`,
@@ -145,6 +152,7 @@ exports.verifyPaystack = async (req, res) => {
       await Deposit.update({ payment_status: true, status: 'success' },
         { where: { id: reference } });
       await Log.create({ message: `Paystack confirmed payment for Deposit #${reference}` });
+      firstDeposit(depositData.id);
       return res.redirect(`${appUrl.param1}/add-money?status=success`);
     }
     return res.redirect(`${appUrl.param1}/add-money?status=failed`);
@@ -178,6 +186,7 @@ exports.verifyVoguePay = async (req, res) => {
       await Deposit.update({ payment_status: true, status: 'success' },
         { where: { id: apiData.merchant_ref } });
       await Log.create({ message: `Paystack confirmed payment for Deposit #${apiData.merchant_ref}` });
+      firstDeposit(depositData.id);
       return res.json({ message: 'Payment verified' });
     }
     return res.json({ message: 'Payment verified' });

@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
+const { customAlphabet } = require('nanoid');
 const db = require('../config/db.config');
 const mailer = require('../utils/mailer');
 
@@ -48,10 +49,13 @@ exports.signUp = async (req, res) => {
   try {
     const data = await User.create(user);
     const site = await Setting.findOne({ where: { value: 'site' } });
-    const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
+    const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
 
     if (req.body.merchant) {
+      const nanoId = customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 6);
+      const merId = nanoId();
       Merchant.create({
+        merId,
         name: req.body.merchantName,
         email: req.body.merchantEmail,
         address: req.body.merchantAddress,
@@ -96,13 +100,6 @@ exports.activateAccount = async (req, res) => {
       { active: true, reset: null },
       { where: { id: data.id } },
     );
-    const refferal = await Setting.findOne({ where: { value: 'refferal' } });
-    if (data.refferedBy && refferal.param2 === 'onsignup') {
-      const referData = await User.findOne({ where: { id: data.refferedBy } });
-      const newBalance = referData.balance_usd + parseFloat(refferal.param1, 10);
-      await User.update({ balance_usd: newBalance }, { where: { id: referData.id } });
-      await Log.create({ message: `User #${referData.id} rewarded ${refferal.param1} for reffering User #${data.id}` });
-    }
     return res.json({ message: 'Account Activated' });
   } catch (err) {
     return res.status(500).json({ message: 'Something went wrong!' });
@@ -228,7 +225,7 @@ exports.signIn = async (req, res) => {
 
 exports.forgotPassword = async (req, res) => {
   const user = await User.findOne({ where: { email: req.body.email } });
-  const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
+  const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
 
   if (!user) {
     return res.status(404).json({

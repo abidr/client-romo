@@ -23,8 +23,8 @@ const GatewayEdit = ({ userData, settings }) => {
   const handleUpdate = (e) => {
     e.preventDefault();
     const params = {
-      api_key: e.target?.api_key?.value,
-      secret_key: e.target?.secret_key?.value,
+      apiKey: e.target?.apiKey?.value,
+      secretKey: e.target?.secretKey?.value,
       email: e.target?.email?.value,
       ex1: e.target?.ex1?.value,
       ex2: e.target?.ex2?.value,
@@ -48,16 +48,16 @@ const GatewayEdit = ({ userData, settings }) => {
               <div className="basic-card">
                 <div className="settings-box">
                   <form onSubmit={handleUpdate}>
-                    {data?.fields?.api_key && (
+                    {data?.fields?.apiKey && (
                     <div className="single-profile">
                       <label htmlFor="apiKey">API Key</label>
-                      <input id="apiKey" name="api_key" type="text" placeholder="API Key" defaultValue={data?.data?.api_key} />
+                      <input id="apiKey" name="apiKey" type="text" placeholder="API Key" defaultValue={data?.data?.apiKey} />
                     </div>
                     )}
-                    {data?.fields?.secret_key && (
+                    {data?.fields?.secretKey && (
                     <div className="single-profile">
                       <label htmlFor="secretKey">Secret Key</label>
-                      <input id="secretKey" name="secret_key" type="text" placeholder="Secret Key" defaultValue={data?.data?.secret_key} />
+                      <input id="secretKey" name="secretKey" type="text" placeholder="Secret Key" defaultValue={data?.data?.secretKey} />
                     </div>
                     )}
                     {data?.fields?.email && (

@@ -7,7 +7,7 @@ const Refferal = ({ userData, settings }) => {
   const inputRef = useRef(null);
 
   const copyToClipboard = () => {
-    copy(`${settings?.app_url?.param1}/register?refer=${userData?.id}`);
+    copy(`${settings?.appUrl?.param1}/register?refer=${userData?.id}`);
     cogoToast.success('Refferal Link Copied!', { position: 'bottom-center' });
   };
 
@@ -21,7 +21,7 @@ const Refferal = ({ userData, settings }) => {
             type="text"
             disabled
             ref={inputRef}
-            defaultValue={`${settings?.app_url?.param1}/register?refer=${userData?.id}`}
+            defaultValue={`${settings?.appUrl?.param1}/register?refer=${userData?.id}`}
             className="input-text input-box"
           />
           <button

@@ -2,14 +2,15 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Spinner, Table } from 'react-bootstrap';
-import { BiErrorCircle } from 'react-icons/bi';
+import { confirmAlert } from 'react-confirm-alert';
+import { BiErrorCircle, BiTrash } from 'react-icons/bi';
 import EditorHeader from '../../../components/admin/EditorHeader';
 import Loader from '../../../components/Loader';
 import SidebarAdmin from '../../../components/SidebarAdmin';
 import UserHeaderAdmin from '../../../components/UserHeaderAdmin';
 import { useMerchantById } from '../../../data/useMerchants';
 import withAuthAdmin from '../../../hoc/withAuthAdmin';
-import merchantUpdate from '../../../lib/merchantUpdate';
+import merchantUpdate, { merchantDelete } from '../../../lib/merchantUpdate';
 
 const MerchantEdit = ({ userData, settings }) => {
   const router = useRouter();
@@ -28,6 +29,22 @@ const MerchantEdit = ({ userData, settings }) => {
       status: e.target?.status?.value,
     };
     merchantUpdate(id, params, setActionLoader);
+  };
+
+  const deleteInit = () => {
+    confirmAlert({
+      title: `${data?.merId} - ${data?.name}`,
+      message: 'Are you sure to remove this merchant? Remember the merchant will be demoted to user.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => merchantDelete(id, setActionLoader)
+        },
+        {
+          label: 'No',
+        }
+      ]
+    });
   };
 
   if (loading) {
@@ -106,6 +123,25 @@ const MerchantEdit = ({ userData, settings }) => {
                         <>
                           <BiErrorCircle />
                           Update Merchant
+                        </>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      className="bttn-mid btn-danger ml-10"
+                      onClick={() => deleteInit()}
+                      disabled={actionLoader}
+                    >
+                      {actionLoader ? (
+                        <>
+                          <Spinner animation="border" role="status" size="sm" />
+                          {' '}
+                          Remove Merchant
+                        </>
+                      ) : (
+                        <>
+                          <BiTrash />
+                          Remove Merchant
                         </>
                       )}
                     </button>

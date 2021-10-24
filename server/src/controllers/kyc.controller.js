@@ -11,6 +11,7 @@ exports.getAllKyc = async (req, res) => {
   try {
     const data = await Kyc.findAll({
       ...query,
+      include: ['user'],
     });
     const count = await Kyc.count({
       ...query,
@@ -24,6 +25,20 @@ exports.getKycByUser = async (req, res) => {
   try {
     const data = await Kyc.findOne({
       where: { userId: req.user.id },
+    });
+    if (data) {
+      return res.json(data);
+    }
+    return res.json({ message: 'Not Yet Submitted' });
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
+  }
+};
+exports.getKycByUserId = async (req, res) => {
+  try {
+    const data = await Kyc.findOne({
+      where: { userId: req.params.id },
+      include: ['user'],
     });
     if (data) {
       return res.json(data);

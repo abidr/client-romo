@@ -8,10 +8,10 @@ module.exports = (sequelize) => {
     value: {
       type: DataTypes.STRING,
     },
-    api_key: {
+    apiKey: {
       type: DataTypes.STRING,
     },
-    secret_key: {
+    secretKey: {
       type: DataTypes.STRING,
     },
     email: {

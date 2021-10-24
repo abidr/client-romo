@@ -40,6 +40,9 @@ module.exports = (sequelize) => {
     reset: {
       type: DataTypes.STRING,
     },
+    passUpdate: {
+      type: DataTypes.INTEGER,
+    },
   });
   return User;
 };

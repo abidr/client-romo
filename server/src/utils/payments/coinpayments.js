@@ -7,12 +7,12 @@ const Setting = db.settings;
 exports.coinPayments = async (data, user) => {
   try {
     const gateway = await Gateway.findOne({ where: { value: 'coinpayments' } });
-    const appUrl = await Setting.findOne({ where: { value: 'app_url' } });
-    const apiUrl = await Setting.findOne({ where: { value: 'api_url' } });
+    const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
+    const apiUrl = await Setting.findOne({ where: { value: 'apiUrl' } });
 
     const client = new Coinpayments({
-      key: gateway.api_key,
-      secret: gateway.secret_key,
+      key: gateway.apiKey,
+      secret: gateway.secretKey,
     });
 
     const payment = await client.createTransaction({
