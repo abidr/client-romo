@@ -5,10 +5,10 @@ import Spinner from 'react-bootstrap/Spinner';
 import Headroom from 'react-headroom';
 import { BiUserPlus } from 'react-icons/bi';
 import { RiDashboardLine } from 'react-icons/ri';
-import useCheckAuth from '../data/useCheckAuth';
-import siteLogo from '../images/weblos-logo.png';
+import useCheckAuth from '../../data/useCheckAuth';
+import siteLogo from '../../images/weblos-logo.png';
 
-const SiteHeader = () => {
+const SiteHeader = ({ mainMenu }) => {
   const { data, loading } = useCheckAuth();
   return (
     <>
@@ -24,11 +24,11 @@ const SiteHeader = () => {
                   <Navbar.Toggle />
                   <Navbar.Collapse>
                     <Nav className="ml-auto mainmenu">
-                      <Link href="/"><a className="nav-link">Home</a></Link>
-                      <Nav.Link href="#features">Features</Nav.Link>
-                      <Nav.Link href="#howitworks">How it works</Nav.Link>
-                      <Nav.Link href="#faq">Faq</Nav.Link>
-                      <Nav.Link href="#contact">Contact</Nav.Link>
+                      {mainMenu?.map((item) => (
+                        <Link href={item.url} key={item.id}>
+                          <a className="nav-link">{item.name}</a>
+                        </Link>
+                      ))}
                       {loading ? (
                         <Link href="/">
                           <a className="bttn-small btn-ylo header-btn" style={{ minWidth: '140px', textAlign: 'center' }}>

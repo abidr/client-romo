@@ -1,32 +1,90 @@
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import React from 'react';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { useState } from 'react';
+import { Modal } from 'react-bootstrap';
+import { FiEdit, FiGrid, FiTrash } from 'react-icons/fi';
 
-export default function SortableItem(props) {
-  const { id } = props;
-  const {
-    attributes, listeners, setNodeRef, transform, transition,
-  } = useSortable({ id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
+export default function SortableItem({
+  dragging,
+  dragged,
+  children,
+  handleDelete,
+  handleEdit,
+  ...rest
+}) {
+  const [active, setActive] = useState(false);
+  const handleClose = () => setActive(false);
   return (
-    <div
-      className="menu-builder"
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-    >
-      <span>::</span>
-      <button
-        type="button"
+    <>
+      <div
+        {...rest}
+        className={`menu-builder ${dragged ? 'is-dragging' : ''} ${active ? 'active' : ''}`}
       >
-        Expand
-      </button>
-    </div>
+        <div className="builder-content">
+          <FiGrid />
+          <p>{children.name}</p>
+        </div>
+        <div className="d-flex">
+          <button
+            type="button"
+            onClick={() => setActive(true)}
+            className="action-btn"
+          >
+            <FiEdit />
+          </button>
+          <button
+            type="button"
+            onClick={() => handleDelete(children.id)}
+            className="action-btn danger ml-10"
+          >
+            <FiTrash />
+          </button>
+        </div>
+      </div>
+      <Modal
+        show={active}
+        onHide={handleClose}
+        size="lg"
+        centered
+      >
+        <form>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              Edit Menu
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="settings-box">
+              <div className="single-profile">
+                <label htmlFor="menuName">Name</label>
+                <input
+                  id="menuName"
+                  name="name"
+                  type="text"
+                  required
+                  defaultValue={children.name}
+                  onChange={(e) => handleEdit(children.id, 'name', e.target.value)}
+                />
+              </div>
+              <div className="single-profile">
+                <label htmlFor="menuUrl">URL</label>
+                <input
+                  id="menuUrl"
+                  name="url"
+                  type="text"
+                  required
+                  defaultValue={children.url}
+                  onChange={(e) => handleEdit(children.id, 'url', e.target.value)}
+                />
+              </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <button type="button" className="bttn-mid btn-grey" onClick={handleClose}>
+              Close
+            </button>
+          </Modal.Footer>
+        </form>
+      </Modal>
+    </>
   );
 }

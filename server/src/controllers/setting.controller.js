@@ -219,6 +219,39 @@ exports.getGatewayByValueAdmin = async (req, res) => {
   }
 };
 
+exports.getMainMenu = async (req, res) => {
+  try {
+    const data = await Setting.findOne({ where: { value: 'mainmenu' } });
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.getFooterMenu = async (req, res) => {
+  try {
+    const data = await Setting.findOne({ where: { value: 'footermenu' } });
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.updateMainMenu = async (req, res) => {
+  try {
+    await Setting.update(req.body, { where: { value: 'mainmenu' } });
+    return res.json({ message: 'Menu Updated' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.updateFooterMenu = async (req, res) => {
+  try {
+    await Setting.update(req.body, { where: { value: 'footermenu' } });
+    return res.json({ message: 'Menu Updated' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
 const last7daysData = async (last7days, type) => {
   const getData = async (day) => {
     const query = {

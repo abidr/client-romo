@@ -1,5 +1,6 @@
 import React from 'react';
 import { BiListCheck } from 'react-icons/bi';
+import FooterMenuBuilder from '../../../components/admin/builder/FooterMenuBuilder';
 import MenuBuilder from '../../../components/admin/builder/MenuBuilder';
 import SidebarAdmin from '../../../components/SidebarAdmin';
 import TabModule from '../../../components/tabs/TabModule';
@@ -23,6 +24,12 @@ const Builder = ({ userData, settings }) => (
                 <div className="basic-card">
                   <h4 className="box-title">Main Menu</h4>
                   <MenuBuilder />
+                </div>
+              </TabModule>
+              <TabModule icon={<BiListCheck />} name="Footer Menu">
+                <div className="basic-card">
+                  <h4 className="box-title">Footer Menu</h4>
+                  <FooterMenuBuilder />
                 </div>
               </TabModule>
             </UserTab>

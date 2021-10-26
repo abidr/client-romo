@@ -1,6 +1,7 @@
+import Link from 'next/link';
 import React from 'react';
 
-const Footer = () => (
+const Footer = ({ footerMenu }) => (
   <>
     <footer className="footer">
       <div className="container">
@@ -13,10 +14,13 @@ const Footer = () => (
           <div className="col-xl-6 col-sm-12 order-xl-2 order-1">
             <div className="footer-menu">
               <ul>
-                <li><a href="/#">About</a></li>
-                <li><a href="/#">Contact</a></li>
-                <li><a href="/#">Privacy Policy</a></li>
-                <li><a href="/#">Terms and Service</a></li>
+                {footerMenu?.map((item) => (
+                  <li key={item.id}>
+                    <Link href={item.url}>
+                      <a>{item.name}</a>
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

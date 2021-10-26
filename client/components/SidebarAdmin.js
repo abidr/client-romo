@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  BiCog, BiDollarCircle, BiHomeSmile,
+  BiCog, BiDollarCircle, BiHomeSmile, BiPaintRoll,
   BiPaperPlane, BiPlusCircle, BiStore, BiTransferAlt, BiUser, BiWallet
 } from 'react-icons/bi';
 import SidebarMenu from './SidebarMenu';
@@ -50,7 +50,7 @@ const SidebarAdmin = ({ settings }) => (
             <span>Settings</span>
           </SidebarMenu>
           <SidebarMenu href="/admin/builder">
-            <BiCog />
+            <BiPaintRoll />
             <span>Site Builder</span>
           </SidebarMenu>
         </ul>

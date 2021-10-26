@@ -3,16 +3,16 @@ import { Spinner } from 'react-bootstrap';
 import { BiPlusCircle, BiSave } from 'react-icons/bi';
 import SortableList from 'react-sortable-dnd-list';
 import { v1 as uuidv1 } from 'uuid';
-import useMainMenu from '../../../data/useMenu';
-import menuUpdate from '../../../lib/menuUpdate';
+import { useFooterMenu } from '../../../data/useMenu';
+import { footerMenuUpdate } from '../../../lib/menuUpdate';
 import Loader from '../../Loader';
 import SortableItem from './SortableItem';
 
-const MenuBuilder = () => {
+const FooterMenuBuilder = () => {
   const [items, setItems] = useState([]);
   const [actionLoader, setActionLoader] = useState(false);
 
-  const { data, loading } = useMainMenu();
+  const { data, loading } = useFooterMenu();
 
   const handleAdd = (item) => {
     const arr = [...items];
@@ -41,7 +41,7 @@ const MenuBuilder = () => {
     const params = {
       param1: JSON.stringify(items)
     };
-    menuUpdate(params, setActionLoader);
+    footerMenuUpdate(params, setActionLoader);
   };
 
   if (loading) {
@@ -88,4 +88,4 @@ const MenuBuilder = () => {
     </>
   );
 };
-export default MenuBuilder;
+export default FooterMenuBuilder;
