@@ -6,9 +6,8 @@ import Headroom from 'react-headroom';
 import { BiUserPlus } from 'react-icons/bi';
 import { RiDashboardLine } from 'react-icons/ri';
 import useCheckAuth from '../../data/useCheckAuth';
-import siteLogo from '../../images/weblos-logo.png';
 
-const SiteHeader = ({ mainMenu }) => {
+const SiteHeader = ({ logo, apiUrl, mainMenu }) => {
   const { data, loading } = useCheckAuth();
   return (
     <>
@@ -18,9 +17,11 @@ const SiteHeader = ({ mainMenu }) => {
             <div className="row">
               <div className="col-xl-12">
                 <Navbar expand="lg">
-                  <Navbar.Brand href="/" className="site-logo">
-                    <Image src={siteLogo.src} alt="Weblos" />
-                  </Navbar.Brand>
+                  <Link href="/">
+                    <a className="site-logo navbar-brand">
+                      <Image src={`${apiUrl?.param1}/public/${logo?.param1}`} alt="Logo" />
+                    </a>
+                  </Link>
                   <Navbar.Toggle />
                   <Navbar.Collapse>
                     <Nav className="ml-auto mainmenu">

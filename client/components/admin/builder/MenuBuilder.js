@@ -3,7 +3,7 @@ import { Spinner } from 'react-bootstrap';
 import { BiPlusCircle, BiSave } from 'react-icons/bi';
 import SortableList from 'react-sortable-dnd-list';
 import { v1 as uuidv1 } from 'uuid';
-import useMainMenu from '../../../data/useMenu';
+import useInfo from '../../../data/useInfo';
 import menuUpdate from '../../../lib/menuUpdate';
 import Loader from '../../Loader';
 import SortableItem from './SortableItem';
@@ -12,7 +12,7 @@ const MenuBuilder = () => {
   const [items, setItems] = useState([]);
   const [actionLoader, setActionLoader] = useState(false);
 
-  const { data, loading } = useMainMenu();
+  const { data, loading } = useInfo();
 
   const handleAdd = (item) => {
     const arr = [...items];
@@ -33,7 +33,7 @@ const MenuBuilder = () => {
   };
 
   useEffect(() => {
-    const jsonItems = data ? JSON.parse(data?.param1) : [];
+    const jsonItems = data ? JSON.parse(data?.mainMenu?.param1) : [];
     setItems(jsonItems);
   }, [data]);
 
@@ -53,7 +53,7 @@ const MenuBuilder = () => {
       <SortableList
         className="list"
         itemComponent={SortableItem}
-        itemComponentProps={{ setItems, handleDelete, handleEdit }}
+        itemComponentProps={{ handleDelete, handleEdit }}
         value={items}
         index={0}
         onChange={(value) => setItems(value)}

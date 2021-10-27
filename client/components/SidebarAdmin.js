@@ -9,7 +9,7 @@ const SidebarAdmin = ({ settings }) => (
   <>
     <div className="sidebar">
       <a href="/" className="brand-logo">
-        <img src="https://docs.nestjs.com/assets/logo-small.svg" alt="" />
+        <img src={`${settings?.apiUrl?.param1}/public/${settings?.logo?.param1}`} alt="" />
       </a>
       <div className="menu">
         <ul>

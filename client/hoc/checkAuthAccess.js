@@ -14,7 +14,11 @@ const checkAuthAccess = (WrappedComponent) => (props) => {
   if (!data) {
     return <WrappedComponent {...props} />;
   }
-  Router.replace('/dashboard');
+  if (data?.isAdmin) {
+    Router.replace('/admin/dashboard');
+  } else {
+    Router.replace('/dashboard');
+  }
   return null;
 };
 

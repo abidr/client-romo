@@ -18,7 +18,7 @@ export async function signInRequest(params, setLoading) {
 export async function signInAdminRequest(params, setLoading) {
   setLoading(true);
   try {
-    const { data } = await request.post('/signin?admin=true', { ...params });
+    const { data } = await request.post('/signin', { ...params });
     setLoading(false);
     window.location.href = '/admin/dashboard';
     return data;

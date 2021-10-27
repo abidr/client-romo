@@ -17,8 +17,13 @@ const withAuth = (WrappedComponent) => (props) => {
   }
 
   if (data) {
-    return <WrappedComponent {...props} userData={userData} settings={settings} />;
+    if (data?.isAdmin) {
+      Router.replace('/admin/dashboard');
+    } else {
+      return <WrappedComponent {...props} userData={userData} settings={settings} />;
+    }
   }
+
   Router.replace('/login');
   return null;
 };

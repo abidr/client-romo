@@ -62,3 +62,21 @@ export async function userDelete(id, setActionLoader) {
   }
   return null;
 }
+export async function logoUpdate(params, setActionLoader) {
+  setActionLoader(true);
+  try {
+    const formData = new FormData();
+    formData.append('logo', params.logo[0].file, params.logo[0].file.name);
+    formData.append('favicon', params.favicon[0].file, params.favicon[0].file.name);
+    const { data } = await request.put('/logo', formData);
+    setActionLoader(false);
+    mutate('/settings');
+    cogoToast.success(data.message, { position: 'bottom-center' });
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    setActionLoader(false);
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}
