@@ -33,6 +33,7 @@ exports.getLogs = async (req, res) => {
 };
 exports.getSettings = async (req, res) => {
   try {
+    const logo = await Setting.findOne({ where: { value: 'logo' } });
     const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
     const apiUrl = await Setting.findOne({ where: { value: 'apiUrl' } });
     const site = await Setting.findOne({ where: { value: 'site' } });
@@ -41,6 +42,7 @@ exports.getSettings = async (req, res) => {
     const tawk = await Setting.findOne({ where: { value: 'tawk' } });
     const freecurrencyapi = await Setting.findOne({ where: { value: 'freecurrencyapi' } });
     return res.json({
+      logo,
       appUrl,
       apiUrl,
       site,
@@ -219,18 +221,17 @@ exports.getGatewayByValueAdmin = async (req, res) => {
   }
 };
 
-exports.getMainMenu = async (req, res) => {
+exports.getBasicInfo = async (req, res) => {
   try {
-    const data = await Setting.findOne({ where: { value: 'mainmenu' } });
-    return res.json(data);
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-};
-exports.getFooterMenu = async (req, res) => {
-  try {
-    const data = await Setting.findOne({ where: { value: 'footermenu' } });
-    return res.json(data);
+    const logo = await Setting.findOne({ where: { value: 'logo' } });
+    const site = await Setting.findOne({ where: { value: 'site' } });
+    const tagline = await Setting.findOne({ where: { value: 'tagline' } });
+    const mainMenu = await Setting.findOne({ where: { value: 'mainmenu' } });
+    const footerMenu = await Setting.findOne({ where: { value: 'footermenu' } });
+    const apiUrl = await Setting.findOne({ where: { value: 'apiUrl' } });
+    return res.json({
+      logo, site, tagline, mainMenu, footerMenu, apiUrl,
+    });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -247,6 +248,17 @@ exports.updateFooterMenu = async (req, res) => {
   try {
     await Setting.update(req.body, { where: { value: 'footermenu' } });
     return res.json({ message: 'Menu Updated' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.updateLogoFav = async (req, res) => {
+  try {
+    await Setting.update({
+      param1: req.files.logo ? req.files.logo[0].filename : undefined,
+      param2: req.files.favicon ? req.files.favicon[0].filename : undefined,
+    }, { where: { value: 'logo' } });
+    return res.json({ message: 'Logo & Favicon Updated' });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

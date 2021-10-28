@@ -45,6 +45,7 @@ db.linkeds = require('../models/linked.model')(sequelize);
 db.merchants = require('../models/merchant.model')(sequelize);
 db.requests = require('../models/request.model')(sequelize);
 db.pays = require('../models/pay.model')(sequelize);
+db.pages = require('../models/page.model')(sequelize);
 
 // Withdraw Relation
 db.users.hasMany(db.withdraws, { as: 'withdraws' });

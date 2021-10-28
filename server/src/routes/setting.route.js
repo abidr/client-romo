@@ -1,6 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
+const multerInstance = require('../config/multer.config');
 
 const { withAuth, isAdmin } = require('../middlewares/auth.middleware');
 
@@ -8,7 +9,8 @@ const {
   updateFees, updateGateways, getSettingByValue, getSettings, getDashboard, updateSettingByValue,
   getLogs, updateRewards, updateGeneral, getGateways, getGatewaysAdmin, getGatewayByValueAdmin,
   updateAdjustments, getDashboardUser, getGatewayCurrencies, updateFooterMenu, updateMainMenu,
-  getFooterMenu, getMainMenu,
+  getBasicInfo,
+  updateLogoFav,
 } = require('../controllers/setting.controller');
 
 router.get('/settings', getSettings);
@@ -26,9 +28,13 @@ router.get('/gateways', getGateways);
 router.get('/gateways/currencies', getGatewayCurrencies);
 router.get('/gateways/admin', withAuth, isAdmin, getGatewaysAdmin);
 router.get('/gateways/:value', withAuth, isAdmin, getGatewayByValueAdmin);
-router.get('/menu/main', getMainMenu);
-router.get('/menu/footer', getFooterMenu);
+router.get('/info', getBasicInfo);
 router.put('/menu/main', withAuth, isAdmin, updateMainMenu);
 router.put('/menu/footer', withAuth, isAdmin, updateFooterMenu);
+router.put('/logo', withAuth, isAdmin,
+  multerInstance.upload.fields([
+    { name: 'logo', maxCount: 1 },
+    { name: 'favicon', maxCount: 1 },
+  ]), updateLogoFav);
 
 module.exports = router;

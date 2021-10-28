@@ -6,5 +6,7 @@
     "dev:api": "cd server && nodemon app.js",
     "dev:client": "cd client && npm run dev"
   },
-  "dependencies": {}
+  "dependencies": {
+    "next-absolute-url": "^1.2.2"
+  }
 }

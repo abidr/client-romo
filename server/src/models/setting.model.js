@@ -6,10 +6,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
     },
     param1: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
     param2: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
   });
   return Setting;

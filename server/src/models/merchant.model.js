@@ -4,6 +4,7 @@ module.exports = (sequelize) => {
   const Merchant = sequelize.define('merchant', {
     merId: {
       type: DataTypes.STRING,
+      unique: true,
     },
     name: {
       type: DataTypes.STRING,

@@ -148,8 +148,6 @@ exports.signUpAdmin = async (req, res) => {
 };
 
 exports.signIn = async (req, res) => {
-  const { admin } = req.query;
-
   const user = await User.findOne({
     where: {
       email: req.body.email,
@@ -159,18 +157,6 @@ exports.signIn = async (req, res) => {
   });
 
   if (!user) {
-    return res.status(404).json({
-      message: 'Wrong Credentials',
-    });
-  }
-
-  if (!admin && user.role === 0) {
-    return res.status(404).json({
-      message: 'Wrong Credentials',
-    });
-  }
-
-  if (admin && !(user.role === 0)) {
     return res.status(404).json({
       message: 'Wrong Credentials',
     });

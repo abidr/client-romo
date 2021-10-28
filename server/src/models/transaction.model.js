@@ -14,6 +14,7 @@ module.exports = (sequelize) => {
     },
     trxId: {
       type: DataTypes.STRING,
+      unique: true,
     },
     amount: {
       type: DataTypes.DOUBLE,

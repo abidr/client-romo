@@ -2,6 +2,7 @@ import axios from 'axios';
 import absoluteUrl from 'next-absolute-url';
 import Head from 'next/head';
 import React from 'react';
+import ComponentPicker from '../components/ui/ComponentPicker';
 import Footer from '../components/ui/Footer';
 import SiteHeader from '../components/ui/SiteHeader';
 
@@ -12,7 +13,7 @@ export default function Home({
     <div>
       <Head>
         <title>
-          {pageData?.name}
+          {pageData?.name || '404 Not Found'}
           {' '}
           -
           {' '}
@@ -21,6 +22,13 @@ export default function Home({
         <link rel="icon" href={`${apiUrl.param1}/public/${logo.param2}`} />
       </Head>
       <SiteHeader logo={logo} apiUrl={apiUrl} mainMenu={mainMenu} />
+      {pageData?.content?.map((comp, index) => (
+        <ComponentPicker
+          key={String(index)}
+          type={comp?.component}
+          data={comp?.data}
+        />
+      ))}
       <Footer site={site} footerMenu={footerMenu} />
     </div>
   );

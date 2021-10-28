@@ -4,7 +4,7 @@ import { Table } from 'react-bootstrap';
 import { confirmAlert } from 'react-confirm-alert';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 import usePages from '../../../data/usePages';
-import currencyDelete from '../../../lib/currencyRequest';
+import { pageDelete } from '../../../lib/pageUpdate';
 import Loader from '../../Loader';
 
 const PageList = () => {
@@ -18,7 +18,7 @@ const PageList = () => {
       buttons: [
         {
           label: 'Yes',
-          onClick: () => currencyDelete(slug)
+          onClick: () => pageDelete(slug)
         },
         {
           label: 'No',
@@ -64,7 +64,7 @@ const PageList = () => {
                     <div className="d-flex">
                       <button
                         type="button"
-                        onClick={() => router.push(`/admin/settings/wallet/${page?.slug}`)}
+                        onClick={() => router.push(`/admin/builder/${page?.slug}`)}
                         className="action-btn"
                       >
                         <FiEdit />
