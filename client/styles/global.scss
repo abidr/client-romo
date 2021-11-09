@@ -1730,3 +1730,12 @@
   grid-gap: 10px;
   justify-items: stretch;
 }
+
+.dashboard-tiles {
+  background-color: $blue2;
+  border-color: $blue;
+  margin-bottom: 20px;
+  p {
+    margin-bottom: 0;
+  }
+}

@@ -306,10 +306,13 @@ exports.getDashboard = async (req, res) => {
     const totalUsers = await User.count({
       where: { active: true, role: 1 },
     });
-    const totalDeposits = await Deposit.sum('amount', {
+    const totalMerchants = await User.count({
+      where: { active: true, role: 2 },
+    });
+    const totalDeposits = await Deposit.count({
       where: { status: 'success' },
     });
-    const totalWithdrawn = await Withdraw.sum('amount', {
+    const totalWithdrawn = await Withdraw.count({
       where: { status: 'success' },
     });
     const totalExchanges = await Exchange.count({
@@ -317,8 +320,9 @@ exports.getDashboard = async (req, res) => {
     });
     return res.json({
       totalUsers,
-      totalDeposits: parseFloat(totalDeposits.toFixed(2), 10),
-      totalWithdrawn: parseFloat(totalWithdrawn.toFixed(2), 10),
+      totalMerchants,
+      totalDeposits,
+      totalWithdrawn,
       totalExchanges,
       labels: last7days,
       last7DaysExchanges,
