@@ -9,8 +9,7 @@ const {
   updateFees, updateGateways, getSettingByValue, getSettings, getDashboard, updateSettingByValue,
   getLogs, updateRewards, updateGeneral, getGateways, getGatewaysAdmin, getGatewayByValueAdmin,
   updateAdjustments, getDashboardUser, getGatewayCurrencies, updateFooterMenu, updateMainMenu,
-  getBasicInfo,
-  updateLogoFav,
+  getBasicInfo, updateLogoFav, handleImageUpload, sendUserEmail, updateRepeater,
 } = require('../controllers/setting.controller');
 
 router.get('/settings', getSettings);
@@ -31,10 +30,13 @@ router.get('/gateways/:value', withAuth, isAdmin, getGatewayByValueAdmin);
 router.get('/info', getBasicInfo);
 router.put('/menu/main', withAuth, isAdmin, updateMainMenu);
 router.put('/menu/footer', withAuth, isAdmin, updateFooterMenu);
+router.put('/repeater/:value', withAuth, isAdmin, updateRepeater);
 router.put('/logo', withAuth, isAdmin,
   multerInstance.upload.fields([
     { name: 'logo', maxCount: 1 },
     { name: 'favicon', maxCount: 1 },
   ]), updateLogoFav);
+router.post('/upload', withAuth, isAdmin, multerInstance.upload.single('image'), handleImageUpload);
+router.post('/email', withAuth, isAdmin, sendUserEmail);
 
 module.exports = router;

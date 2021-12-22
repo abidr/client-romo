@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import {
   BiEnvelope, BiMap, BiPaperPlane, BiPhone
@@ -10,8 +11,8 @@ const ContactSection = ({ data }) => (
         <div className="row justify-content-center">
           <div className="col-xl-6 centered">
             <div className="section-title">
-              <h2>{data.sectionTitle}</h2>
-              <p>{data.sectionSub}</p>
+              <h2>{data?.sectionTitle}</h2>
+              <p>{data?.sectionSub}</p>
             </div>
           </div>
         </div>

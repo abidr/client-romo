@@ -8,7 +8,7 @@ const AboutSection = ({ data }) => (
         <div className="row align-items-center">
           <div className="col-xl-6 col-lg-6 col-sm-12">
             <div className="about-img">
-              <img src={data?.image} alt="About" />
+              <img src={`/api/${data?.image}`} alt="About" />
             </div>
           </div>
           <div className="col-xl-6 col-lg-6 col-sm-12">

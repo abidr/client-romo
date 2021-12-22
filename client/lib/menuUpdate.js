@@ -32,3 +32,18 @@ export async function footerMenuUpdate(params, setActionLoader) {
   }
   return null;
 }
+export async function repeaterUpdate(value, params, setActionLoader) {
+  setActionLoader(true);
+  try {
+    const { data } = await request.put(`/repeater/${value}`, { ...params });
+    setActionLoader(false);
+    mutate('/info');
+    cogoToast.success(data.message, { position: 'bottom-center' });
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    setActionLoader(false);
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}

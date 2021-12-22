@@ -5,6 +5,9 @@ import FooterMenuBuilder from '../../../components/admin/builder/FooterMenuBuild
 import LogoFavicon from '../../../components/admin/builder/LogoFavicon';
 import MenuBuilder from '../../../components/admin/builder/MenuBuilder';
 import PageList from '../../../components/admin/builder/PageList';
+import FaqBuilder from '../../../components/admin/repeater/faq/FaqBuilder';
+import ServicesBuilder from '../../../components/admin/repeater/services/ServicesBuilder';
+import SolutionsBuilder from '../../../components/admin/repeater/solutions/SolutionsBuilder';
 import SidebarAdmin from '../../../components/SidebarAdmin';
 import TabModule from '../../../components/tabs/TabModule';
 import UserTab from '../../../components/tabs/UserTab';
@@ -56,6 +59,24 @@ const Builder = ({ userData, settings }) => {
                   <div className="basic-card">
                     <h4 className="box-title">Footer Menu</h4>
                     <FooterMenuBuilder />
+                  </div>
+                </TabModule>
+                <TabModule icon={<BiListCheck />} name="Services">
+                  <div className="basic-card">
+                    <h4 className="box-title">Services</h4>
+                    <ServicesBuilder />
+                  </div>
+                </TabModule>
+                <TabModule icon={<BiListCheck />} name="Solutions">
+                  <div className="basic-card">
+                    <h4 className="box-title">Solutions</h4>
+                    <SolutionsBuilder />
+                  </div>
+                </TabModule>
+                <TabModule icon={<BiListCheck />} name="FAQ">
+                  <div className="basic-card">
+                    <h4 className="box-title">FAQ</h4>
+                    <FaqBuilder />
                   </div>
                 </TabModule>
               </UserTab>

@@ -37,7 +37,6 @@ const PageList = () => {
             <thead>
               <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Type</th>
                 <th scope="col">Slug</th>
                 <th scope="col">Action</th>
               </tr>
@@ -48,11 +47,6 @@ const PageList = () => {
                   <td>
                     <strong>
                       {page?.name}
-                    </strong>
-                  </td>
-                  <td>
-                    <strong>
-                      {page?.type}
                     </strong>
                   </td>
                   <td>

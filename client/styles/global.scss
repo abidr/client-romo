@@ -68,23 +68,10 @@
   bottom: 0;
   border-radius: 0;
   border-right: 1px solid #ffffff17;
-  // background-image: linear-gradient(to top, #5856d5 0%, #bb1341 100%);
-  @media (max-width: 767px) {
-    top: auto;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    left: 0;
-    border-radius: 0;
-    background: $blue;
-  }
   .brand-logo {
     text-align: center;
     margin-top: 30px;
     display: block;
-    @media (max-width: 767px) {
-      display: none;
-    }
     img {
       width: 50px;
     }
@@ -92,25 +79,10 @@
   .menu {
     margin-top: 40px;
     padding: 0 10px;
-    @media (max-width: 767px) {
-      margin-top: 0px;
-    }
     ul {
-      @media (max-width: 767px) {
-        display: -webkit-flex;
-        display: flex;
-        -webkit-justify-content: space-between;
-        justify-content: space-between;
-        -webkit-align-items: center;
-        align-items: center;
-        margin-top: 9px;
-      }
       li {
         margin-bottom: 10px;
         padding: 0 5px;
-        @media (max-width: 767px) {
-          margin-bottom: 0;
-        }
         &:last-child {
           margin-bottom: 0;
         }
@@ -119,9 +91,6 @@
           border-radius: 4px;
           color: rgba($white, $alpha: 0.7);
           padding: 12px 12px;
-          @media (max-width: 767px) {
-            padding: 8px 12px;
-          }
           svg {
             font-size: 20px;
             display: inline-block;
@@ -137,11 +106,6 @@
           &:hover {
             background: $blue;
             color: $white;
-          }
-          span {
-            @media (max-width: 767px) {
-              display: none;
-            }
           }
         }
         &.active {
@@ -659,6 +623,7 @@
     input[type="text"],
     input[type="password"],
     input[type="number"],
+    textarea,
     input[type="email"] {
       width: 100%;
       line-height: 52px;
@@ -1737,5 +1702,37 @@
   margin-bottom: 20px;
   p {
     margin-bottom: 0;
+  }
+}
+
+.image-field {
+  display: flex;
+  label {
+    margin-left: 10px;
+  }
+  .inputFile {
+    display: none;
+  }
+  .image-preview-icon {
+    width: 60px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    img {
+      width: 80%;
+    }
+  }
+}
+
+.nav-toggle {
+  display: none;
+  background: transparent;
+  color: #ffff;
+  font-size: 35px;
+  @media (max-width: 767px) {
+    display: inherit;
+  }
+  span {
+    display: none;
   }
 }

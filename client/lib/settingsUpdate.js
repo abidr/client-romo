@@ -80,3 +80,33 @@ export async function logoUpdate(params, setActionLoader) {
   }
   return null;
 }
+export async function sendMail(params, setActionLoader) {
+  setActionLoader(true);
+  try {
+    const { data } = await request.post('/email', { ...params });
+    setActionLoader(false);
+    cogoToast.success(data.message, { position: 'bottom-center' });
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    setActionLoader(false);
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}
+export async function imageUpload(params, setActionLoader) {
+  setActionLoader(true);
+  try {
+    const formData = new FormData();
+    formData.append('image', params, params.name);
+    const { data } = await request.post('/upload', formData);
+    setActionLoader(false);
+    cogoToast.success('Image Uploaded', { position: 'bottom-center' });
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    setActionLoader(false);
+    cogoToast.error(data.message || 'Image Upload Failed', { position: 'bottom-center' });
+  }
+  return null;
+}

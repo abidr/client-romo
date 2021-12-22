@@ -4,6 +4,7 @@ const { Op } = require('sequelize');
 const db = require('../config/db.config');
 const fieldData = require('../config/gateway.config');
 const { Last7Days, getDay } = require('../utils/dates');
+const mailer = require('../utils/mailer');
 
 const queryParser = sequelizeQuery(db);
 
@@ -228,9 +229,22 @@ exports.getBasicInfo = async (req, res) => {
     const tagline = await Setting.findOne({ where: { value: 'tagline' } });
     const mainMenu = await Setting.findOne({ where: { value: 'mainmenu' } });
     const footerMenu = await Setting.findOne({ where: { value: 'footermenu' } });
+    const services = await Setting.findOne({ where: { value: 'services' } });
+    const solutions = await Setting.findOne({ where: { value: 'solutions' } });
+    const work = await Setting.findOne({ where: { value: 'work' } });
+    const faq = await Setting.findOne({ where: { value: 'faq' } });
     const apiUrl = await Setting.findOne({ where: { value: 'apiUrl' } });
     return res.json({
-      logo, site, tagline, mainMenu, footerMenu, apiUrl,
+      logo,
+      site,
+      tagline,
+      mainMenu,
+      footerMenu,
+      apiUrl,
+      services,
+      solutions,
+      work,
+      faq,
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
@@ -248,6 +262,14 @@ exports.updateFooterMenu = async (req, res) => {
   try {
     await Setting.update(req.body, { where: { value: 'footermenu' } });
     return res.json({ message: 'Menu Updated' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.updateRepeater = async (req, res) => {
+  try {
+    await Setting.update(req.body, { where: { value: req.params.value } });
+    return res.json({ message: 'Updated Successfully' });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -385,6 +407,32 @@ exports.getDashboardUser = async (req, res) => {
       last7DaysBuys,
       last7DaysSells,
     });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+exports.handleImageUpload = async (req, res) => {
+  try {
+    if (req.file) {
+      return res.json({
+        file: req.file.filename,
+        path: req.file.path,
+      });
+    }
+    return res.status(400).json({ message: 'Upload Failed' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.sendUserEmail = async (req, res) => {
+  try {
+    mailer({
+      user: req.body.userId,
+      subject: req.body.subject,
+      message: req.body.message,
+    });
+    return res.json({ message: 'Mail Sent Successfully' });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

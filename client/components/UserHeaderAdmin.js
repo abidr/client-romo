@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import {
-  BiCog, BiLogOut, BiUser
+  BiCog, BiLogOut, BiMenu, BiUser
 } from 'react-icons/bi';
 import { signOutRequest } from '../lib/authRequest';
 
@@ -13,6 +13,10 @@ const Header = () => (
         <div className="row">
           <div className="col-xl-12">
             <nav className="navbar navbar-expand-lg navbar-light px-0 justify-content-between">
+              <button type="button" className="nav-toggle">
+                <BiMenu />
+                <span>Toggle</span>
+              </button>
               <div className="d-flex align-items-center" />
               <div className="dashboard-log">
                 <div className="d-flex align-items-center">

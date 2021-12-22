@@ -2,12 +2,12 @@ import axios from 'axios';
 import absoluteUrl from 'next-absolute-url';
 import Head from 'next/head';
 import React from 'react';
-import ComponentPicker from '../components/ui/ComponentPicker';
+import ComponentPicker from '../components/ui/editor/ComponentPicker';
 import Footer from '../components/ui/Footer';
 import SiteHeader from '../components/ui/SiteHeader';
 
-export default function Home({
-  pageData, logo, site, mainMenu, footerMenu, apiUrl
+export default function Page({
+  pageData, logo, site, mainMenu, footerMenu, apiUrl, info
 }) {
   return (
     <div>
@@ -27,6 +27,7 @@ export default function Home({
           key={String(index)}
           type={comp?.component}
           data={comp?.data}
+          info={info}
         />
       ))}
       <Footer site={site} footerMenu={footerMenu} />
@@ -47,7 +48,8 @@ export async function getServerSideProps(context) {
       site: data?.site,
       apiUrl: data?.apiUrl,
       mainMenu: JSON.parse(data.mainMenu.param1),
-      footerMenu: JSON.parse(data.footerMenu.param1)
+      footerMenu: JSON.parse(data.footerMenu.param1),
+      info: data
     }
   };
 }

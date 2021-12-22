@@ -24,32 +24,30 @@ const Howitworks = () => (
           <div className="col-xl-6 col-sm-6 mb-80">
             <img src={howItWorks1.src} alt="" />
           </div>
-          <div className="col-xl-6 col-sm-6 order-xl-1 order-2 mb-80">
+          <div className="col-xl-6 col-sm-6 mb-80">
             <img src={howItWorks2.src} alt="" />
           </div>
-          <div className="col-xl-6 col-sm-6 order-xl-2 order-1 mb-80">
+          <div className="col-xl-6 col-sm-6 mb-80">
             <div className="single-howitworks">
               <h3>2. Exchange</h3>
               <p>Similique soluta nesciunt fugiat veritatis hic sapiente non temporibus velit explicabo nihil. Esse repudiandae non consectetur odit laboriosam voluptatibus, molestias debitis modi! dolor aperiam aspernatur deleniti quos illo, facere quisquam, praesentium maxime! Nisi in quis nostrum ipsam non. Rem, dolorem.</p>
             </div>
           </div>
-        </div>
-        <div className="row">
           <div className="col-xl-6 col-sm-6 mb-80">
             <div className="single-howitworks">
-              <h3>3. Transfer</h3>
+              <h3>1. Deposit</h3>
               <p>Similique soluta nesciunt fugiat veritatis hic sapiente non temporibus velit explicabo nihil. Esse repudiandae non consectetur odit laboriosam voluptatibus, molestias debitis modi! dolor aperiam aspernatur deleniti quos illo, facere quisquam, praesentium maxime! Nisi in quis nostrum ipsam non. Rem, dolorem.</p>
             </div>
           </div>
           <div className="col-xl-6 col-sm-6 mb-80">
             <img src={howItWorks1.src} alt="" />
           </div>
-          <div className="col-xl-6 col-sm-6 order-xl-1 order-2 mb-80">
+          <div className="col-xl-6 col-sm-6 mb-80">
             <img src={howItWorks2.src} alt="" />
           </div>
-          <div className="col-xl-6 col-sm-6 order-xl-2 order-1 mb-80">
+          <div className="col-xl-6 col-sm-6 mb-80">
             <div className="single-howitworks">
-              <h3>4. Withdraw</h3>
+              <h3>2. Exchange</h3>
               <p>Similique soluta nesciunt fugiat veritatis hic sapiente non temporibus velit explicabo nihil. Esse repudiandae non consectetur odit laboriosam voluptatibus, molestias debitis modi! dolor aperiam aspernatur deleniti quos illo, facere quisquam, praesentium maxime! Nisi in quis nostrum ipsam non. Rem, dolorem.</p>
             </div>
           </div>

@@ -17,6 +17,7 @@ import withAuthAdmin from '../../../hoc/withAuthAdmin';
 import { kycAdminAction } from '../../../lib/kycUpdate';
 import { merchantCreate, merchantDeleteFromUser } from '../../../lib/merchantUpdate';
 import { profileUpdateAdmin, userDelete } from '../../../lib/profileUpdate';
+import { sendMail } from '../../../lib/settingsUpdate';
 
 const UserEdit = ({ userData, settings }) => {
   const router = useRouter();
@@ -52,6 +53,16 @@ const UserEdit = ({ userData, settings }) => {
       userId: id
     };
     merchantCreate(params, setActionLoader);
+  };
+
+  const handleMail = (e) => {
+    e.preventDefault();
+    const params = {
+      userId: id,
+      subject: e.target?.subject?.value,
+      message: e.target?.message?.value,
+    };
+    sendMail(params, setActionLoader);
   };
 
   const handleKyc = (type, updateId, userId) => {
@@ -103,7 +114,7 @@ const UserEdit = ({ userData, settings }) => {
           <EditorHeader name={`User #${data?.id}`} />
           <div className="row">
             <div className="col-12 col-xl-6">
-              <div className="basic-card">
+              <div className="basic-card mb-20">
                 <h4 className="box-title">User Details</h4>
                 <div className="settings-box">
                   <form onSubmit={handleUpdate}>
@@ -211,6 +222,48 @@ const UserEdit = ({ userData, settings }) => {
                         <>
                           <BiTrash />
                           Remove User
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <div className="basic-card">
+                <h4 className="box-title">Send Email</h4>
+                <div className="settings-box">
+                  <form onSubmit={handleMail}>
+                    <div className="single-profile">
+                      <label htmlFor="mailSub">Subject</label>
+                      <input
+                        id="mailSub"
+                        name="subject"
+                        type="text"
+                        placeholder="Subject"
+                        required
+                      />
+                    </div>
+                    <div className="single-profile">
+                      <label htmlFor="mailMsg">Message</label>
+                      <textarea
+                        id="mailMsg"
+                        name="message"
+                        placeholder="Message"
+                        row={7}
+                        style={{ height: 'auto' }}
+                        required
+                      />
+                    </div>
+                    <button type="submit" className="bttn-mid btn-ylo" disabled={actionLoader}>
+                      {actionLoader ? (
+                        <>
+                          <Spinner animation="border" role="status" size="sm" />
+                          {' '}
+                          Send Mail
+                        </>
+                      ) : (
+                        <>
+                          <BiErrorCircle />
+                          Send Mail
                         </>
                       )}
                     </button>

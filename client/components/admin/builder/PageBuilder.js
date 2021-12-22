@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { BiSave } from 'react-icons/bi';
@@ -5,11 +7,13 @@ import SortableList from 'react-sortable-dnd-list';
 import { usePageBySlug } from '../../../data/usePages';
 import { pageUpdate } from '../../../lib/pageUpdate';
 import Loader from '../../Loader';
-import { HeadingBlockAdd } from '../../ui/HeadingBlock';
-import { TextBlockAdd } from '../../ui/TextBlock';
+import BlockAdd from '../../ui/editor/BlockAdd';
+import ComponentsField from '../../ui/editor/ComponentsField';
 import SortableSection from './SortableSection';
 
 const PageBuilder = ({ slug }) => {
+  const [name, setName] = useState();
+  const [slugBuild, setSlugBuild] = useState();
   const [items, setItems] = useState([]);
   const [actionLoader, setActionLoader] = useState(false);
 
@@ -35,8 +39,8 @@ const PageBuilder = ({ slug }) => {
 
   const handleSubmit = () => {
     const params = {
-      name: data?.name,
-      slug: data?.slug,
+      name,
+      slug: slugBuild,
       content: items
     };
     pageUpdate(slug, params, setActionLoader);
@@ -44,6 +48,8 @@ const PageBuilder = ({ slug }) => {
 
   useEffect(() => {
     const jsonItems = data ? data?.content : [];
+    setName(data?.name);
+    setSlugBuild(data?.slug);
     setItems(jsonItems);
   }, [data]);
 
@@ -55,15 +61,47 @@ const PageBuilder = ({ slug }) => {
     <>
       <div className="row">
         <div className="col-md-4">
-          <h3>Pick Components</h3>
-          <div className="component-wrapper">
-            <HeadingBlockAdd handleAdd={handleAdd} />
-            <TextBlockAdd handleAdd={handleAdd} />
+          <div className="basic-card">
+            <h4 className="box-title">Page Settings</h4>
+            <div className="settings-box">
+              <form>
+                <div className="single-profile">
+                  <label htmlFor="pageTitle">Page Title</label>
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    id="pageTitle"
+                    name="title"
+                    type="text"
+                    placeholder="Title"
+                    required
+                  />
+                </div>
+                <div className="single-profile">
+                  <label htmlFor="pageSlug">Slug</label>
+                  <input
+                    value={slugBuild}
+                    onChange={(e) => setSlugBuild(e.target.value)}
+                    id="pageSlug"
+                    name="slug"
+                    type="text"
+                    placeholder="Slug"
+                    required
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+          <div className="basic-card mt-20">
+            <h4 className="box-title">Pick Components</h4>
+            <div className="component-wrapper">
+              {ComponentsField.map((field) => <BlockAdd key={field.component} field={field} handleAdd={handleAdd} />)}
+            </div>
           </div>
         </div>
         <div className="col-md-8">
           <div className="basic-card">
-            <h3>Builder</h3>
+            <h4 className="box-title">Builder</h4>
             <SortableList
               className="list"
               itemComponent={SortableSection}
