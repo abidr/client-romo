@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   BiCog, BiGroup, BiPlusCircle, BiPound, BiPurchaseTag, BiShuffle
 } from 'react-icons/bi';
@@ -16,6 +17,7 @@ import withAuthAdmin from '../../../hoc/withAuthAdmin';
 
 const Settings = ({ userData, settings }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   return (
     <>
       <UserHeaderAdmin />
@@ -25,18 +27,18 @@ const Settings = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title="Settings"
-                description="Manage site settings from this panel."
+                title={t('Settings')}
+                description={t('Manage site settings from this panel')}
               >
-                <TabModule icon={<BiCog />} name="General">
+                <TabModule icon={<BiCog />} name={t('General')}>
                   <div className="basic-card">
-                    <h4 className="box-title">General Settings</h4>
+                    <h4 className="box-title">{t('General Settings')}</h4>
                     <GeneralSettings settings={settings} />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiPound />} name="Wallets">
+                <TabModule icon={<BiPound />} name={t('Wallets')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Wallets</h4>
+                    <h4 className="box-title">{t('Wallets')}</h4>
                     <WalletList settings={settings} />
                     <button
                       type="button"
@@ -44,25 +46,25 @@ const Settings = ({ userData, settings }) => {
                       onClick={() => router.push('/admin/settings/wallet/new')}
                     >
                       <BiPlusCircle />
-                      Add New Wallet
+                      {t('Add New Wallet')}
                     </button>
                   </div>
                 </TabModule>
-                <TabModule icon={<BiGroup />} name="Refferal">
+                <TabModule icon={<BiGroup />} name={t('Refferal')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Refferal</h4>
+                    <h4 className="box-title">{t('Refferal')}</h4>
                     <RefferalSettings settings={settings} />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiPurchaseTag />} name="Fees">
+                <TabModule icon={<BiPurchaseTag />} name={t('Fees')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Fees</h4>
+                    <h4 className="box-title">{t('Fees')}</h4>
                     <AdjSettings settings={settings} />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiShuffle />} name="APIs">
+                <TabModule icon={<BiShuffle />} name={t('APIs')}>
                   <div className="basic-card">
-                    <h4 className="box-title">APIs</h4>
+                    <h4 className="box-title">{t('APIs')}</h4>
                     <ApiSettings settings={settings} />
                   </div>
                 </TabModule>

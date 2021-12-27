@@ -46,6 +46,7 @@ export default function SortableService({
         onHide={handleClose}
         size="lg"
         centered
+        animation={false}
       >
         <form>
           <Modal.Header closeButton>

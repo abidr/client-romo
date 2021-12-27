@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Modal, Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import useLinkeds from '../../data/useLinkeds';
 import useMethods from '../../data/useMethods';
 import useWallet from '../../data/useWallet';
@@ -14,6 +15,7 @@ const LinkAccount = ({ show, handleClose }) => {
   const { data } = useWallet();
   const { data: methods } = useMethods();
   const { data: linkedAcc } = useLinkeds();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setMethod('');
@@ -55,20 +57,21 @@ const LinkAccount = ({ show, handleClose }) => {
       onHide={handleClose}
       size="lg"
       centered
+      animation={false}
     >
       <form onSubmit={submitLinked}>
         <Modal.Header closeButton>
           <Modal.Title>
-            Link New Account
+            {t('Link New Account')}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="settings-box">
             <div className="single-profile">
-              <label htmlFor="curSelector">Wallet</label>
+              <label htmlFor="curSelector">{t('Wallet')}</label>
               <Dropdown id="curSelector">
                 <Dropdown.Toggle className="bttn-small btn-emt dropdown-method" variant="link">
-                  {currency || 'Please Select'}
+                  {currency || t('Please Select')}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {data?.map((wallet) => (
@@ -84,17 +87,17 @@ const LinkAccount = ({ show, handleClose }) => {
             </div>
             {currency && (
             <div className="single-profile">
-              <label htmlFor="methodSelector">Withdraw Method</label>
+              <label htmlFor="methodSelector">{t('Withdraw Method')}</label>
               <Dropdown id="methodSelector">
                 <Dropdown.Toggle className="bttn-small btn-emt dropdown-method" variant="link">
-                  {method?.name || 'Please Select'}
+                  {method?.name || t('Please Select')}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {methods?.data?.map((methodData) => {
                     if (!(methodData?.currency === currency)) {
-                      return <></>;
+                      return <React.Fragment key={methodData?.id} />;
                     } if (methodExistChecker(methodData?.id)) {
-                      return <></>;
+                      return <React.Fragment key={methodData?.id} />;
                     }
                     return (
                       <Dropdown.Item
@@ -126,18 +129,18 @@ const LinkAccount = ({ show, handleClose }) => {
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="bttn-mid btn-grey" onClick={handleClose}>
-            Close
+            {t('Close')}
           </button>
           <button type="submit" className="bttn-mid btn-ylo">
             {actionLoader ? (
               <>
                 <Spinner animation="border" role="status" size="sm" />
                 {' '}
-                Submit
+                {t('Submit')}
               </>
             ) : (
               <>
-                Submit
+                {t('Submit')}
               </>
             )}
           </button>

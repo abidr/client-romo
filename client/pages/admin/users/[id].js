@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Spinner, Table } from 'react-bootstrap';
 import { confirmAlert } from 'react-confirm-alert';
+import { useTranslation } from 'react-i18next';
 import {
   BiCheck, BiErrorCircle, BiTrash, BiX
 } from 'react-icons/bi';
@@ -27,6 +28,8 @@ const UserEdit = ({ userData, settings }) => {
 
   const { data, loading } = useUserById(id);
   const { data: kyc, loading: kycLoading } = useKycById(id);
+
+  const { t } = useTranslation();
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -72,14 +75,14 @@ const UserEdit = ({ userData, settings }) => {
   const deleteInit = () => {
     confirmAlert({
       title: `#${data?.id} - ${data?.name}`,
-      message: 'Are you sure to remove this user?',
+      message: t('Are you sure to remove this user?'),
       buttons: [
         {
-          label: 'Yes',
+          label: t('Yes'),
           onClick: () => userDelete(id, setActionLoader)
         },
         {
-          label: 'No',
+          label: t('No'),
         }
       ]
     });
@@ -88,14 +91,14 @@ const UserEdit = ({ userData, settings }) => {
   const deleteInitMerc = () => {
     confirmAlert({
       title: `#${data?.id} - ${data?.name}`,
-      message: 'Are you sure to remove this user as merchant?',
+      message: t('Are you sure to remove this user as merchant?'),
       buttons: [
         {
-          label: 'Yes',
+          label: t('Yes'),
           onClick: () => merchantDeleteFromUser(id, data?.merchant?.id, setActionLoader)
         },
         {
-          label: 'No',
+          label: t('No'),
         }
       ]
     });
@@ -111,82 +114,82 @@ const UserEdit = ({ userData, settings }) => {
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">
         <div className="container-fluid">
-          <EditorHeader name={`User #${data?.id}`} />
+          <EditorHeader name={`${t('User')} #${data?.id}`} />
           <div className="row">
             <div className="col-12 col-xl-6">
               <div className="basic-card mb-20">
-                <h4 className="box-title">User Details</h4>
+                <h4 className="box-title">{t('User Details')}</h4>
                 <div className="settings-box">
                   <form onSubmit={handleUpdate}>
                     <div className="single-profile">
-                      <label htmlFor="userName">Full Name</label>
+                      <label htmlFor="userName">{t('Full Name')}</label>
                       <input
                         id="userName"
                         name="name"
                         type="text"
-                        placeholder="Full Name"
+                        placeholder={t('Full Name')}
                         defaultValue={data?.name}
                       />
                     </div>
                     <div className="single-profile">
-                      <label htmlFor="userEmail">Email</label>
+                      <label htmlFor="userEmail">{t('Email')}</label>
                       <input
                         id="userEmail"
                         name="email"
                         type="email"
-                        placeholder="Email"
+                        placeholder={t('Email')}
                         defaultValue={data?.email}
                       />
                     </div>
                     <div className="single-profile">
-                      <label htmlFor="userPhone">Phone</label>
+                      <label htmlFor="userPhone">{t('Phone')}</label>
                       <input
                         id="userPhone"
                         name="phone"
                         type="text"
-                        placeholder="Phone Number"
+                        placeholder={t('Phone Number')}
                         defaultValue={data?.phone}
                       />
                     </div>
                     <div className="single-profile">
-                      <label htmlFor="userAdd">Address</label>
+                      <label htmlFor="userAdd">{t('Address')}</label>
                       <input
                         id="userAdd"
                         name="address"
                         type="text"
-                        placeholder="Address"
+                        placeholder={t('Address')}
                         defaultValue={data?.address}
                       />
                     </div>
                     <div className="single-profile">
-                      <label htmlFor="userPassword">Password</label>
+                      <label htmlFor="userPassword">{t('Password')}</label>
                       <input
                         id="userPassword"
                         name="password"
                         type="password"
-                        placeholder="Leave blank to keep unchanged"
+                        placeholder={t('Leave blank to keep unchanged')}
                       />
                     </div>
                     <div className="single-profile">
-                      <label htmlFor="userRole">Role</label>
+                      <label htmlFor="userRole">{t('Role')}</label>
                       {data?.role === 2 ? (
-                        <p>This user is a merchant</p>
+                        <p>{t('This user is a merchant')}</p>
                       ) : (
                         <select name="role" id="userRole" defaultValue={data?.role}>
-                          <option value="0">Admin</option>
-                          <option value="1">User</option>
+                          <option value="0">{t('Admin')}</option>
+                          <option value="1">{t('User')}</option>
                         </select>
                       )}
                     </div>
                     <div className="single-profile">
-                      <label>Active</label>
+                      <label>{t('Active')}</label>
                       <Toggle
                         defaultChecked={data?.active}
                         name="active"
                       />
                     </div>
                     <div className="single-profile">
-                      <label>KYC</label>
+                      <label>{t('KYC')}</label>
                       <Toggle
                         defaultChecked={data?.kyc}
                         name="kyc"
@@ -197,12 +200,12 @@ const UserEdit = ({ userData, settings }) => {
                         <>
                           <Spinner animation="border" role="status" size="sm" />
                           {' '}
-                          Update User
+                          {t('Update User')}
                         </>
                       ) : (
                         <>
                           <BiErrorCircle />
-                          Update User
+                          {t('Update User')}
                         </>
                       )}
                     </button>
@@ -216,12 +219,12 @@ const UserEdit = ({ userData, settings }) => {
                         <>
                           <Spinner animation="border" role="status" size="sm" />
                           {' '}
-                          Remove User
+                          {t('Remove User')}
                         </>
                       ) : (
                         <>
                           <BiTrash />
-                          Remove User
+                          {t('Remove User')}
                         </>
                       )}
                     </button>
@@ -229,25 +232,25 @@ const UserEdit = ({ userData, settings }) => {
                 </div>
               </div>
               <div className="basic-card">
-                <h4 className="box-title">Send Email</h4>
+                <h4 className="box-title">{t('Send Email')}</h4>
                 <div className="settings-box">
                   <form onSubmit={handleMail}>
                     <div className="single-profile">
-                      <label htmlFor="mailSub">Subject</label>
+                      <label htmlFor="mailSub">{t('Subject')}</label>
                       <input
                         id="mailSub"
                         name="subject"
                         type="text"
-                        placeholder="Subject"
+                        placeholder={t('Subject')}
                         required
                       />
                     </div>
                     <div className="single-profile">
-                      <label htmlFor="mailMsg">Message</label>
+                      <label htmlFor="mailMsg">{t('Message')}</label>
                       <textarea
                         id="mailMsg"
                         name="message"
-                        placeholder="Message"
+                        placeholder={t('Message')}
                         row={7}
                         style={{ height: 'auto' }}
                         required
@@ -258,12 +261,12 @@ const UserEdit = ({ userData, settings }) => {
                         <>
                           <Spinner animation="border" role="status" size="sm" />
                           {' '}
-                          Send Mail
+                          {t('Send Mail')}
                         </>
                       ) : (
                         <>
                           <BiErrorCircle />
-                          Send Mail
+                          {t('Send Mail')}
                         </>
                       )}
                     </button>

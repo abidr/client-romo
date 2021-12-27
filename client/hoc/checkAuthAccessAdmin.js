@@ -5,7 +5,7 @@ import useCheckAuth from '../data/useCheckAuth';
 
 const checkAuthAccessAdmin = (WrappedComponent) => (props) => {
   const Router = useRouter();
-  const { data, loading } = useCheckAuth();
+  const { data, loading } = useCheckAuth(true);
 
   if (loading) {
     return <Loader height="100vh" />;

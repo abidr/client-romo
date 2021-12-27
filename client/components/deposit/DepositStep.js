@@ -4,6 +4,7 @@ import cogoToast from 'cogo-toast';
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Image, Table } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
+import { useTranslation } from 'react-i18next';
 import {
   BiCheckCircle, BiLeftArrowAlt, BiRightArrowAlt, BiXCircle
 } from 'react-icons/bi';
@@ -24,6 +25,7 @@ const DepositStep = ({ step, setStep, status }) => {
   const { data: walletData, loading: walletLoading } = useWallet();
   const { data: gatewayData, loading: gatewayLoading } = useGateways();
   const { data: currencyData, loading: currencyLoading } = useGatewayCurrencies();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setSelectedCurrency(data?.data[0]);
@@ -47,7 +49,7 @@ const DepositStep = ({ step, setStep, status }) => {
         currency: selectedCurrency?.symbol
       }, setActionLoader);
     } else {
-      cogoToast.error('Please select a payment method', { position: 'bottom-center' });
+      cogoToast.error(t('Please select a payment method'), { position: 'bottom-center' });
     }
   };
 
@@ -60,7 +62,7 @@ const DepositStep = ({ step, setStep, status }) => {
       <>
         <form onSubmit={handleNext}>
           <div className="currency-amount">
-            <label htmlFor="currencySelector">Wallet</label>
+            <label htmlFor="currencySelector">{t('Wallet')}</label>
             <Dropdown id="currencySelector">
               <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
                 <Image src={selectedCurrency?.icon} rounded />
@@ -79,7 +81,8 @@ const DepositStep = ({ step, setStep, status }) => {
                 ))}
               </Dropdown.Menu>
               <p className="available-balance">
-                Available Balance:
+                {t('Available Balance')}
+                :
                 <span>
                   {' '}
                   {currentBalance}
@@ -90,7 +93,7 @@ const DepositStep = ({ step, setStep, status }) => {
             </Dropdown>
           </div>
           <div className="currency-amount">
-            <label>Amount</label>
+            <label>{t('Amount')}</label>
             <input
               onChange={(e) => setAmount(e.target.value)}
               value={amount}
@@ -105,7 +108,7 @@ const DepositStep = ({ step, setStep, status }) => {
               className="bttn-mid btn-ylo"
             >
               <BiRightArrowAlt />
-              Next
+              {t('Next')}
             </button>
           </div>
         </form>
@@ -115,11 +118,11 @@ const DepositStep = ({ step, setStep, status }) => {
     return (
       <>
         <div className="transaction-review">
-          <h4>Review Details</h4>
+          <h4>{t('Review Details')}</h4>
           <Table striped hover responsive className="dark-color">
             <tbody>
               <tr>
-                <td>Amount</td>
+                <td>{t('Amount')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount}
                   {' '}
@@ -127,7 +130,7 @@ const DepositStep = ({ step, setStep, status }) => {
                 </td>
               </tr>
               <tr>
-                <td>Fee</td>
+                <td>{t('Fee')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount}
                   {' '}
@@ -135,7 +138,7 @@ const DepositStep = ({ step, setStep, status }) => {
                 </td>
               </tr>
               <tr>
-                <td>Total</td>
+                <td>{t('Total')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount}
                   {' '}
@@ -145,7 +148,7 @@ const DepositStep = ({ step, setStep, status }) => {
             </tbody>
           </Table>
           <div className="payment-method">
-            <h4>Payment Method</h4>
+            <h4>{t('Payment Method')}</h4>
             {gatewayData?.map((gateway) => {
               const isCurrencyAvailable = currencyData[gateway?.value].supportedCurrencies.some((cur) => cur === selectedCurrency?.symbol);
               if (isCurrencyAvailable) {
@@ -154,12 +157,13 @@ const DepositStep = ({ step, setStep, status }) => {
                     type="button"
                     onClick={() => setPayment(gateway.value)}
                     className={`gateway ${(payment === gateway.value) ? 'active' : ''}`}
+                    key={gateway?.value}
                   >
                     <GatewayLogo name={gateway.value} />
                   </button>
                 );
               }
-              return <></>;
+              return <React.Fragment key={gateway?.value} />;
             })}
           </div>
         </div>
@@ -170,7 +174,7 @@ const DepositStep = ({ step, setStep, status }) => {
             className="bttn-mid btn-grey mr-10"
           >
             <BiLeftArrowAlt />
-            Back
+            {t('Back')}
           </button>
           <button
             type="button"
@@ -182,12 +186,12 @@ const DepositStep = ({ step, setStep, status }) => {
               <>
                 <Spinner animation="border" role="status" size="sm" />
                 {' '}
-                Processing
+                {t('Processing')}
               </>
             ) : (
               <>
                 <BiRightArrowAlt />
-                Make Payment
+                {t('Make Payment')}
               </>
             )}
           </button>
@@ -202,21 +206,27 @@ const DepositStep = ({ step, setStep, status }) => {
         ) : (
           <BiXCircle color="red" size={70} />)}
         <h2>
-          Deposit
+          {t('Deposit')}
           {' '}
           {status === 'success' ? 'Successful' : 'Failed'}
         </h2>
         {status === 'success' ? (
-          <p>Your requested amount has been added to your desired wallet.</p>
+          <p>
+            {t('Your requested amount has been added to your desired wallet')}
+            .
+          </p>
         ) : (
-          <p>Your deposit request declined by the payment gateway.</p>
+          <p>
+            {t('Your deposit request declined by the payment gateway')}
+            .
+          </p>
         )}
         <button
           type="button"
           onClick={() => setStep(1)}
           className="bttn-mid btn-ylo"
         >
-          Make Another Deposit
+          {t('Make Another Deposit')}
         </button>
       </div>
     );

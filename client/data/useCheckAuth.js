@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 
-export default function useCheckAuth() {
-  const { data, error } = useSWR('/checkauth', {
+export default function useCheckAuth(admin) {
+  const { data, error } = useSWR(admin ? '/checkauth/admin' : '/checkauth', {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: true

@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const multerInstance = require('../config/multer.config');
 
-const { withAuth, isAdmin } = require('../middlewares/auth.middleware');
+const { isAdmin, withAuthAdmin } = require('../middlewares/auth.middleware');
 
 const {
   getAllCurrencies, createCurrency, getCurrencyById, updateCurrency,
@@ -13,9 +13,9 @@ const {
 router.get('/currencies', getAllCurrencies);
 router.get('/currencies/list', getCurrencyList);
 router.get('/currencies/:id', getCurrencyById);
-router.post('/fetchrates', withAuth, isAdmin, fetchCurrencyRates);
-router.post('/currencies', withAuth, isAdmin, multerInstance.upload.single('icon'), createCurrency);
-router.put('/currencies/:id', withAuth, isAdmin, updateCurrency);
-router.delete('/currencies/:id', withAuth, isAdmin, deleteCurrency);
+router.post('/fetchrates', withAuthAdmin, isAdmin, fetchCurrencyRates);
+router.post('/currencies', withAuthAdmin, isAdmin, multerInstance.upload.single('icon'), createCurrency);
+router.put('/currencies/:id', withAuthAdmin, isAdmin, updateCurrency);
+router.delete('/currencies/:id', withAuthAdmin, isAdmin, deleteCurrency);
 
 module.exports = router;

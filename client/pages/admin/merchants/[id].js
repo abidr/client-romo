@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Spinner, Table } from 'react-bootstrap';
 import { confirmAlert } from 'react-confirm-alert';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiTrash } from 'react-icons/bi';
 import EditorHeader from '../../../components/admin/EditorHeader';
 import Loader from '../../../components/Loader';
@@ -19,6 +20,8 @@ const MerchantEdit = ({ userData, settings }) => {
   const [actionLoader, setActionLoader] = useState(false);
 
   const { data, loading } = useMerchantById(id);
+
+  const { t } = useTranslation();
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -37,11 +40,11 @@ const MerchantEdit = ({ userData, settings }) => {
       message: 'Are you sure to remove this merchant? Remember the merchant will be demoted to user.',
       buttons: [
         {
-          label: 'Yes',
+          label: t('Yes'),
           onClick: () => merchantDelete(id, setActionLoader)
         },
         {
-          label: 'No',
+          label: t('No'),
         }
       ]
     });
@@ -57,59 +60,59 @@ const MerchantEdit = ({ userData, settings }) => {
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">
         <div className="container-fluid">
-          <EditorHeader name={`Merchant #${data?.id}`} />
+          <EditorHeader name={`${t('Merchant')} #${data?.id}`} />
           <div className="row">
             <div className="col-12 col-xl-6">
               <div className="basic-card">
-                <h4 className="box-title">Merchant Details</h4>
+                <h4 className="box-title">{t('Merchant Details')}</h4>
                 <div className="settings-box">
                   <form onSubmit={handleUpdate}>
                     <div className="single-profile">
-                      <label htmlFor="merId">Merchant ID</label>
+                      <label htmlFor="merId">{t('Merchant ID')}</label>
                       <input
                         id="merId"
                         disabled
                         name="merId"
                         type="text"
-                        placeholder="Merchant ID"
+                        placeholder={t('Merchant ID')}
                         defaultValue={data?.merId}
                       />
                     </div>
                     <div className="single-profile">
-                      <label htmlFor="merName">Merchant Name</label>
+                      <label htmlFor="merName">{t('Merchant Name')}</label>
                       <input
                         id="merName"
                         name="name"
                         type="text"
-                        placeholder="Merchant Name"
+                        placeholder={t('Merchant Name')}
                         defaultValue={data?.name}
                       />
                     </div>
                     <div className="single-profile">
-                      <label htmlFor="merEmail">Merchant Email</label>
+                      <label htmlFor="merEmail">{t('Merchant Email')}</label>
                       <input
                         id="merEmail"
                         name="email"
                         type="email"
-                        placeholder="Merchant Email"
+                        placeholder={t('Merchant Email')}
                         defaultValue={data?.email}
                       />
                     </div>
                     <div className="single-profile">
-                      <label htmlFor="merAdd">Merchant Address</label>
+                      <label htmlFor="merAdd">{t('Merchant Address')}</label>
                       <input
                         id="merAdd"
                         name="address"
                         type="text"
-                        placeholder="Merchant Address"
+                        placeholder={t('Merchant Address')}
                         defaultValue={data?.address}
                       />
                     </div>
                     <div className="single-profile">
-                      <label htmlFor="merStatus">Status</label>
+                      <label htmlFor="merStatus">{t('Status')}</label>
                       <select name="status" id="merStatus" defaultValue={data?.status}>
-                        <option value="pending">Pending</option>
-                        <option value="verified">Verified</option>
+                        <option value="pending">{t('Pending')}</option>
+                        <option value="verified">{t('Verified')}</option>
                       </select>
                     </div>
                     <button type="submit" className="bttn-mid btn-ylo" disabled={actionLoader}>
@@ -117,12 +120,12 @@ const MerchantEdit = ({ userData, settings }) => {
                         <>
                           <Spinner animation="border" role="status" size="sm" />
                           {' '}
-                          Update Merchant
+                          {t('Update Merchant')}
                         </>
                       ) : (
                         <>
                           <BiErrorCircle />
-                          Update Merchant
+                          {t('Update Merchant')}
                         </>
                       )}
                     </button>
@@ -136,12 +139,12 @@ const MerchantEdit = ({ userData, settings }) => {
                         <>
                           <Spinner animation="border" role="status" size="sm" />
                           {' '}
-                          Remove Merchant
+                          {t('Remove Merchant')}
                         </>
                       ) : (
                         <>
                           <BiTrash />
-                          Remove Merchant
+                          {t('Remove Merchant')}
                         </>
                       )}
                     </button>
@@ -151,15 +154,15 @@ const MerchantEdit = ({ userData, settings }) => {
             </div>
             <div className="col-12 col-xl-6">
               <div className="basic-card mb-20">
-                <h4 className="box-title">Proof</h4>
+                <h4 className="box-title">{t('Proof')}</h4>
                 <div className="settings-box">
                   <Table striped hover className="dark-color details-table" responsive>
                     <tbody>
                       <tr>
-                        <td className="head-td">File</td>
+                        <td className="head-td">{t('File')}</td>
                         <td>
                           {data?.proof ? (
-                            <a href={data?.proof}>Download/View</a>
+                            <a href={data?.proof}>{t('Download/View')}</a>
                           ) : 'N/A'}
                         </td>
                       </tr>
@@ -168,51 +171,51 @@ const MerchantEdit = ({ userData, settings }) => {
                 </div>
               </div>
               <div className="basic-card">
-                <h4 className="box-title">User</h4>
+                <h4 className="box-title">{t('User')}</h4>
                 <div className="settings-box">
                   <Table striped hover className="dark-color details-table" responsive>
                     <tbody>
                       <tr>
-                        <td className="head-td">ID</td>
+                        <td className="head-td">{t('ID')}</td>
                         <td>
                           #
                           {data?.user?.id}
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">Name</td>
+                        <td className="head-td">{t('Name')}</td>
                         <td>
                           {data?.user?.name}
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">Email</td>
+                        <td className="head-td">{t('Email')}</td>
                         <td>
                           {data?.user?.email}
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">Address</td>
+                        <td className="head-td">{t('Address')}</td>
                         <td>
                           {data?.user?.address || 'N/A'}
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">Phone</td>
+                        <td className="head-td">{t('Phone')}</td>
                         <td>
                           {data?.user?.phone || 'N/A'}
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">Activation</td>
+                        <td className="head-td">{t('Activation')}</td>
                         <td>
-                          {data?.user?.active ? 'Active' : 'Inactive'}
+                          {data?.user?.active ? t('Active') : t('Inactive')}
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">KYC</td>
+                        <td className="head-td">{t('KYC')}</td>
                         <td>
-                          {data?.user?.kyc ? 'Verified' : 'Pending Verification'}
+                          {data?.user?.kyc ? t('Verified') : t('Pending Verification')}
                         </td>
                       </tr>
                     </tbody>

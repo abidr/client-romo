@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Image, Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle } from 'react-icons/bi';
 import useCurrency from '../../data/useCurrency';
 import requestPayment from '../../lib/requestPayment';
@@ -9,6 +10,7 @@ const RequestPayment = () => {
   const [selectedCurrency, setSelectedCurrency] = useState();
   const [actionLoader, setActionLoader] = useState(false);
   const { data } = useCurrency();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setSelectedCurrency(data?.data[0]);
@@ -26,19 +28,19 @@ const RequestPayment = () => {
 
   return (
     <div className="basic-card">
-      <h3 className="box-title">Request Payment</h3>
+      <h3 className="box-title">{t('Request Payment')}</h3>
       <div className="settings-box">
         <form onSubmit={handleSubmit}>
           <div className="single-profile">
-            <label htmlFor="emailField">Email</label>
-            <input id="emailField" name="email" type="email" placeholder="Customer Email" />
+            <label htmlFor="emailField">{t('Email')}</label>
+            <input id="emailField" name="email" type="email" placeholder={t('Customer Email')} />
           </div>
           <div className="single-profile">
-            <label htmlFor="amountField">Amount</label>
-            <input id="amountField" name="amount" type="text" placeholder="Amount" />
+            <label htmlFor="amountField">{t('Amount')}</label>
+            <input id="amountField" name="amount" type="text" placeholder={t('Amount')} />
           </div>
           <div className="currency-amount mb-20">
-            <label htmlFor="currencySelector">Currency</label>
+            <label htmlFor="currencySelector">{t('Currency')}</label>
             <Dropdown id="currencySelector">
               <Dropdown.Toggle className="bttn-small btn-emt dropdown-method mt-10" variant="link">
                 {selectedCurrency?.symbol}
@@ -62,12 +64,12 @@ const RequestPayment = () => {
               <>
                 <Spinner animation="border" role="status" size="sm" />
                 {' '}
-                Request
+                {t('Request')}
               </>
             ) : (
               <>
                 <BiErrorCircle />
-                Request
+                {t('Request')}
               </>
             )}
           </button>

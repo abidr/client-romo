@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import Pagination from 'react-js-pagination';
 import { useDepositAll } from '../../data/useDeposits';
 import statusColor from '../../utils/statusColor';
@@ -9,6 +10,7 @@ import Loader from '../Loader';
 const DepositHistory = () => {
   const [page, setPage] = useState(1);
   const { data, loading } = useDepositAll(page, 10);
+  const { t } = useTranslation();
 
   if (loading) {
     return <Loader height="300px" />;
@@ -19,11 +21,11 @@ const DepositHistory = () => {
       <Table striped hover className="dark-color" responsive>
         <thead>
           <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Status</th>
-            <th scope="col">Description</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Payment</th>
+            <th scope="col">{t('Date')}</th>
+            <th scope="col">{t('Status')}</th>
+            <th scope="col">{t('Description')}</th>
+            <th scope="col">{t('Amount')}</th>
+            <th scope="col">{t('Payment')}</th>
           </tr>
         </thead>
         <tbody>
@@ -40,7 +42,9 @@ const DepositHistory = () => {
               </td>
               <td>
                 <strong>
-                  Deposit Request #
+                  {t('Deposit Request')}
+                  {' '}
+                  #
                   {history.id}
                 </strong>
               </td>

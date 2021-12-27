@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Spinner, Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiCheck, BiX } from 'react-icons/bi';
 import EditorHeader from '../../../components/admin/EditorHeader';
 import Loader from '../../../components/Loader';
@@ -19,6 +20,8 @@ const WithdrawEdit = ({ userData, settings }) => {
 
   const { data, loading } = useWithdrawById(id);
 
+  const { t } = useTranslation();
+
   const handleUpdate = (type) => {
     withdrawUpdate(id, type, setActionLoader);
   };
@@ -32,22 +35,22 @@ const WithdrawEdit = ({ userData, settings }) => {
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">
         <div className="container-fluid">
-          <EditorHeader name={`Withdraw #${data?.id}`} />
+          <EditorHeader name={`${t('Withdraw')} #${data?.id}`} />
           <div className="row">
             <div className="col-12 col-xl-6">
               <div className="basic-card">
-                <h4 className="box-title">Withdraw Details</h4>
+                <h4 className="box-title">{t('Withdraw Details')}</h4>
                 <div className="settings-box">
                   <Table striped hover className="dark-color details-table" responsive>
                     <tbody>
                       <tr>
-                        <td className="head-td">Status</td>
+                        <td className="head-td">{t('Status')}</td>
                         <td style={{ textTransform: 'capitalize' }}>
                           {data?.status}
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">Amount</td>
+                        <td className="head-td">{t('Amount')}</td>
                         <td>
                           {data?.amount}
                           {' '}
@@ -55,7 +58,7 @@ const WithdrawEdit = ({ userData, settings }) => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">Fee</td>
+                        <td className="head-td">{t('Fee')}</td>
                         <td>
                           {data?.fee}
                           {' '}
@@ -63,7 +66,7 @@ const WithdrawEdit = ({ userData, settings }) => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">User Getting</td>
+                        <td className="head-td">{t('User Getting')}</td>
                         <td>
                           {data?.total}
                           {' '}
@@ -71,7 +74,7 @@ const WithdrawEdit = ({ userData, settings }) => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">User</td>
+                        <td className="head-td">{t('User')}</td>
                         <td>
                           {data?.user?.email}
                           {' '}
@@ -95,7 +98,7 @@ const WithdrawEdit = ({ userData, settings }) => {
                           disabled={actionLoader}
                         >
                           <BiCheck />
-                          Approve
+                          {t('Approve')}
                         </button>
                         <button
                           onClick={() => handleUpdate('decline')}
@@ -104,7 +107,7 @@ const WithdrawEdit = ({ userData, settings }) => {
                           disabled={actionLoader}
                         >
                           <BiX />
-                          Decline
+                          {t('Decline')}
                         </button>
                       </>
                     )}
@@ -115,12 +118,12 @@ const WithdrawEdit = ({ userData, settings }) => {
             </div>
             <div className="col-12 col-xl-6">
               <div className="basic-card">
-                <h4 className="box-title">Preffered Method</h4>
+                <h4 className="box-title">{t('Preffered Method')}</h4>
                 <div className="settings-box">
                   <Table striped hover className="dark-color details-table" responsive>
                     <tbody>
                       <tr>
-                        <td className="head-td">Method</td>
+                        <td className="head-td">{t('Method')}</td>
                         <td style={{ textTransform: 'capitalize' }}>
                           {data?.method}
                         </td>

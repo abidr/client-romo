@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import Pagination from 'react-js-pagination';
 import useExchanges from '../../data/useExchanges';
 import statusColor from '../../utils/statusColor';
@@ -8,19 +9,20 @@ import statusColor from '../../utils/statusColor';
 const ExchangeHistory = () => {
   const [page, setPage] = useState(1);
   const { data } = useExchanges(page, 10);
+  const { t } = useTranslation();
 
   return (
     <>
       <Table striped hover className="dark-color" responsive>
         <thead>
           <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Status</th>
-            <th scope="col">Description</th>
-            <th scope="col">From</th>
-            <th scope="col">To</th>
-            <th scope="col">Fee</th>
-            <th scope="col">You Get</th>
+            <th scope="col">{t('Date')}</th>
+            <th scope="col">{t('Status')}</th>
+            <th scope="col">{t('Description')}</th>
+            <th scope="col">{t('From')}</th>
+            <th scope="col">{t('To')}</th>
+            <th scope="col">{t('Fee')}</th>
+            <th scope="col">{t('You Get')}</th>
           </tr>
         </thead>
         <tbody>
@@ -37,7 +39,9 @@ const ExchangeHistory = () => {
               </td>
               <td>
                 <strong>
-                  Exchange #
+                  {t('Exchange')}
+                  {' '}
+                  #
                   {history?.id}
                 </strong>
               </td>

@@ -34,6 +34,7 @@ const BlockAdd = ({ field, handleAdd }) => {
         onHide={() => setActive(false)}
         size="lg"
         centered
+        animation={false}
       >
         <form onSubmit={handleSubmit}>
           <Modal.Header closeButton>

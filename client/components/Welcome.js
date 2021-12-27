@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiCheck, BiX } from 'react-icons/bi';
 import { useDepositAll } from '../data/useDeposits';
 import useLinkeds from '../data/useLinkeds';
@@ -8,6 +9,7 @@ import Loader from './Loader';
 const Welcome = ({ userData, settings }) => {
   const { data, loading } = useDepositAll(1, 10);
   const { data: linkedAcc, loading: linkedLoading } = useLinkeds();
+  const { t } = useTranslation();
 
   if (loading || linkedLoading) {
     return <Loader height="225px" />;
@@ -17,16 +19,18 @@ const Welcome = ({ userData, settings }) => {
     <>
       <div className="welcome-status">
         <h4 className="box-title">
-          Welcome
+          {t('Welcome')}
           {' '}
           {userData?.name}
           !
         </h4>
         <p>
-          To
+          {t('To')}
           {' '}
           {settings?.site?.param1}
-          . You can deposit money to your wallet and start exchanging.
+          .
+          {' '}
+          {t('You can deposit money to your wallet and start exchanging.')}
         </p>
         <ul>
           <li>
@@ -37,7 +41,7 @@ const Welcome = ({ userData, settings }) => {
                 ) : (
                   <BiX className="cross" />
                 )}
-                KYC Verified
+                {t('KYC Verified')}
               </a>
             </Link>
           </li>
@@ -49,7 +53,7 @@ const Welcome = ({ userData, settings }) => {
                 ) : (
                   <BiX className="cross" />
                 )}
-                Deposit Money
+                {t('Deposit Money')}
               </a>
             </Link>
           </li>
@@ -61,7 +65,7 @@ const Welcome = ({ userData, settings }) => {
                 ) : (
                   <BiX className="cross" />
                 )}
-                Connect Withdrawal Method
+                {t('Connect Withdrawal Method')}
               </a>
             </Link>
           </li>

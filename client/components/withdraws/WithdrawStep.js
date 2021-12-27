@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Image, Table } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
+import { useTranslation } from 'react-i18next';
 import {
   BiCheckCircle, BiLeftArrowAlt, BiRightArrowAlt
 } from 'react-icons/bi';
@@ -21,6 +22,7 @@ const WithdrawStep = ({ step, setStep }) => {
   const { data, loading } = useCurrency();
   const { data: walletData, loading: walletLoading } = useWallet();
   const { data: methods, loading: methodsLoading } = useMethods();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setSelectedCurrency(data?.data[0]);
@@ -54,7 +56,7 @@ const WithdrawStep = ({ step, setStep }) => {
       <>
         <form onSubmit={handleNext}>
           <div className="currency-amount">
-            <label htmlFor="currencySelector">Wallet</label>
+            <label htmlFor="currencySelector">{t('Wallet')}</label>
             <Dropdown id="currencySelector">
               <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
                 <Image src={selectedCurrency?.icon} rounded />
@@ -73,7 +75,8 @@ const WithdrawStep = ({ step, setStep }) => {
                 ))}
               </Dropdown.Menu>
               <p className="available-balance">
-                Available Balance:
+                {t('Available Balance')}
+                :
                 <span>
                   {' '}
                   {currentBalance}
@@ -84,7 +87,7 @@ const WithdrawStep = ({ step, setStep }) => {
             </Dropdown>
           </div>
           <div className="currency-amount">
-            <label>Amount</label>
+            <label>{t('Amount')}</label>
             <input
               onChange={(e) => setAmount(e.target.value)}
               value={amount}
@@ -93,10 +96,10 @@ const WithdrawStep = ({ step, setStep }) => {
             />
           </div>
           <div className="currency-amount">
-            <label htmlFor="methodSelector">Withdraw Method</label>
+            <label htmlFor="methodSelector">{t('Withdraw Method')}</label>
             <Dropdown id="methodSelector">
               <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
-                {method?.name || 'Please Select'}
+                {method?.name || t('Please Select')}
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
@@ -116,7 +119,8 @@ const WithdrawStep = ({ step, setStep }) => {
               </Dropdown.Menu>
               {method && (
               <p className="available-balance">
-                Fee:
+                {t('Fee')}
+                :
                 {' '}
                 <span>
                   {`${method?.percentageCharge}% + ${method?.fixedCharge} ${method?.currency}`}
@@ -132,7 +136,7 @@ const WithdrawStep = ({ step, setStep }) => {
               disabled={!(selectedCurrency && method)}
             >
               <BiRightArrowAlt />
-              Next
+              {t('Next')}
             </button>
           </div>
         </form>
@@ -142,17 +146,17 @@ const WithdrawStep = ({ step, setStep }) => {
     return (
       <>
         <div className="transaction-review">
-          <h4>Review Details</h4>
+          <h4>{t('Review Details')}</h4>
           <Table striped hover responsive className="dark-color">
             <tbody>
               <tr>
-                <td>Withdraw Method</td>
+                <td>{t('Withdraw Method')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {method?.name}
                 </td>
               </tr>
               <tr>
-                <td>Amount</td>
+                <td>{t('Amount')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount}
                   {' '}
@@ -161,7 +165,9 @@ const WithdrawStep = ({ step, setStep }) => {
               </tr>
               <tr>
                 <td>
-                  Fee (
+                  {t('Fee')}
+                  {' '}
+                  (
                   {`${method?.percentageCharge}% + ${method?.fixedCharge} ${method?.currency}`}
                   )
                 </td>
@@ -172,7 +178,7 @@ const WithdrawStep = ({ step, setStep }) => {
                 </td>
               </tr>
               <tr>
-                <td>You Get</td>
+                <td>{t('You Get')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount - (amount * (method?.percentageCharge / 100) + method?.fixedCharge)}
                   {' '}
@@ -189,7 +195,7 @@ const WithdrawStep = ({ step, setStep }) => {
             className="bttn-mid btn-grey mr-10"
           >
             <BiLeftArrowAlt />
-            Back
+            {t('Back')}
           </button>
           <button
             type="button"
@@ -201,12 +207,12 @@ const WithdrawStep = ({ step, setStep }) => {
               <>
                 <Spinner animation="border" role="status" size="sm" />
                 {' '}
-                Processing
+                {t('Processing')}
               </>
             ) : (
               <>
                 <BiRightArrowAlt />
-                Withdraw
+                {t('Withdraw')}
               </>
             )}
           </button>
@@ -218,18 +224,21 @@ const WithdrawStep = ({ step, setStep }) => {
       <div className="transaction-success">
         <BiCheckCircle color="green" size={70} />
         <h2>
-          Withdraw Request Submitted
+          {t('Withdraw Request Submitted')}
         </h2>
         <p>
-          We will review your withdraw request and send the fund to your desired account,
-          please allow upto 24 hours for us to review.
+          {t('We will review your withdraw request and send the fund to your desired account')}
+          ,
+          {' '}
+          {t('please allow upto 24 hours for us to review')}
+          .
         </p>
         <button
           type="button"
           onClick={() => setStep(1)}
           className="bttn-mid btn-ylo"
         >
-          Make Another Withdraw
+          {t('Make Another Withdraw')}
         </button>
       </div>
     );

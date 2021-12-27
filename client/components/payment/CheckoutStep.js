@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
+import { useTranslation } from 'react-i18next';
 import {
   BiCheckCircle, BiLeftArrowAlt, BiRightArrowAlt
 } from 'react-icons/bi';
@@ -13,6 +14,7 @@ import Loader from '../Loader';
 const CheckoutStep = ({ step, setStep, trx }) => {
   const [actionLoader, setActionLoader] = useState(false);
   const { data, loading } = useRequestByTrx(trx);
+  const { t } = useTranslation();
 
   const handleSubmit = () => {
     checkoutRequest({
@@ -28,7 +30,7 @@ const CheckoutStep = ({ step, setStep, trx }) => {
     return (
       <>
         <div className="transaction-review">
-          <p>This transaction is not valid</p>
+          <p>{t('This transaction is not valid')}</p>
         </div>
       </>
     );
@@ -43,19 +45,19 @@ const CheckoutStep = ({ step, setStep, trx }) => {
           <Table striped hover responsive className="dark-color">
             <tbody>
               <tr>
-                <td>Merchant ID</td>
+                <td>{t('Merchant ID')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {data?.merchant?.merId}
                 </td>
               </tr>
               <tr>
-                <td>TRX ID</td>
+                <td>{t('TRX ID')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {data?.trxId}
                 </td>
               </tr>
               <tr>
-                <td>Amount</td>
+                <td>{t('Amount')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {data?.amount}
                   {' '}
@@ -72,7 +74,7 @@ const CheckoutStep = ({ step, setStep, trx }) => {
             className="bttn-mid btn-grey mr-10"
           >
             <BiLeftArrowAlt />
-            Back
+            {t('Back')}
           </button>
           <button
             type="button"
@@ -84,17 +86,18 @@ const CheckoutStep = ({ step, setStep, trx }) => {
               <>
                 <Spinner animation="border" role="status" size="sm" />
                 {' '}
-                Processing
+                {t('Processing')}
               </>
             ) : (
               <>
                 <BiRightArrowAlt />
-                Pay
+                {t('Pay')}
               </>
             )}
           </button>
           <p className="mt-10 mb-0">
-            For any query please contact at:
+            {t('For any query please contact at')}
+            :
             {' '}
             <a href={`mailto:${data?.merchant?.email}`}>{data?.merchant?.email}</a>
           </p>
@@ -106,14 +109,14 @@ const CheckoutStep = ({ step, setStep, trx }) => {
       <div className="transaction-success">
         <BiCheckCircle color="green" size={70} />
         <h2>
-          Payment Successful
+          {t('Payment Successful')}
         </h2>
         <p>
           {data?.amount}
           {' '}
           {data?.currency}
           {' '}
-          sent to
+          {t('sent to')}
           {' '}
           {data?.merchant?.name}
         </p>

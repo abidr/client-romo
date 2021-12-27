@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiPlusCircle, BiTrash } from 'react-icons/bi';
 import Toggle from 'react-toggle';
 import EditorHeader from '../../../../components/admin/EditorHeader';
@@ -19,6 +20,8 @@ const MethodNew = ({ userData, settings }) => {
   const [actionLoader, setActionLoader] = useState(false);
 
   const { data: curData, loading: curLoading } = useCurrency();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setCurrency(curData?.data?.[0].symbol);
@@ -64,7 +67,7 @@ const MethodNew = ({ userData, settings }) => {
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">
         <div className="container-fluid">
-          <EditorHeader name="Add New Method" />
+          <EditorHeader name={t('Add New Method')} />
           <div className="row">
             <div className="col-12 col-xl-12">
               <div className="basic-card">
@@ -72,24 +75,26 @@ const MethodNew = ({ userData, settings }) => {
                   <form onSubmit={handleUpdate}>
                     <div className="row">
                       <div className="col">
-                        <h4 className="box-title">Details</h4>
+                        <h4 className="box-title">{t('Details')}</h4>
                       </div>
                     </div>
                     <div className="row">
                       <div className="col-12 col-xl-6">
                         <div className="single-profile">
-                          <label htmlFor="methodName">Name</label>
+                          <label htmlFor="methodName">{t('Name')}</label>
                           <input
                             id="methodName"
                             required
                             name="name"
                             type="text"
-                            placeholder="Name"
+                            placeholder={t('Name')}
                           />
                         </div>
                         <div className="single-profile">
                           <label htmlFor="minAmount">
-                            Minimum Amount (
+                            {t('Minimum Amount')}
+                            {' '}
+                            (
                             {currency}
                             )
                           </label>
@@ -98,13 +103,15 @@ const MethodNew = ({ userData, settings }) => {
                             onKeyPress={inputNumber}
                             name="minAmount"
                             type="text"
-                            placeholder="Min Amount"
+                            placeholder={t('Min Amount')}
                             required
                           />
                         </div>
                         <div className="single-profile">
                           <label htmlFor="maxAmount">
-                            Maximum Amount (
+                            {t('Maximum Amount')}
+                            {' '}
+                            (
                             {currency}
                             )
                           </label>
@@ -114,11 +121,11 @@ const MethodNew = ({ userData, settings }) => {
                             name="maxAmount"
                             type="text"
                             required
-                            placeholder="Max Amount"
+                            placeholder={t('Max Amount')}
                           />
                         </div>
                         <div className="single-profile">
-                          <label>Active</label>
+                          <label>{t('Active')}</label>
                           <Toggle
                             name="active"
                           />
@@ -126,11 +133,11 @@ const MethodNew = ({ userData, settings }) => {
                       </div>
                       <div className="col-12 col-xl-6">
                         <label htmlFor="curSelector">
-                          Currency
+                          {t('Currency')}
                         </label>
                         <Dropdown id="curSelector" className="mt-10 mb-20">
                           <Dropdown.Toggle className="bttn-small btn-emt dropdown-method" variant="link">
-                            {currency || 'Please Select'}
+                            {currency || t('Please Select')}
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
                             {curData?.data?.map((wallet) => (
@@ -145,7 +152,9 @@ const MethodNew = ({ userData, settings }) => {
                         </Dropdown>
                         <div className="single-profile">
                           <label htmlFor="fixedCharge">
-                            Fixed Charge  (
+                            {t('Fixed Charge')}
+                            {' '}
+                            (
                             {currency}
                             )
                           </label>
@@ -155,25 +164,29 @@ const MethodNew = ({ userData, settings }) => {
                             name="fixedCharge"
                             required
                             type="text"
-                            placeholder="Fixed Charge"
+                            placeholder={t('Fixed Charge')}
                           />
                         </div>
                         <div className="single-profile">
-                          <label htmlFor="perCharge">Percentage Charge (%)</label>
+                          <label htmlFor="perCharge">
+                            {t('Percentage Charge')}
+                            {' '}
+                            (%)
+                          </label>
                           <input
                             id="perCharge"
                             name="perCharge"
                             onKeyPress={inputNumber}
                             required
                             type="text"
-                            placeholder="Percentage Charge"
+                            placeholder={t('Percentage Charge')}
                           />
                         </div>
                       </div>
                     </div>
                     <div className="row">
                       <div className="col">
-                        <h4 className="box-title">Fields</h4>
+                        <h4 className="box-title">{t('Fields')}</h4>
                       </div>
                     </div>
                     <div className="row">
@@ -181,7 +194,7 @@ const MethodNew = ({ userData, settings }) => {
                         {fields?.map((field, index) => (
                           <div className="method-field" key={String(index)}>
                             <div className="single-profile">
-                              <label>Field Name</label>
+                              <label>{t('Field Name')}</label>
                               <input
                                 type="text"
                                 onChange={(e) => handleFieldChange(index, 'name', e.target.value)}
@@ -189,18 +202,18 @@ const MethodNew = ({ userData, settings }) => {
                               />
                             </div>
                             <div className="single-profile">
-                              <label>Field Type</label>
+                              <label>{t('Field Type')}</label>
                               <select
                                 defaultValue={field?.type}
                                 onChange={(e) => handleFieldChange(index, 'type', e.target.value)}
                               >
-                                <option value="text">Text</option>
-                                <option value="email">Email</option>
-                                <option value="Number">Number</option>
+                                <option value="text">{t('Text')}</option>
+                                <option value="email">{t('Email')}</option>
+                                <option value="Number">{t('Number')}</option>
                               </select>
                             </div>
                             <div className="single-profile toggler">
-                              <label>Required</label>
+                              <label>{t('Required')}</label>
                               <Toggle
                                 defaultChecked={field?.required}
                                 onChange={(e) => handleFieldChange(index, 'required', e.target.checked)}
@@ -223,7 +236,7 @@ const MethodNew = ({ userData, settings }) => {
                           onClick={() => addField()}
                         >
                           <BiPlusCircle />
-                          New Field
+                          {t('New Field')}
                         </button>
                       </div>
                     </div>
@@ -232,12 +245,12 @@ const MethodNew = ({ userData, settings }) => {
                         <>
                           <Spinner animation="border" role="status" size="sm" />
                           {' '}
-                          Update Method
+                          {t('Update Method')}
                         </>
                       ) : (
                         <>
                           <BiErrorCircle />
-                          Update Method
+                          {t('Update Method')}
                         </>
                       )}
                     </button>

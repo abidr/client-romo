@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import Pagination from 'react-js-pagination';
 import usePayments from '../../data/usePayments';
 import statusColor from '../../utils/statusColor';
@@ -8,17 +9,18 @@ import statusColor from '../../utils/statusColor';
 const PaymentHistory = () => {
   const [page, setPage] = useState(1);
   const { data } = usePayments(page, 10);
+  const { t } = useTranslation();
 
   return (
     <>
       <Table striped hover className="dark-color" responsive>
         <thead>
           <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Status</th>
-            <th scope="col">Merchant</th>
-            <th scope="col">Trx ID</th>
-            <th scope="col">Amount</th>
+            <th scope="col">{t('Date')}</th>
+            <th scope="col">{t('Status')}</th>
+            <th scope="col">{t('Merchant')}</th>
+            <th scope="col">{t('Trx ID')}</th>
+            <th scope="col">{t('Amount')}</th>
           </tr>
         </thead>
         <tbody>

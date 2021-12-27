@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiPlusCircle, BiTrash } from 'react-icons/bi';
 import Toggle from 'react-toggle';
 import EditorHeader from '../../../../components/admin/EditorHeader';
@@ -24,6 +25,8 @@ const MethodEdit = ({ userData, settings }) => {
 
   const { data, loading } = useMethodById(id);
   const { data: curData, loading: curLoading } = useCurrency();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setCurrency(data?.currency);
@@ -70,7 +73,7 @@ const MethodEdit = ({ userData, settings }) => {
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">
         <div className="container-fluid">
-          <EditorHeader name={`Method #${data?.id}`} />
+          <EditorHeader name={`${t('Method')} #${data?.id}`} />
           <div className="row">
             <div className="col-12 col-xl-12">
               <div className="basic-card">
@@ -78,18 +81,20 @@ const MethodEdit = ({ userData, settings }) => {
                   <form onSubmit={handleUpdate}>
                     <div className="row">
                       <div className="col">
-                        <h4 className="box-title">Details</h4>
+                        <h4 className="box-title">{t('Details')}</h4>
                       </div>
                     </div>
                     <div className="row">
                       <div className="col-12 col-xl-6">
                         <div className="single-profile">
-                          <label htmlFor="methodName">Name</label>
-                          <input id="methodName" name="name" type="text" placeholder="Name" defaultValue={data?.name} />
+                          <label htmlFor="methodName">{t('Name')}</label>
+                          <input id="methodName" name="name" type="text" placeholder={t('Name')} defaultValue={data?.name} />
                         </div>
                         <div className="single-profile">
                           <label htmlFor="minAmount">
-                            Minimum Amount (
+                            {t('Minimum Amount')}
+                            {' '}
+                            (
                             {currency}
                             )
                           </label>
@@ -98,13 +103,15 @@ const MethodEdit = ({ userData, settings }) => {
                             onKeyPress={inputNumber}
                             name="minAmount"
                             type="text"
-                            placeholder="Min Amount"
+                            placeholder={t('Min Amount')}
                             defaultValue={data?.minAmount}
                           />
                         </div>
                         <div className="single-profile">
                           <label htmlFor="maxAmount">
-                            Maximum Amount (
+                            {t('Maximum Amount')}
+                            {' '}
+                            (
                             {currency}
                             )
                           </label>
@@ -113,12 +120,12 @@ const MethodEdit = ({ userData, settings }) => {
                             onKeyPress={inputNumber}
                             name="maxAmount"
                             type="text"
-                            placeholder="Max Amount"
+                            placeholder={t('Max Amount')}
                             defaultValue={data?.maxAmount}
                           />
                         </div>
                         <div className="single-profile">
-                          <label>Active</label>
+                          <label>{t('Active')}</label>
                           <Toggle
                             defaultChecked={data?.active}
                             name="active"
@@ -127,11 +134,11 @@ const MethodEdit = ({ userData, settings }) => {
                       </div>
                       <div className="col-12 col-xl-6">
                         <label htmlFor="curSelector">
-                          Currency
+                          {t('Currency')}
                         </label>
                         <Dropdown id="curSelector" className="mt-10 mb-20">
                           <Dropdown.Toggle className="bttn-small btn-emt dropdown-method" variant="link">
-                            {currency || 'Please Select'}
+                            {currency || t('Please Select')}
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
                             {curData?.data?.map((wallet) => (
@@ -146,7 +153,9 @@ const MethodEdit = ({ userData, settings }) => {
                         </Dropdown>
                         <div className="single-profile">
                           <label htmlFor="fixedCharge">
-                            Fixed Charge (
+                            {t('Fixed Charge')}
+                            {' '}
+                            (
                             {currency}
                             )
                           </label>
@@ -155,18 +164,22 @@ const MethodEdit = ({ userData, settings }) => {
                             onKeyPress={inputNumber}
                             name="fixedCharge"
                             type="text"
-                            placeholder="Fixed Charge"
+                            placeholder={t('Fixed Charge')}
                             defaultValue={data?.fixedCharge}
                           />
                         </div>
                         <div className="single-profile">
-                          <label htmlFor="perCharge">Percentage Charge (%)</label>
+                          <label htmlFor="perCharge">
+                            {t('Percentage Charge')}
+                            {' '}
+                            (%)
+                          </label>
                           <input
                             id="perCharge"
                             name="perCharge"
                             onKeyPress={inputNumber}
                             type="text"
-                            placeholder="Percentage Charge"
+                            placeholder={t('Percentage Charge')}
                             defaultValue={data?.percentageCharge}
                           />
                         </div>
@@ -174,7 +187,7 @@ const MethodEdit = ({ userData, settings }) => {
                     </div>
                     <div className="row">
                       <div className="col">
-                        <h4 className="box-title">Fields</h4>
+                        <h4 className="box-title">{t('Fields')}</h4>
                       </div>
                     </div>
                     <div className="row">
@@ -182,7 +195,7 @@ const MethodEdit = ({ userData, settings }) => {
                         {fields?.map((field, index) => (
                           <div className="method-field" key={String(index)}>
                             <div className="single-profile">
-                              <label>Field Name</label>
+                              <label>{t('Field Name')}</label>
                               <input
                                 type="text"
                                 onChange={(e) => handleFieldChange(index, 'name', e.target.value)}
@@ -190,18 +203,18 @@ const MethodEdit = ({ userData, settings }) => {
                               />
                             </div>
                             <div className="single-profile">
-                              <label>Field Type</label>
+                              <label>{t('Field Type')}</label>
                               <select
                                 defaultValue={field?.type}
                                 onChange={(e) => handleFieldChange(index, 'type', e.target.value)}
                               >
-                                <option value="text">Text</option>
-                                <option value="email">Email</option>
-                                <option value="Number">Number</option>
+                                <option value="text">{t('Text')}</option>
+                                <option value="email">{t('Email')}</option>
+                                <option value="Number">{t('Number')}</option>
                               </select>
                             </div>
                             <div className="single-profile toggler">
-                              <label>Required</label>
+                              <label>{t('Required')}</label>
                               <Toggle
                                 defaultChecked={field?.required}
                                 onChange={(e) => handleFieldChange(index, 'required', e.target.checked)}
@@ -224,7 +237,7 @@ const MethodEdit = ({ userData, settings }) => {
                           onClick={() => addField()}
                         >
                           <BiPlusCircle />
-                          New Field
+                          {t('New Field')}
                         </button>
                       </div>
                     </div>
@@ -233,12 +246,12 @@ const MethodEdit = ({ userData, settings }) => {
                         <>
                           <Spinner animation="border" role="status" size="sm" />
                           {' '}
-                          Update Method
+                          {t('Update Method')}
                         </>
                       ) : (
                         <>
                           <BiErrorCircle />
-                          Update Method
+                          {t('Update Method')}
                         </>
                       )}
                     </button>

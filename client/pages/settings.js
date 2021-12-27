@@ -2,6 +2,7 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
 import Kyc from '../components/settings/Kyc';
 import LinkedAcc from '../components/settings/LinkedAcc';
@@ -15,12 +16,15 @@ import withAuth from '../hoc/withAuth';
 const Settings = ({ userData, settings }) => {
   const router = useRouter();
   const { tab } = router.query;
+  const { t } = useTranslation();
 
   return (
     <>
       <Head>
         <title>
-          Settings -
+          {t('Settings')}
+          {' '}
+          -
           {' '}
           {settings?.site?.param1}
         </title>
@@ -32,17 +36,17 @@ const Settings = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title="Settings"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa incidunt, qui, id consequatur unde debitis in fuga vel accusamus architecto hic error veritatis expedita recusandae aliquid cupiditate maxime placeat sit?"
+                title={t('Settings')}
+                description={t('Manage your account settings, KYC, linked accounts')}
                 defaultTab={parseInt(tab, 10)}
               >
-                <TabModule icon={<BiWallet />} name="Account Settings">
+                <TabModule icon={<BiWallet />} name={t('Account Settings')}>
                   <ProfileSettings userData={userData} />
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="KYC">
+                <TabModule icon={<BiErrorCircle />} name={t('KYC')}>
                   <Kyc />
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="Linked Accounts">
+                <TabModule icon={<BiErrorCircle />} name={t('Linked Accounts')}>
                   <LinkedAcc />
                 </TabModule>
               </UserTab>

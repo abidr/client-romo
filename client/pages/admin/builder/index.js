@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiListCheck, BiPlusCircle } from 'react-icons/bi';
 import AddPage from '../../../components/admin/builder/AddPage';
 import FooterMenuBuilder from '../../../components/admin/builder/FooterMenuBuilder';
@@ -16,6 +17,7 @@ import withAuthAdmin from '../../../hoc/withAuthAdmin';
 
 const Builder = ({ userData, settings }) => {
   const [active, setActive] = useState(false);
+  const { t } = useTranslation();
   return (
     <>
       <UserHeaderAdmin />
@@ -26,12 +28,12 @@ const Builder = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title="Site Builder"
-                description="Manage UI of your site from this panel."
+                title={t('Site Builder')}
+                description={t('Manage UI of your site from this panel')}
               >
-                <TabModule icon={<BiListCheck />} name="Pages">
+                <TabModule icon={<BiListCheck />} name={t('Pages')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Pages</h4>
+                    <h4 className="box-title">{t('Pages')}</h4>
                     <PageList />
                     <button
                       type="button"
@@ -39,43 +41,43 @@ const Builder = ({ userData, settings }) => {
                       onClick={() => setActive(true)}
                     >
                       <BiPlusCircle />
-                      Add New Page
+                      {t('Add New Page')}
                     </button>
                   </div>
                 </TabModule>
-                <TabModule icon={<BiListCheck />} name="Logo & Favicon">
+                <TabModule icon={<BiListCheck />} name={t('Logo & Favicon')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Logo & Favicon</h4>
+                    <h4 className="box-title">{t('Logo & Favicon')}</h4>
                     <LogoFavicon />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiListCheck />} name="Main Menu">
+                <TabModule icon={<BiListCheck />} name={t('Main Menu')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Main Menu</h4>
+                    <h4 className="box-title">{t('Main Menu')}</h4>
                     <MenuBuilder />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiListCheck />} name="Footer Menu">
+                <TabModule icon={<BiListCheck />} name={t('Footer Menu')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Footer Menu</h4>
+                    <h4 className="box-title">{t('Footer Menu')}</h4>
                     <FooterMenuBuilder />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiListCheck />} name="Services">
+                <TabModule icon={<BiListCheck />} name={t('Services')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Services</h4>
+                    <h4 className="box-title">{t('Services')}</h4>
                     <ServicesBuilder />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiListCheck />} name="Solutions">
+                <TabModule icon={<BiListCheck />} name={t('Solutions')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Solutions</h4>
+                    <h4 className="box-title">{t('Solutions')}</h4>
                     <SolutionsBuilder />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiListCheck />} name="FAQ">
+                <TabModule icon={<BiListCheck />} name={t('FAQ')}>
                   <div className="basic-card">
-                    <h4 className="box-title">FAQ</h4>
+                    <h4 className="box-title">{t('FAQ')}</h4>
                     <FaqBuilder />
                   </div>
                 </TabModule>

@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Spinner, Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiCheck, BiX } from 'react-icons/bi';
 import EditorHeader from '../../../components/admin/EditorHeader';
 import Loader from '../../../components/Loader';
@@ -18,6 +19,8 @@ const ExchangeEdit = ({ userData, settings }) => {
   const [actionLoader, setActionLoader] = useState(false);
 
   const { data, loading } = useExchangeById(id);
+
+  const { t } = useTranslation();
 
   const handleUpdate = (type) => {
     exchangeUpdate(id, type, setActionLoader);
@@ -40,13 +43,13 @@ const ExchangeEdit = ({ userData, settings }) => {
                   <Table striped hover className="dark-color details-table" responsive>
                     <tbody>
                       <tr>
-                        <td className="head-td">Status</td>
+                        <td className="head-td">{t('Status')}</td>
                         <td style={{ textTransform: 'capitalize' }}>
                           {data?.status}
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">Amount From</td>
+                        <td className="head-td">{t('Amount From')}</td>
                         <td>
                           {data?.amountFrom}
                           {' '}
@@ -54,7 +57,7 @@ const ExchangeEdit = ({ userData, settings }) => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">Amount To</td>
+                        <td className="head-td">{t('Amount To')}</td>
                         <td>
                           {data?.amountTo}
                           {' '}
@@ -62,13 +65,13 @@ const ExchangeEdit = ({ userData, settings }) => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">Exchange Rate</td>
+                        <td className="head-td">{t('Exchange Rate')}</td>
                         <td>
                           {data?.exchangeRate}
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">Fee</td>
+                        <td className="head-td">{t('Fee')}</td>
                         <td>
                           {data?.fee}
                           {' '}
@@ -76,7 +79,7 @@ const ExchangeEdit = ({ userData, settings }) => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">User Getting</td>
+                        <td className="head-td">{t('User Getting')}</td>
                         <td>
                           {data?.total}
                           {' '}
@@ -84,7 +87,7 @@ const ExchangeEdit = ({ userData, settings }) => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="head-td">User</td>
+                        <td className="head-td">{t('User')}</td>
                         <td>
                           {data?.user?.email}
                           {' '}
@@ -108,7 +111,7 @@ const ExchangeEdit = ({ userData, settings }) => {
                           disabled={actionLoader}
                         >
                           <BiCheck />
-                          Approve
+                          {t('Approve')}
                         </button>
                         <button
                           onClick={() => handleUpdate('decline')}
@@ -117,7 +120,7 @@ const ExchangeEdit = ({ userData, settings }) => {
                           disabled={actionLoader}
                         >
                           <BiX />
-                          Decline
+                          {t('Decline')}
                         </button>
                       </>
                     )}

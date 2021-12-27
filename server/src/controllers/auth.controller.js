@@ -157,7 +157,7 @@ exports.signIn = async (req, res) => {
   });
 
   if (!user) {
-    return res.status(404).json({
+    return res.status(401).json({
       message: 'Wrong Credentials',
     });
   }
@@ -177,7 +177,7 @@ exports.signIn = async (req, res) => {
   const matchPassword = await bcrypt.compare(req.body.password, user.password);
 
   if (!matchPassword) {
-    return res.status(404).json({
+    return res.status(401).json({
       message: 'Wrong Credentials',
     });
   }
@@ -187,6 +187,55 @@ exports.signIn = async (req, res) => {
   });
 
   res.cookie('token', token, {
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: process.env.SAMESITE,
+    secure: parseInt(process.env.COOKIESECURE, 10) === 1,
+  });
+
+  const {
+    id, name, email, phone, address, role,
+  } = user;
+
+  return res.json({
+    user: {
+      id,
+      name,
+      email,
+      phone,
+      address,
+      role,
+    },
+  });
+};
+
+exports.signInAdmin = async (req, res) => {
+  const user = await User.findOne({
+    where: {
+      email: req.body.email,
+      role: 0,
+    },
+  });
+
+  if (!user) {
+    return res.status(401).json({
+      message: 'Wrong Credentials',
+    });
+  }
+
+  const matchPassword = await bcrypt.compare(req.body.password, user.password);
+
+  if (!matchPassword) {
+    return res.status(401).json({
+      message: 'Wrong Credentials',
+    });
+  }
+
+  const token = jwt.sign({ id: user.id, role: user.role }, process.env.SECRET, {
+    expiresIn: '30d',
+  });
+
+  res.cookie('adminToken', token, {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     sameSite: process.env.SAMESITE,
@@ -280,5 +329,16 @@ exports.signOut = (req, res) => {
   });
   res.json({
     message: 'User signed out',
+  });
+};
+
+exports.signOutAdmin = (req, res) => {
+  res.clearCookie('adminToken', {
+    httpOnly: true,
+    sameSite: process.env.SAMESITE,
+    secure: parseInt(process.env.COOKIESECURE, 10) === 1,
+  });
+  res.json({
+    message: 'Admin signed out',
   });
 };

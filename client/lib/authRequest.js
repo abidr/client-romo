@@ -18,7 +18,7 @@ export async function signInRequest(params, setLoading) {
 export async function signInAdminRequest(params, setLoading) {
   setLoading(true);
   try {
-    const { data } = await request.post('/signin', { ...params });
+    const { data } = await request.post('/signin/admin', { ...params });
     setLoading(false);
     window.location.href = '/admin/dashboard';
     return data;
@@ -89,6 +89,17 @@ export async function signOutRequest() {
   try {
     const { data } = await request.get('/signout');
     window.location.href = '/';
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    console.log(data);
+  }
+  return null;
+}
+export async function signOutAdminRequest() {
+  try {
+    const { data } = await request.get('/signout/admin');
+    window.location.href = '/admin/login';
     return data;
   } catch (error) {
     const { data } = error.response;

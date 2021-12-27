@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle } from 'react-icons/bi';
 import ImageUploading from 'react-images-uploading';
 import Toggle from 'react-toggle';
@@ -22,6 +23,8 @@ const WalletEdit = ({ userData, settings }) => {
   const [active, setActive] = useState(true);
 
   const { data, loading } = useCurrencyById(id);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setActive(data?.active);
@@ -44,13 +47,13 @@ const WalletEdit = ({ userData, settings }) => {
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">
         <div className="container-fluid">
-          <EditorHeader name={`Currency #${id}`} />
+          <EditorHeader name={`${t('Currency')} #${id}`} />
           <div className="row">
             <div className="col-12 col-xl-6">
               <div className="basic-card">
                 <div className="settings-box">
                   <div className="single-profile">
-                    <label>Icon</label>
+                    <label>{t('Icon')}</label>
                     <ImageUploading
                       value={icon}
                       onChange={setIcon}
@@ -71,7 +74,7 @@ const WalletEdit = ({ userData, settings }) => {
                             onClick={onImageUpload}
                             {...dragProps}
                           >
-                            {imageList.length <= 0 ? 'Click or Drop Here (512x512px)' : (
+                            {imageList.length <= 0 ? `${t('Click or Drop Here')} (512x512px)` : (
                               imageList.map((image) => (
                                 <div key={image.dataURL} className="image-item">
                                   <img src={image.dataURL} alt="" width="100%" />
@@ -84,7 +87,7 @@ const WalletEdit = ({ userData, settings }) => {
                     </ImageUploading>
                   </div>
                   <div className="single-profile">
-                    <label>Active</label>
+                    <label>{t('Active')}</label>
                     <Toggle
                       checked={active}
                       onChange={(e) => setActive(e.target.checked)}
@@ -101,12 +104,12 @@ const WalletEdit = ({ userData, settings }) => {
                       <>
                         <Spinner animation="border" role="status" size="sm" />
                         {' '}
-                        Add Wallet
+                        {t('Add Wallet')}
                       </>
                     ) : (
                       <>
                         <BiErrorCircle />
-                        Add Wallet
+                        {t('Add Wallet')}
                       </>
                     )}
                   </button>

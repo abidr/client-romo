@@ -45,6 +45,7 @@ export default function SortableFaq({
         onHide={handleClose}
         size="lg"
         centered
+        animation={false}
       >
         <form>
           <Modal.Header closeButton>

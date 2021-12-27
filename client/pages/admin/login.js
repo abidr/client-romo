@@ -2,9 +2,9 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { useTranslation } from 'react-i18next';
-import checkAuthAccess from '../hoc/checkAuthAccess';
-import siteLogo from '../images/weblos-logo.png';
-import { signInRequest } from '../lib/authRequest';
+import checkAuthAccessAdmin from '../../hoc/checkAuthAccessAdmin';
+import siteLogo from '../../images/weblos-logo.png';
+import { signInAdminRequest } from '../../lib/authRequest';
 
 const Login = () => {
   const [email, setEmail] = useState();
@@ -17,7 +17,7 @@ const Login = () => {
     const params = {
       email, password,
     };
-    signInRequest(params, setLoading);
+    signInAdminRequest(params, setLoading);
   };
 
   return (
@@ -30,7 +30,7 @@ const Login = () => {
                 <div className="logo">
                   <a href="/"><img src={siteLogo.src} alt="sitename" /></a>
                 </div>
-                <h3>{t('Login Account')}</h3>
+                <h3>{t('Account Login')}</h3>
                 <form onSubmit={handleLogin}>
                   <input
                     className="box-input"
@@ -51,7 +51,6 @@ const Login = () => {
                   </button>
                 </form>
                 <div className="form-bottom mt-20">
-                  <Link href="/register"><a>{t('Create new account')}</a></Link>
                   <Link href="/forgot-password">
                     <a>
                       {t('Forget Password')}
@@ -68,4 +67,4 @@ const Login = () => {
   );
 };
 
-export default checkAuthAccess(Login);
+export default checkAuthAccessAdmin(Login);

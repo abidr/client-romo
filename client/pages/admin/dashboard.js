@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import Loader from '../../components/Loader';
 import SidebarAdmin from '../../components/SidebarAdmin';
 import UserHeaderAdmin from '../../components/UserHeaderAdmin';
@@ -13,6 +14,9 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 const Dashboard = ({ userData, settings }) => {
   const { data, loading } = useDashboard();
   const { data: userList, loading: userLoading } = useUsers(1, 10, 'active', '', '', 1);
+
+  const { t } = useTranslation();
+
   if (loading || userLoading) {
     return <Loader height="100vh" />;
   }
@@ -103,31 +107,31 @@ const Dashboard = ({ userData, settings }) => {
             <div className="col-xs-12 col">
               <div className="dashboard-tiles basic-card">
                 <h3>{data?.totalDeposits}</h3>
-                <p>Total Deposits</p>
+                <p>{t('Total Deposits')}</p>
               </div>
             </div>
             <div className="col-xs-12 col">
               <div className="dashboard-tiles basic-card">
                 <h3>{data?.totalWithdrawn}</h3>
-                <p>Total Withdraws</p>
+                <p>{t('Total Withdraws')}</p>
               </div>
             </div>
             <div className="col-xs-12 col">
               <div className="dashboard-tiles basic-card">
                 <h3>{data?.totalExchanges}</h3>
-                <p>Total Exchanges</p>
+                <p>{t('Total Exchanges')}</p>
               </div>
             </div>
             <div className="col-xs-12 col">
               <div className="dashboard-tiles basic-card">
                 <h3>{data?.totalUsers}</h3>
-                <p>Total Users</p>
+                <p>{t('Total Users')}</p>
               </div>
             </div>
             <div className="col-xs-12 col">
               <div className="dashboard-tiles basic-card">
                 <h3>{data?.totalMerchants}</h3>
-                <p>Total Merchants</p>
+                <p>{t('Total Merchants')}</p>
               </div>
             </div>
           </div>
@@ -135,7 +139,7 @@ const Dashboard = ({ userData, settings }) => {
             <div className="col">
               <div className="basic-card mb-20">
                 <h4 className="box-title">
-                  Last 7 Days
+                  {t('Last 7 Days')}
                 </h4>
                 <Chart options={options} series={series} type="area" height={350} />
               </div>
@@ -145,15 +149,15 @@ const Dashboard = ({ userData, settings }) => {
             <div className="col">
               <div className="basic-card">
                 <h4 className="box-title">
-                  Recently Registered
+                  {t('Recently Registered')}
                 </h4>
                 <Table striped hover className="dark-color" responsive>
                   <thead>
                     <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Email</th>
-                      <th scope="col">Status</th>
+                      <th scope="col">{t('ID')}</th>
+                      <th scope="col">{t('Name')}</th>
+                      <th scope="col">{t('Email')}</th>
+                      <th scope="col">{t('Status')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -177,7 +181,7 @@ const Dashboard = ({ userData, settings }) => {
                         </td>
                         <td>
                           <strong>
-                            {history?.active ? 'Active' : 'Inactive'}
+                            {history?.active ? t('Active') : t('Inactive')}
                           </strong>
                         </td>
                       </tr>

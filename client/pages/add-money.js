@@ -2,6 +2,7 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
 import DepositHistory from '../components/deposit/DepositHistory';
 import DepositStep from '../components/deposit/DepositStep';
@@ -17,6 +18,8 @@ const AddMoney = ({ userData, settings }) => {
   const router = useRouter();
   const { status } = router.query;
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (status === 'success' || status === 'failed') {
       setStep(3);
@@ -27,7 +30,9 @@ const AddMoney = ({ userData, settings }) => {
     <>
       <Head>
         <title>
-          Deposit -
+          {t('Deposit')}
+          {' '}
+          -
           {' '}
           {settings?.site?.param1}
         </title>
@@ -39,18 +44,18 @@ const AddMoney = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title="Add Money"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa incidunt, qui, id consequatur unde debitis in fuga vel accusamus architecto hic error veritatis expedita recusandae aliquid cupiditate maxime"
+                title={t('Add Money')}
+                description={t('Add money to your wallet by using different payment methods')}
               >
-                <TabModule icon={<BiWallet />} name="Deposit">
+                <TabModule icon={<BiWallet />} name={t('Deposit')}>
                   <div className="deposit-box basic-card">
                     <TransactionSteps step={step} />
                     <DepositStep step={step} setStep={setStep} status={status} />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="History">
+                <TabModule icon={<BiErrorCircle />} name={t('History')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Deposit Logs</h4>
+                    <h4 className="box-title">{t('Deposit Logs')}</h4>
                     <DepositHistory />
                   </div>
                 </TabModule>

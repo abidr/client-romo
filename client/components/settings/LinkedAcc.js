@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AiOutlinePlus } from 'react-icons/ai';
 import useLinkeds from '../../data/useLinkeds';
 import Loader from '../Loader';
@@ -12,18 +13,20 @@ const LinkedAcc = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const { t } = useTranslation();
+
   if (loading) {
     return <Loader height="200px" />;
   }
   return (
     <>
       <div className="basic-card">
-        <h4 className="box-title">Linked Accounts</h4>
+        <h4 className="box-title">{t('Linked Accounts')}</h4>
         <div className="settings-box">
           {data?.data?.map((account) => <LinkedCard account={account} key={account?.id} />)}
           <button type="button" className="bttn-mid btn-ylo" onClick={handleShow}>
             <AiOutlinePlus />
-            Link New Account
+            {t('Link New Account')}
           </button>
         </div>
       </div>

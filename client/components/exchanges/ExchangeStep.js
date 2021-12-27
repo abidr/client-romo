@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Image, Table } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
+import { useTranslation } from 'react-i18next';
 import {
   BiCheckCircle, BiLeftArrowAlt, BiRightArrowAlt
 } from 'react-icons/bi';
@@ -20,6 +21,7 @@ const ExchangeStep = ({ step, setStep, settings }) => {
   const [actionLoader, setActionLoader] = useState(false);
   const { data, loading } = useCurrency();
   const { data: walletData, loading: walletLoading } = useWallet();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setSelectedCurrency(data?.data[0]);
@@ -63,7 +65,7 @@ const ExchangeStep = ({ step, setStep, settings }) => {
       <>
         <form onSubmit={handleNext}>
           <div className="currency-amount">
-            <label htmlFor="currencySelector">From</label>
+            <label htmlFor="currencySelector">{t('From')}</label>
             <Dropdown id="currencySelector">
               <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
                 <Image src={selectedCurrency?.icon} rounded />
@@ -82,7 +84,8 @@ const ExchangeStep = ({ step, setStep, settings }) => {
                 ))}
               </Dropdown.Menu>
               <p className="available-balance">
-                Available Balance:
+                {t('Available Balance')}
+                :
                 <span>
                   {' '}
                   {currentBalance}
@@ -93,7 +96,7 @@ const ExchangeStep = ({ step, setStep, settings }) => {
             </Dropdown>
           </div>
           <div className="currency-amount">
-            <label htmlFor="currencyToSelector">To</label>
+            <label htmlFor="currencyToSelector">{t('To')}</label>
             <Dropdown id="currencyToSelector">
               <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
                 <Image src={selectedToCurrency?.icon} rounded />
@@ -112,7 +115,8 @@ const ExchangeStep = ({ step, setStep, settings }) => {
                 ))}
               </Dropdown.Menu>
               <p className="available-balance">
-                Available Balance:
+                {t('Available Balance')}
+                :
                 <span>
                   {' '}
                   {currentToBalance}
@@ -123,7 +127,7 @@ const ExchangeStep = ({ step, setStep, settings }) => {
             </Dropdown>
           </div>
           <div className="currency-amount">
-            <label>Amount</label>
+            <label>{t('Amount')}</label>
             <input
               onChange={(e) => setAmount(e.target.value)}
               value={amount}
@@ -137,7 +141,7 @@ const ExchangeStep = ({ step, setStep, settings }) => {
               className="bttn-mid btn-ylo"
             >
               <BiRightArrowAlt />
-              Next
+              {t('Next')}
             </button>
           </div>
         </form>
@@ -147,11 +151,11 @@ const ExchangeStep = ({ step, setStep, settings }) => {
     return (
       <>
         <div className="transaction-review">
-          <h4>Review Details</h4>
+          <h4>{t('Review Details')}</h4>
           <Table striped hover responsive className="dark-color">
             <tbody>
               <tr>
-                <td>Exchange Rate</td>
+                <td>{t('Exchange Rate')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {exchangeRate}
                   {' '}
@@ -159,7 +163,7 @@ const ExchangeStep = ({ step, setStep, settings }) => {
                 </td>
               </tr>
               <tr>
-                <td>Exchange From</td>
+                <td>{t('Exchange From')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount}
                   {' '}
@@ -167,7 +171,7 @@ const ExchangeStep = ({ step, setStep, settings }) => {
                 </td>
               </tr>
               <tr>
-                <td>Exchange To</td>
+                <td>{t('Exchange To')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amountTo}
                   {' '}
@@ -176,7 +180,7 @@ const ExchangeStep = ({ step, setStep, settings }) => {
               </tr>
               <tr>
                 <td>
-                  Fee
+                  {t('Fee')}
                 </td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {fee}
@@ -185,7 +189,7 @@ const ExchangeStep = ({ step, setStep, settings }) => {
                 </td>
               </tr>
               <tr>
-                <td>You Get</td>
+                <td>{t('You Get')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {total}
                   {' '}
@@ -202,7 +206,7 @@ const ExchangeStep = ({ step, setStep, settings }) => {
             className="bttn-mid btn-grey mr-10"
           >
             <BiLeftArrowAlt />
-            Back
+            {t('Back')}
           </button>
           <button
             type="button"
@@ -214,12 +218,12 @@ const ExchangeStep = ({ step, setStep, settings }) => {
               <>
                 <Spinner animation="border" role="status" size="sm" />
                 {' '}
-                Processing
+                {t('Processing')}
               </>
             ) : (
               <>
                 <BiRightArrowAlt />
-                Exchange
+                {t('Exchange')}
               </>
             )}
           </button>
@@ -231,18 +235,21 @@ const ExchangeStep = ({ step, setStep, settings }) => {
       <div className="transaction-success">
         <BiCheckCircle color="green" size={70} />
         <h2>
-          Exchange Request Submitted
+          {t('Exchange Request Submitted')}
         </h2>
         <p>
-          We will review your exchange request and add the fund to your desired wallet,
-          please allow upto 24 hours for us to review.
+          {t('We will review your exchange request and add the fund to your desired wallet')}
+          ,
+          {' '}
+          {t('please allow upto 24 hours for us to review')}
+          .
         </p>
         <button
           type="button"
           onClick={() => setStep(1)}
           className="bttn-mid btn-ylo"
         >
-          Make Another Exchange
+          {t('Make Another Exchange')}
         </button>
       </div>
     );

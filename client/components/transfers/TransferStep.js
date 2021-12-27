@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Image, Table } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
+import { useTranslation } from 'react-i18next';
 import {
   BiCheckCircle, BiLeftArrowAlt, BiRightArrowAlt
 } from 'react-icons/bi';
@@ -19,6 +20,7 @@ const TransferStep = ({ step, setStep }) => {
   const [actionLoader, setActionLoader] = useState(false);
   const { data, loading } = useCurrency();
   const { data: walletData, loading: walletLoading } = useWallet();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setSelectedCurrency(data?.data[0]);
@@ -51,7 +53,7 @@ const TransferStep = ({ step, setStep }) => {
       <>
         <form onSubmit={handleNext}>
           <div className="currency-amount">
-            <label htmlFor="currencySelector">Wallet</label>
+            <label htmlFor="currencySelector">{t('Wallet')}</label>
             <Dropdown id="currencySelector">
               <Dropdown.Toggle className="bttn-small btn-emt" variant="link">
                 <Image src={selectedCurrency?.icon} rounded />
@@ -70,7 +72,8 @@ const TransferStep = ({ step, setStep }) => {
                 ))}
               </Dropdown.Menu>
               <p className="available-balance">
-                Available Balance:
+                {t('Available Balance')}
+                :
                 <span>
                   {' '}
                   {currentBalance}
@@ -81,7 +84,7 @@ const TransferStep = ({ step, setStep }) => {
             </Dropdown>
           </div>
           <div className="currency-amount">
-            <label>Amount</label>
+            <label>{t('Amount')}</label>
             <input
               onChange={(e) => setAmount(e.target.value)}
               value={amount}
@@ -91,7 +94,11 @@ const TransferStep = ({ step, setStep }) => {
           </div>
 
           <div className="currency-amount">
-            <label>Recipient&apos;s Email</label>
+            <label>
+              {t('Recipients')}
+              {' '}
+              {t('Email')}
+            </label>
             <input
               onChange={(e) => setEmail(e.target.value)}
               value={email}
@@ -106,7 +113,7 @@ const TransferStep = ({ step, setStep }) => {
               className="bttn-mid btn-ylo"
             >
               <BiRightArrowAlt />
-              Next
+              {t('Next')}
             </button>
           </div>
         </form>
@@ -116,17 +123,17 @@ const TransferStep = ({ step, setStep }) => {
     return (
       <>
         <div className="transaction-review">
-          <h4>Review Details</h4>
+          <h4>{t('Review Details')}</h4>
           <Table striped hover responsive className="dark-color">
             <tbody>
               <tr>
-                <td>Recipient</td>
+                <td>{t('Recipient')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {email}
                 </td>
               </tr>
               <tr>
-                <td>Amount</td>
+                <td>{t('Amount')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount}
                   {' '}
@@ -143,7 +150,7 @@ const TransferStep = ({ step, setStep }) => {
             className="bttn-mid btn-grey mr-10"
           >
             <BiLeftArrowAlt />
-            Back
+            {t('Back')}
           </button>
           <button
             type="button"
@@ -155,12 +162,12 @@ const TransferStep = ({ step, setStep }) => {
               <>
                 <Spinner animation="border" role="status" size="sm" />
                 {' '}
-                Processing
+                {t('Processing')}
               </>
             ) : (
               <>
                 <BiRightArrowAlt />
-                Send
+                {t('Send')}
               </>
             )}
           </button>
@@ -172,14 +179,14 @@ const TransferStep = ({ step, setStep }) => {
       <div className="transaction-success">
         <BiCheckCircle color="green" size={70} />
         <h2>
-          Transfer Successful
+          {t('Transfer Successful')}
         </h2>
         <p>
           {amount}
           {' '}
           {selectedCurrency?.symbol}
           {' '}
-          sent to
+          {t('sent to')}
           {' '}
           {email}
         </p>
@@ -188,7 +195,7 @@ const TransferStep = ({ step, setStep }) => {
           onClick={() => setStep(1)}
           className="bttn-mid btn-ylo"
         >
-          Make Another Transfer
+          {t('Make Another Transfer')}
         </button>
       </div>
     );

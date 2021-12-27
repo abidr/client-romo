@@ -1,11 +1,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle } from 'react-icons/bi';
 import profileUpdate from '../../lib/profileUpdate';
 
 const ProfileSettings = ({ userData }) => {
   const [actionLoader, setActionLoader] = useState(false);
+
+  const { t } = useTranslation();
+
   const handleUpdate = (e) => {
     e.preventDefault();
     const params = {
@@ -19,32 +23,32 @@ const ProfileSettings = ({ userData }) => {
 
   return (
     <div className="basic-card">
-      <h3 className="box-title">Account Settings</h3>
+      <h3 className="box-title">{t('Account Settings')}</h3>
       <div className="settings-box">
         <form onSubmit={handleUpdate}>
           <div className="single-profile">
-            <label htmlFor="fullName">Full Name</label>
-            <input id="fullName" name="fullName" type="text" placeholder="Your Full Name" defaultValue={userData?.name} />
+            <label htmlFor="fullName">{t('Full Name')}</label>
+            <input id="fullName" name="fullName" type="text" placeholder={t('Your Full Name')} defaultValue={userData?.name} />
           </div>
           <div className="single-profile">
-            <label htmlFor="phone">Phone</label>
-            <input id="phone" name="phone" type="text" placeholder="Your Phone Number" defaultValue={userData?.phone} />
+            <label htmlFor="phone">{t('Phone')}</label>
+            <input id="phone" name="phone" type="text" placeholder={t('Your Phone Number')} defaultValue={userData?.phone} />
           </div>
           <div className="single-profile">
-            <label htmlFor="address">Address</label>
-            <input id="address" name="address" type="text" placeholder="Your Address" defaultValue={userData?.address} />
+            <label htmlFor="address">{t('Address')}</label>
+            <input id="address" name="address" type="text" placeholder={t('Your Address')} defaultValue={userData?.address} />
           </div>
           <div className="single-profile">
-            <label htmlFor="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="Your Email Address" defaultValue={userData?.email} disabled />
+            <label htmlFor="email">{t('Email')}</label>
+            <input id="email" name="email" type="email" placeholder={t('Your Email Address')} defaultValue={userData?.email} disabled />
           </div>
           <div className="single-profile">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('Password')}</label>
             <input
               id="password"
               name="password"
               type="password"
-              placeholder="Leave blank to keep unchanged"
+              placeholder={t('Leave blank to keep unchanged')}
               autoComplete="wallet-password-change"
             />
           </div>
@@ -53,12 +57,12 @@ const ProfileSettings = ({ userData }) => {
               <>
                 <Spinner animation="border" role="status" size="sm" />
                 {' '}
-                Update Profile
+                {t('Update Profile')}
               </>
             ) : (
               <>
                 <BiErrorCircle />
-                Update Profile
+                {t('Update Profile')}
               </>
             )}
           </button>

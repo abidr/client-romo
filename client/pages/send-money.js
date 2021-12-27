@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
 import Sidebar from '../components/Sidebar';
 import TabModule from '../components/tabs/TabModule';
@@ -13,11 +14,14 @@ import withAuth from '../hoc/withAuth';
 
 const Send = ({ userData, settings }) => {
   const [step, setStep] = useState(1);
+  const { t } = useTranslation();
   return (
     <>
       <Head>
         <title>
-          Send Money -
+          {t('Send Money')}
+          {' '}
+          -
           {' '}
           {settings?.site?.param1}
         </title>
@@ -29,24 +33,24 @@ const Send = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title="Send Money"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa incidunt, qui, id consequatur unde debitis in fuga vel accusamus architecto hic error veritatis expedita recusandae aliquid cupiditate maxime"
+                title={t('Send Money')}
+                description={t('Send money to other users from your wallet')}
               >
-                <TabModule icon={<BiWallet />} name="Send Money">
+                <TabModule icon={<BiWallet />} name={t('Send Money')}>
                   <div className="deposit-box basic-card">
                     <TransactionSteps step={step} />
                     <TransferStep step={step} setStep={setStep} />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="Send Logs">
+                <TabModule icon={<BiErrorCircle />} name={t('Send Logs')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Send Logs</h4>
+                    <h4 className="box-title">{t('Send Logs')}</h4>
                     <SendHistory />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="Receive Logs">
+                <TabModule icon={<BiErrorCircle />} name={t('Receive Logs')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Receive Logs</h4>
+                    <h4 className="box-title">{t('Receive Logs')}</h4>
                     <ReceiveHistory />
                   </div>
                 </TabModule>

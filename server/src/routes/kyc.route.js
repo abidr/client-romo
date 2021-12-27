@@ -3,16 +3,16 @@ const express = require('express');
 const router = express.Router();
 const multerInstance = require('../config/multer.config');
 
-const { withAuth, isAdmin } = require('../middlewares/auth.middleware');
+const { withAuth, isAdmin, withAuthAdmin } = require('../middlewares/auth.middleware');
 
 const {
   getKycByUser, getAllKyc, createKyc, acceptKyc, declineKyc,
   resubmitKyc, getKycByUserId,
 } = require('../controllers/kyc.controller');
 
-router.get('/kyc', withAuth, isAdmin, getAllKyc);
+router.get('/kyc', withAuthAdmin, isAdmin, getAllKyc);
 router.get('/kyc/me', withAuth, getKycByUser);
-router.get('/kyc/:id', withAuth, isAdmin, getKycByUserId);
+router.get('/kyc/:id', withAuthAdmin, isAdmin, getKycByUserId);
 router.post(
   '/kyc',
   withAuth,
@@ -24,7 +24,7 @@ router.post(
   createKyc,
 );
 router.post('/kyc/resubmit', withAuth, resubmitKyc);
-router.put('/kyc/:id/accept', withAuth, isAdmin, acceptKyc);
-router.put('/kyc/:id/decline', withAuth, isAdmin, declineKyc);
+router.put('/kyc/:id/accept', withAuthAdmin, isAdmin, acceptKyc);
+router.put('/kyc/:id/decline', withAuthAdmin, isAdmin, declineKyc);
 
 module.exports = router;

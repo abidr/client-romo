@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle } from 'react-icons/bi';
 import ImageUploading from 'react-images-uploading';
 import Toggle from 'react-toggle';
@@ -20,6 +21,8 @@ const WalletNew = ({ userData, settings }) => {
   const [active, setActive] = useState(true);
 
   const { data, loading } = useCurrencyList();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setCurrency(data?.[0]);
@@ -57,11 +60,11 @@ const WalletNew = ({ userData, settings }) => {
               <div className="basic-card">
                 <div className="settings-box">
                   <label htmlFor="curSelector">
-                    Currency
+                    {t('Currency')}
                   </label>
                   <Dropdown id="curSelector" className="mt-10 mb-20">
                     <Dropdown.Toggle className="bttn-small btn-emt dropdown-method" variant="link">
-                      {currency?.symbol || 'Please Select'}
+                      {currency?.symbol || t('Please Select')}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       {data?.map((wallet) => (
@@ -75,7 +78,7 @@ const WalletNew = ({ userData, settings }) => {
                     </Dropdown.Menu>
                   </Dropdown>
                   <div className="single-profile">
-                    <label>Icon</label>
+                    <label>{t('Icon')}</label>
                     <ImageUploading
                       value={icon}
                       onChange={setIcon}
@@ -96,7 +99,7 @@ const WalletNew = ({ userData, settings }) => {
                             onClick={onImageUpload}
                             {...dragProps}
                           >
-                            {imageList.length <= 0 ? 'Click or Drop Here (512x512px)' : (
+                            {imageList.length <= 0 ? `${t('Click or Drop Here')} (512x512px)` : (
                               imageList.map((image) => (
                                 <div key={image.dataURL} className="image-item">
                                   <img src={image.dataURL} alt="" width="100%" />
@@ -109,14 +112,14 @@ const WalletNew = ({ userData, settings }) => {
                     </ImageUploading>
                   </div>
                   <div className="single-profile">
-                    <label>Crypto</label>
+                    <label>{t('Crypto')}</label>
                     <Toggle
                       checked={crypto}
                       onChange={(e) => setCrypto(e.target.checked)}
                     />
                   </div>
                   <div className="single-profile">
-                    <label>Active</label>
+                    <label>{t('Active')}</label>
                     <Toggle
                       checked={active}
                       onChange={(e) => setActive(e.target.checked)}
@@ -127,12 +130,12 @@ const WalletNew = ({ userData, settings }) => {
                       <>
                         <Spinner animation="border" role="status" size="sm" />
                         {' '}
-                        Add Wallet
+                        {t('Add Wallet')}
                       </>
                     ) : (
                       <>
                         <BiErrorCircle />
-                        Add Wallet
+                        {t('Add Wallet')}
                       </>
                     )}
                   </button>

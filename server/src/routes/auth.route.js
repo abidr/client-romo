@@ -4,10 +4,12 @@ const router = express.Router();
 const { check } = require('express-validator');
 
 const {
-  signUp, signIn, signOut, forgotPassword, resetInit, activateAccount,
+  signUp, signIn, signOut, forgotPassword, resetInit, activateAccount, signInAdmin, signOutAdmin,
 } = require('../controllers/auth.controller');
 
-const { withAuth, checkAuth } = require('../middlewares/auth.middleware');
+const {
+  withAuth, withAuthAdmin, checkAuth, checkAuthAdmin,
+} = require('../middlewares/auth.middleware');
 
 // Authentication
 router.post(
@@ -30,6 +32,15 @@ router.post(
 );
 
 router.post(
+  '/signin/admin',
+  [
+    check('email', 'Email is required').isEmail(),
+    check('password', 'Password field is required').isLength({ min: 8 }),
+  ],
+  signInAdmin,
+);
+
+router.post(
   '/forgot',
   [
     check('email', 'Email is required').isEmail(),
@@ -48,6 +59,8 @@ router.post(
 router.post('/activate', activateAccount);
 
 router.get('/checkauth', withAuth, checkAuth);
+router.get('/checkauth/admin', withAuthAdmin, checkAuthAdmin);
 router.get('/signout', signOut);
+router.get('/signout/admin', signOutAdmin);
 
 module.exports = router;

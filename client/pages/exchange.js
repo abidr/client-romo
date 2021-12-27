@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import Head from 'next/head';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
 import ExchangeHistory from '../components/exchanges/ExchangeHistory';
 import ExchangeStep from '../components/exchanges/ExchangeStep';
@@ -13,11 +14,14 @@ import withAuth from '../hoc/withAuth';
 
 const Exchange = ({ userData, settings }) => {
   const [step, setStep] = useState(1);
+  const { t } = useTranslation();
   return (
     <>
       <Head>
         <title>
-          Exchange -
+          {t('Exchange')}
+          {' '}
+          -
           {' '}
           {settings?.site?.param1}
         </title>
@@ -29,18 +33,18 @@ const Exchange = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title="Exchange Money"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa incidunt, qui, id consequatur unde debitis in fuga vel accusamus architecto hic error veritatis expedita recusandae aliquid cupiditate maxime placeat sit"
+                title={t('Exchange Money')}
+                description={t('Exchange money from one wallet to another')}
               >
-                <TabModule icon={<BiWallet />} name="Exchange">
+                <TabModule icon={<BiWallet />} name={t('Exchange')}>
                   <div className="deposit-box basic-card">
                     <TransactionSteps step={step} />
                     <ExchangeStep step={step} setStep={setStep} settings={settings} />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="Exchange Logs">
+                <TabModule icon={<BiErrorCircle />} name={t('Exchange Logs')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Exchange Logs</h4>
+                    <h4 className="box-title">{t('Exchange Logs')}</h4>
                     <ExchangeHistory />
                   </div>
                 </TabModule>

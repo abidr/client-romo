@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
 import PaymentHistory from '../components/payment/PaymentHistory';
 import PaymentStep from '../components/payment/PaymentStep';
@@ -12,11 +13,14 @@ import withAuth from '../hoc/withAuth';
 
 const MakePayment = ({ userData, settings }) => {
   const [step, setStep] = useState(1);
+  const { t } = useTranslation();
   return (
     <>
       <Head>
         <title>
-          Payment -
+          {t('Payment')}
+          {' '}
+          -
           {' '}
           {settings?.site?.param1}
         </title>
@@ -28,18 +32,18 @@ const MakePayment = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title="Make Payment"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa incidunt, qui, id consequatur unde debitis in fuga vel accusamus architecto hic error veritatis expedita recusandae aliquid cupiditate maxime"
+                title={t('Make Payment')}
+                description={t('Make payment to different merchants')}
               >
-                <TabModule icon={<BiWallet />} name="Make Payment">
+                <TabModule icon={<BiWallet />} name={t('Make Payment')}>
                   <div className="deposit-box basic-card">
                     <TransactionSteps step={step} />
                     <PaymentStep step={step} setStep={setStep} />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="Payment Logs">
+                <TabModule icon={<BiErrorCircle />} name={t('Payment Logs')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Payment Logs</h4>
+                    <h4 className="box-title">{t('Payment Logs')}</h4>
                     <PaymentHistory />
                   </div>
                 </TabModule>

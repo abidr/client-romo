@@ -8,7 +8,7 @@ import useSettings from '../data/useSettings';
 const withAuthAdmin = (WrappedComponent) => (props) => {
   const Router = useRouter();
 
-  const { data, loading } = useCheckAuth();
+  const { data, loading } = useCheckAuth(true);
   const { data: userData, loading: userLoading } = useProfile();
   const { data: settings, loading: settingsLoading } = useSettings();
 
@@ -19,7 +19,7 @@ const withAuthAdmin = (WrappedComponent) => (props) => {
   if (data?.isAdmin) {
     return <WrappedComponent {...props} userData={userData} settings={settings} />;
   }
-  Router.replace('/login');
+  Router.replace('/admin/login');
   return null;
 };
 

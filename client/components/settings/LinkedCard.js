@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { confirmAlert } from 'react-confirm-alert';
+import { useTranslation } from 'react-i18next';
 import { BiShow, BiTrash } from 'react-icons/bi';
 import { removeLinked } from '../../lib/linkedUpdate';
 
@@ -11,17 +12,19 @@ const LinkedCard = ({ account }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const { t } = useTranslation();
+
   const deleteInit = () => {
     confirmAlert({
       title: `${account?.method?.name} - ${account?.method?.currency}`,
-      message: 'Are you sure to remove your linked account?',
+      message: t('Are you sure to remove your linked account?'),
       buttons: [
         {
-          label: 'Yes',
+          label: t('Yes'),
           onClick: () => removeLinked(account?.id)
         },
         {
-          label: 'No',
+          label: t('No'),
         }
       ]
     });
@@ -56,6 +59,7 @@ const LinkedCard = ({ account }) => {
         size="lg"
         centered
         scrollable
+        animation={false}
       >
         <Modal.Header closeButton>
           <Modal.Title>
@@ -65,7 +69,7 @@ const LinkedCard = ({ account }) => {
             {account?.method?.currency}
             )
             {' '}
-            Info
+            {t('Info')}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -84,7 +88,10 @@ const LinkedCard = ({ account }) => {
               </div>
             ))}
           </div>
-          <p>To update information please remove the linked account first then add it again.</p>
+          <p>
+            {t('To update information please remove the linked account first then add it again')}
+            .
+          </p>
         </Modal.Body>
       </Modal>
     </>

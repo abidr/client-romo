@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   BiAnalyse, BiErrorCircle, BiPlusCircle, BiWallet
 } from 'react-icons/bi';
@@ -13,6 +14,7 @@ import withAuthAdmin from '../../../hoc/withAuthAdmin';
 
 const Withdraws = ({ userData, settings }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   return (
     <>
       <UserHeaderAdmin />
@@ -22,24 +24,24 @@ const Withdraws = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title="Withdraws"
-                description="Manage all withdraws of your users from this panel."
+                title={t('Withdraws')}
+                description={t('Manage all withdraws of your users from this panel')}
               >
-                <TabModule icon={<BiAnalyse />} name="Pending">
+                <TabModule icon={<BiAnalyse />} name={t('Pending')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Pending Withdraws</h4>
+                    <h4 className="box-title">{t('Pending Withdraws')}</h4>
                     <WithdrawHistoryAdmin pending />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="History">
+                <TabModule icon={<BiErrorCircle />} name={t('History')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Withdraw History</h4>
+                    <h4 className="box-title">{t('Withdraw History')}</h4>
                     <WithdrawHistoryAdmin />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiWallet />} name="Methods">
+                <TabModule icon={<BiWallet />} name={t('Methods')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Withdraw Methods</h4>
+                    <h4 className="box-title">{t('Withdraw Methods')}</h4>
                     <WithdrawMethodsList />
                     <button
                       type="button"
@@ -47,7 +49,7 @@ const Withdraws = ({ userData, settings }) => {
                       onClick={() => router.push('/admin/withdraws/method/new')}
                     >
                       <BiPlusCircle />
-                      Add New Method
+                      {t('Add New Method')}
                     </button>
                   </div>
                 </TabModule>

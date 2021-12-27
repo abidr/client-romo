@@ -2,6 +2,7 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
 import RequestPayment from '../components/merchant/RequestPayment';
 import StoreSettings from '../components/merchant/StoreSettings';
@@ -15,12 +16,15 @@ import withAuth from '../hoc/withAuth';
 const Merchant = ({ userData, settings }) => {
   const router = useRouter();
   const { tab } = router.query;
+  const { t } = useTranslation();
 
   return (
     <>
       <Head>
         <title>
-          Merchant -
+          {t('Merchant')}
+          {' '}
+          -
           {' '}
           {settings?.site?.param1}
         </title>
@@ -32,20 +36,20 @@ const Merchant = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title="Merchant"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa incidunt, qui, id consequatur unde debitis in fuga vel accusamus architecto hic error veritatis expedita recusandae aliquid cupiditate maxime placeat sit?"
+                title={t('Merchant')}
+                description={t('Manage your merchant settings and request payment')}
                 defaultTab={parseInt(tab, 10)}
               >
                 <TabModule icon={<BiWallet />} name="Request Payment">
                   <RequestPayment />
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="Recent Transactions">
+                <TabModule icon={<BiErrorCircle />} name={t('Recent Transactions')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Recent Transactions</h4>
+                    <h4 className="box-title">{t('Recent Transactions')}</h4>
                     <TransactionHistory />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="Store Settings">
+                <TabModule icon={<BiErrorCircle />} name={t('Store Settings')}>
                   <StoreSettings userData={userData} />
                 </TabModule>
               </UserTab>

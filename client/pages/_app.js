@@ -6,6 +6,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'react-toggle/style.css';
 import { SWRConfig } from 'swr';
 import request from '../config/api';
+import '../i18n/i18n';
 import '../styles/global.scss';
 
 Router.events.on('routeChangeStart', () => NProgress.start());

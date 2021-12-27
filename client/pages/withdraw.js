@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import Head from 'next/head';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
 import Sidebar from '../components/Sidebar';
 import TabModule from '../components/tabs/TabModule';
@@ -13,11 +14,14 @@ import withAuth from '../hoc/withAuth';
 
 const Withdraw = ({ userData, settings }) => {
   const [step, setStep] = useState(1);
+  const { t } = useTranslation();
   return (
     <>
       <Head>
         <title>
-          Withdraw -
+          {t('Withdraw')}
+          {' '}
+          -
           {' '}
           {settings?.site?.param1}
         </title>
@@ -29,18 +33,18 @@ const Withdraw = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title="Withdraw Money"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa incidunt, qui, id consequatur unde debitis in fuga vel accusamus architecto hic error veritatis expedita recusandae aliquid cupiditate maxime placeat sit?"
+                title={t('Withdraw Money')}
+                description={t('Withdraw funds to your desired method')}
               >
-                <TabModule icon={<BiWallet />} name="Withdraw">
+                <TabModule icon={<BiWallet />} name={t('Withdraw')}>
                   <div className="deposit-box basic-card">
                     <TransactionSteps step={step} />
                     <WithdrawStep step={step} setStep={setStep} />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name="Withdraw Logs">
+                <TabModule icon={<BiErrorCircle />} name={t('Withdraw Logs')}>
                   <div className="basic-card">
-                    <h4 className="box-title">Withdraw Logs</h4>
+                    <h4 className="box-title">{t('Withdraw Logs')}</h4>
                     <WithdrawHistory />
                   </div>
                 </TabModule>

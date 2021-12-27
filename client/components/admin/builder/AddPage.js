@@ -24,6 +24,7 @@ const AddPage = ({ active, setActive }) => {
       onHide={handleClose}
       size="lg"
       centered
+      animation={false}
     >
       <form onSubmit={handleSubmit}>
         <Modal.Header closeButton>

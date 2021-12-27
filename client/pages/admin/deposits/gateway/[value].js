@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle } from 'react-icons/bi';
 import Toggle from 'react-toggle';
 import EditorHeader from '../../../../components/admin/EditorHeader';
@@ -19,6 +20,8 @@ const GatewayEdit = ({ userData, settings }) => {
   const [actionLoader, setActionLoader] = useState(false);
 
   const { data, loading } = useGatewayByValue(value);
+
+  const { t } = useTranslation();
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -50,20 +53,20 @@ const GatewayEdit = ({ userData, settings }) => {
                   <form onSubmit={handleUpdate}>
                     {data?.fields?.apiKey && (
                     <div className="single-profile">
-                      <label htmlFor="apiKey">API Key</label>
-                      <input id="apiKey" name="apiKey" type="text" placeholder="API Key" defaultValue={data?.data?.apiKey} />
+                      <label htmlFor="apiKey">{t('API Key')}</label>
+                      <input id="apiKey" name="apiKey" type="text" placeholder={t('API Key')} defaultValue={data?.data?.apiKey} />
                     </div>
                     )}
                     {data?.fields?.secretKey && (
                     <div className="single-profile">
-                      <label htmlFor="secretKey">Secret Key</label>
-                      <input id="secretKey" name="secretKey" type="text" placeholder="Secret Key" defaultValue={data?.data?.secretKey} />
+                      <label htmlFor="secretKey">{t('Secret Key')}</label>
+                      <input id="secretKey" name="secretKey" type="text" placeholder={t('Secret Key')} defaultValue={data?.data?.secretKey} />
                     </div>
                     )}
                     {data?.fields?.email && (
                     <div className="single-profile">
-                      <label htmlFor="emailGateway">Email</label>
-                      <input id="emailGateway" name="email" type="email" placeholder="Email" defaultValue={data?.data?.email} />
+                      <label htmlFor="emailGateway">{t('Email')}</label>
+                      <input id="emailGateway" name="email" type="email" placeholder={t('Email')} defaultValue={data?.data?.email} />
                     </div>
                     )}
                     {data?.fields?.ex1?.status && (
@@ -79,14 +82,14 @@ const GatewayEdit = ({ userData, settings }) => {
                     </div>
                     )}
                     <div className="single-profile">
-                      <label>Active</label>
+                      <label>{t('Active')}</label>
                       <Toggle
                         defaultChecked={data?.data?.active}
                         name="active"
                       />
                     </div>
                     <div className="single-profile">
-                      <label>Supported Currencies</label>
+                      <label>{t('Supported Currencies')}</label>
                       <strong>
                         {data?.fields?.supportedCurrencies?.join(', ')}
                       </strong>
@@ -96,12 +99,12 @@ const GatewayEdit = ({ userData, settings }) => {
                         <>
                           <Spinner animation="border" role="status" size="sm" />
                           {' '}
-                          Update Gateway
+                          {t('Update Gateway')}
                         </>
                       ) : (
                         <>
                           <BiErrorCircle />
-                          Update Gateway
+                          {t('Update Gateway')}
                         </>
                       )}
                     </button>

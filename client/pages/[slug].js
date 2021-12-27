@@ -2,6 +2,7 @@ import axios from 'axios';
 import absoluteUrl from 'next-absolute-url';
 import Head from 'next/head';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ComponentPicker from '../components/ui/editor/ComponentPicker';
 import Footer from '../components/ui/Footer';
 import SiteHeader from '../components/ui/SiteHeader';
@@ -9,11 +10,12 @@ import SiteHeader from '../components/ui/SiteHeader';
 export default function Page({
   pageData, logo, site, mainMenu, footerMenu, apiUrl, info
 }) {
+  const { t } = useTranslation();
   return (
     <div>
       <Head>
         <title>
-          {pageData?.name || '404 Not Found'}
+          {pageData?.name || t('404 Not Found')}
           {' '}
           -
           {' '}
