@@ -8,3 +8,11 @@ export default function useProfile() {
     error,
   };
 }
+export function useProfileAdmin() {
+  const { data, error } = useSWR('/users/me/admin');
+  return {
+    data,
+    loading: !data && !error,
+    error,
+  };
+}

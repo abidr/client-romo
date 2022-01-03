@@ -30,12 +30,12 @@ export async function signInAdminRequest(params, setLoading) {
   return null;
 }
 
-export async function signUpRequest(params, setLoading) {
+export async function signUpRequest(params, setLoading, setSuccess) {
   setLoading(true);
   try {
     const { data } = await request.post('/signup', { ...params });
     setLoading(false);
-    window.location.href = '/success';
+    setSuccess(true);
     return data;
   } catch (error) {
     const { data } = error.response;
@@ -45,12 +45,12 @@ export async function signUpRequest(params, setLoading) {
   return null;
 }
 
-export async function forgotRequest(params, setLoading) {
+export async function forgotRequest(params, setLoading, setSuccess) {
   setLoading(true);
   try {
     const { data } = await request.post('/forgot', { ...params });
     setLoading(false);
-    window.location.href = '/reset-success';
+    setSuccess(true);
     return data;
   } catch (error) {
     const { data } = error.response;

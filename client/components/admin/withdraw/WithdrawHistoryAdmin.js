@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { FiEdit } from 'react-icons/fi';
 import Pagination from 'react-js-pagination';
 import { useWithdrawsAdmin } from '../../../data/useWithdraws';
@@ -16,26 +17,37 @@ const WithdrawHistoryAdmin = ({ pending }) => {
 
   const { data, loading } = useWithdrawsAdmin(page, perPage, status, depId);
 
+  const { t } = useTranslation();
+
   return (
     <>
       <div className="filter">
         <div className="filter-box">
-          <p>ID </p>
+          <p>
+            {t('ID')}
+            {' '}
+          </p>
           <input type="text" value={depId} onChange={(e) => setDepId(e.target.value)} />
         </div>
         {!pending && (
         <div className="filter-box">
-          <p>Status </p>
+          <p>
+            {t('Status')}
+            {' '}
+          </p>
           <select value={status} name="status" onChange={(e) => setStatus(e.target.value)}>
-            <option value="all">All</option>
-            <option value="pending">Pending</option>
-            <option value="success">Success</option>
-            <option value="failed">Failed</option>
+            <option value="all">{t('All')}</option>
+            <option value="pending">{t('Pending')}</option>
+            <option value="success">{t('Success')}</option>
+            <option value="failed">{t('Failed')}</option>
           </select>
         </div>
         )}
         <div className="filter-box">
-          <p>Per Page </p>
+          <p>
+            {t('Per Page')}
+            {' '}
+          </p>
           <select value={perPage} name="status" onChange={(e) => setPerPage(e.target.value)}>
             <option value="20">25</option>
             <option value="50">50</option>
@@ -52,15 +64,15 @@ const WithdrawHistoryAdmin = ({ pending }) => {
           <Table striped hover className="dark-color" responsive>
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Date</th>
-                <th scope="col">Status</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Fee</th>
-                <th scope="col">User Got</th>
-                <th scope="col">Method</th>
-                <th scope="col">User</th>
-                <th scope="col">Action</th>
+                <th scope="col">{t('ID')}</th>
+                <th scope="col">{t('Date')}</th>
+                <th scope="col">{t('Status')}</th>
+                <th scope="col">{t('Amount')}</th>
+                <th scope="col">{t('Fee')}</th>
+                <th scope="col">{t('User Got')}</th>
+                <th scope="col">{t('Method')}</th>
+                <th scope="col">{t('User')}</th>
+                <th scope="col">{t('Action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -78,7 +90,7 @@ const WithdrawHistoryAdmin = ({ pending }) => {
                       className={`status ${statusColor(history?.status)}`}
                       style={{ textTransform: 'capitalize' }}
                     >
-                      {history?.status}
+                      {t(history?.status)}
                     </strong>
                   </td>
                   <td>

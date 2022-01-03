@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import { Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import pageAdd from '../../../lib/pageUpdate';
 
 const AddPage = ({ active, setActive }) => {
   const handleClose = () => setActive(false);
+  const { t } = useTranslation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,13 +31,13 @@ const AddPage = ({ active, setActive }) => {
       <form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
           <Modal.Title>
-            Add New Page
+            {t('Add New Page')}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="settings-box">
             <div className="single-profile">
-              <label htmlFor="pageName">Name</label>
+              <label htmlFor="pageName">{t('Name')}</label>
               <input
                 id="pageName"
                 name="name"
@@ -44,7 +46,7 @@ const AddPage = ({ active, setActive }) => {
               />
             </div>
             <div className="single-profile">
-              <label htmlFor="pageSlug">Slug</label>
+              <label htmlFor="pageSlug">{t('Slug')}</label>
               <input
                 id="pageSlug"
                 name="slug"
@@ -56,10 +58,10 @@ const AddPage = ({ active, setActive }) => {
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="bttn-mid btn-grey" onClick={handleClose}>
-            Close
+            {t('Close')}
           </button>
           <button type="submit" className="bttn-mid btn-ylo">
-            Submit
+            {t('Submit')}
           </button>
         </Modal.Footer>
       </form>

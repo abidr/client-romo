@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiPlusCircle, BiSave } from 'react-icons/bi';
 import SortableList from 'react-sortable-dnd-list';
 import { v1 as uuidv1 } from 'uuid';
@@ -13,6 +14,8 @@ const ServicesBuilder = () => {
   const [actionLoader, setActionLoader] = useState(false);
 
   const { data, loading } = useInfo();
+
+  const { t } = useTranslation();
 
   const handleAdd = (item) => {
     const arr = [...items];
@@ -66,7 +69,7 @@ const ServicesBuilder = () => {
         })}
       >
         <BiPlusCircle />
-        Add New Service
+        {t('Add New Service')}
       </button>
       <button
         type="button"
@@ -78,12 +81,12 @@ const ServicesBuilder = () => {
           <>
             <Spinner animation="border" role="status" size="sm" />
             {' '}
-            Save Changes
+            {t('Save Changes')}
           </>
         ) : (
           <>
             <BiSave />
-            Save Changes
+            {t('Save Changes')}
           </>
         )}
       </button>

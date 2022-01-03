@@ -3,12 +3,15 @@ import React, { useRef, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { imageUpload } from '../../../lib/settingsUpdate';
 
-const ImageUpload = ({ input }) => {
+const ImageUploadEdit = ({
+  input, defaultValue, handleEdit, childrenId
+}) => {
   const { name, label } = input;
   const inputEl = useRef(null);
   const [actionLoader, setActionLoader] = useState(false);
   const handleUpload = async (e) => {
     const data = await imageUpload(e.target.files[0], setActionLoader);
+    handleEdit(childrenId, name, data.path);
     inputEl.current.value = data.path;
   };
   return (
@@ -21,6 +24,7 @@ const ImageUpload = ({ input }) => {
           placeholder="Image URL"
           disabled
           ref={inputEl}
+          defaultValue={defaultValue}
         />
         <label className="bttn-mid btn-ylo" htmlFor={`inputFile-${name}`}>
           {actionLoader ? <Spinner animation="border" role="status" size="sm" /> : 'Upload'}
@@ -31,4 +35,4 @@ const ImageUpload = ({ input }) => {
   );
 };
 
-export default ImageUpload;
+export default ImageUploadEdit;

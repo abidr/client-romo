@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { FiEdit } from 'react-icons/fi';
 import Pagination from 'react-js-pagination';
 import useMerchants from '../../../data/useMerchants';
@@ -12,6 +13,7 @@ const MerchantList = ({ pending }) => {
   const [depId, setDepId] = useState('');
   const [status, setStatus] = useState(pending ? 'pending' : 'all');
   const [perPage, setPerPage] = useState(25);
+  const { t } = useTranslation();
 
   const { data, loading } = useMerchants(page, perPage, status, depId);
 
@@ -19,21 +21,30 @@ const MerchantList = ({ pending }) => {
     <>
       <div className="filter">
         <div className="filter-box">
-          <p>Merchant ID </p>
+          <p>
+            {t('Merchant ID')}
+            {' '}
+          </p>
           <input type="text" value={depId} onChange={(e) => setDepId(e.target.value)} />
         </div>
         {!pending && (
         <div className="filter-box">
-          <p>Status </p>
+          <p>
+            {t('Status')}
+            {' '}
+          </p>
           <select value={status} name="status" onChange={(e) => setStatus(e.target.value)}>
-            <option value="all">All</option>
-            <option value="pending">Pending</option>
-            <option value="verified">Verified</option>
+            <option value="all">{t('All')}</option>
+            <option value="pending">{t('Pending')}</option>
+            <option value="verified">{t('Verified')}</option>
           </select>
         </div>
         )}
         <div className="filter-box">
-          <p>Per Page </p>
+          <p>
+            {t('Per Page')}
+            {' '}
+          </p>
           <select value={perPage} name="status" onChange={(e) => setPerPage(e.target.value)}>
             <option value="20">25</option>
             <option value="50">50</option>
@@ -50,14 +61,14 @@ const MerchantList = ({ pending }) => {
           <Table striped hover className="dark-color" responsive>
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Merchant ID</th>
-                <th scope="col">Status</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Address</th>
-                <th scope="col">User</th>
-                <th scope="col">Action</th>
+                <th scope="col">{t('ID')}</th>
+                <th scope="col">{t('Merchant ID')}</th>
+                <th scope="col">{t('Status')}</th>
+                <th scope="col">{t('Name')}</th>
+                <th scope="col">{t('Email')}</th>
+                <th scope="col">{t('Address')}</th>
+                <th scope="col">{t('User')}</th>
+                <th scope="col">{t('Action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -79,7 +90,7 @@ const MerchantList = ({ pending }) => {
                       className={`status ${statusColor(history?.status)}`}
                       style={{ textTransform: 'capitalize' }}
                     >
-                      {history?.status}
+                      {t(history?.status)}
                     </strong>
                   </td>
                   <td>

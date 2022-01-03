@@ -25,6 +25,7 @@ const Exchange = ({ userData, settings }) => {
           {' '}
           {settings?.site?.param1}
         </title>
+        <link rel="icon" href={`${settings?.apiUrl?.param1}/public/${settings?.logo?.param2}`} />
       </Head>
       <UserHeader />
       <Sidebar userData={userData} settings={settings} />

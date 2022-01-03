@@ -1,14 +1,15 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Nav, Navbar } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import Headroom from 'react-headroom';
-import { BiUserPlus } from 'react-icons/bi';
+import { BiMenu, BiUserPlus } from 'react-icons/bi';
 import { RiDashboardLine } from 'react-icons/ri';
 import useCheckAuth from '../../data/useCheckAuth';
 
 const SiteHeader = ({ logo, apiUrl, mainMenu }) => {
   const { data, loading } = useCheckAuth();
+  const [show, setShow] = useState(false);
   return (
     <>
       <Headroom>
@@ -22,8 +23,17 @@ const SiteHeader = ({ logo, apiUrl, mainMenu }) => {
                       <Image src={`${apiUrl?.param1}/public/${logo?.param1}`} alt="Logo" />
                     </a>
                   </Link>
-                  <Navbar.Toggle />
-                  <Navbar.Collapse>
+                  <button
+                    type="button"
+                    onClick={() => setShow(!show)}
+                    aria-label="Toggle navigation"
+                    className="navbar-toggler collapsed"
+                  >
+                    <span className="navbar-toggler-svg">
+                      <BiMenu />
+                    </span>
+                  </button>
+                  <div className={`navbar-collapse collapse ${show ? 'show' : 'hide'}`}>
                     <Nav className="ml-auto mainmenu">
                       {mainMenu?.map((item) => (
                         <Link href={item.url} key={item.id}>
@@ -47,7 +57,7 @@ const SiteHeader = ({ logo, apiUrl, mainMenu }) => {
                         </Link>
                       )}
                     </Nav>
-                  </Navbar.Collapse>
+                  </div>
                 </Navbar>
               </div>
             </div>

@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -50,6 +51,11 @@ const WalletNew = ({ userData, settings }) => {
   }
   return (
     <>
+      <Head>
+        <title>
+          {t('Admin Panel')}
+        </title>
+      </Head>
       <UserHeaderAdmin />
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">

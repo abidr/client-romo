@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { FiEdit, FiGrid, FiTrash } from 'react-icons/fi';
 
 export default function SortableItem({
@@ -13,6 +14,7 @@ export default function SortableItem({
 }) {
   const [active, setActive] = useState(false);
   const handleClose = () => setActive(false);
+  const { t } = useTranslation();
   return (
     <>
       <div
@@ -50,13 +52,13 @@ export default function SortableItem({
         <form>
           <Modal.Header closeButton>
             <Modal.Title>
-              Edit Menu
+              {t('Edit Menu')}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="settings-box">
               <div className="single-profile">
-                <label htmlFor="menuName">Name</label>
+                <label htmlFor="menuName">{t('Name')}</label>
                 <input
                   id="menuName"
                   name="name"
@@ -67,7 +69,7 @@ export default function SortableItem({
                 />
               </div>
               <div className="single-profile">
-                <label htmlFor="menuUrl">URL</label>
+                <label htmlFor="menuUrl">{t('URL')}</label>
                 <input
                   id="menuUrl"
                   name="url"
@@ -81,7 +83,7 @@ export default function SortableItem({
           </Modal.Body>
           <Modal.Footer>
             <button type="button" className="bttn-mid btn-grey" onClick={handleClose}>
-              Close
+              {t('Close')}
             </button>
           </Modal.Footer>
         </form>

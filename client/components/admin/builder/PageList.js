@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import { confirmAlert } from 'react-confirm-alert';
+import { useTranslation } from 'react-i18next';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 import usePages from '../../../data/usePages';
 import { pageDelete } from '../../../lib/pageUpdate';
@@ -10,18 +11,19 @@ import Loader from '../../Loader';
 const PageList = () => {
   const { data, loading } = usePages();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const deleteInit = (slug, name) => {
     confirmAlert({
       title: `${name}`,
-      message: 'Are you sure to remove this page?',
+      message: t('Are you sure to remove this page?'),
       buttons: [
         {
-          label: 'Yes',
+          label: t('Yes'),
           onClick: () => pageDelete(slug)
         },
         {
-          label: 'No',
+          label: t('No'),
         }
       ]
     });
@@ -36,9 +38,9 @@ const PageList = () => {
           <Table striped hover className="dark-color" responsive>
             <thead>
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Slug</th>
-                <th scope="col">Action</th>
+                <th scope="col">{t('Name')}</th>
+                <th scope="col">{t('Slug')}</th>
+                <th scope="col">{t('Action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -63,6 +65,7 @@ const PageList = () => {
                       >
                         <FiEdit />
                       </button>
+                      {!(page?.slug === 'home') && (
                       <button
                         type="button"
                         onClick={() => deleteInit(page?.slug, page?.name)}
@@ -70,6 +73,7 @@ const PageList = () => {
                       >
                         <FiTrash />
                       </button>
+                      )}
                     </div>
                   </td>
                 </tr>

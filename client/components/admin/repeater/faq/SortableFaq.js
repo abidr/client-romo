@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { FiEdit, FiGrid, FiTrash } from 'react-icons/fi';
 
 export default function SortableFaq({
@@ -13,6 +14,7 @@ export default function SortableFaq({
 }) {
   const [active, setActive] = useState(false);
   const handleClose = () => setActive(false);
+  const { t } = useTranslation();
   return (
     <>
       <div
@@ -50,13 +52,13 @@ export default function SortableFaq({
         <form>
           <Modal.Header closeButton>
             <Modal.Title>
-              Edit Solution
+              {t('Edit FAQ')}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="settings-box">
               <div className="single-profile">
-                <label htmlFor="serTitle">Title</label>
+                <label htmlFor="serTitle">{t('Title')}</label>
                 <input
                   id="serTitle"
                   name="title"
@@ -67,7 +69,7 @@ export default function SortableFaq({
                 />
               </div>
               <div className="single-profile">
-                <label htmlFor="serContent">Content</label>
+                <label htmlFor="serContent">{t('Content')}</label>
                 <input
                   id="serContent"
                   name="content"
@@ -81,7 +83,7 @@ export default function SortableFaq({
           </Modal.Body>
           <Modal.Footer>
             <button type="button" className="bttn-mid btn-grey" onClick={handleClose}>
-              Close
+              {t('Close')}
             </button>
           </Modal.Footer>
         </form>

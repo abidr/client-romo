@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import React from 'react';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { FiEdit } from 'react-icons/fi';
-import useMethods from '../../../data/useMethods';
+import { useMethodsAdmin } from '../../../data/useMethods';
 import Loader from '../../Loader';
 
 const WithdrawMethodsList = () => {
-  const { data, loading } = useMethods();
+  const { data, loading } = useMethodsAdmin();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -17,12 +19,12 @@ const WithdrawMethodsList = () => {
           <Table striped hover className="dark-color" responsive>
             <thead>
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Currency</th>
-                <th scope="col">Limit</th>
-                <th scope="col">Charge</th>
-                <th scope="col">Status</th>
-                <th scope="col">Action</th>
+                <th scope="col">{t('Name')}</th>
+                <th scope="col">{t('Currency')}</th>
+                <th scope="col">{t('Limit')}</th>
+                <th scope="col">{t('Charge')}</th>
+                <th scope="col">{t('Status')}</th>
+                <th scope="col">{t('Action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -61,7 +63,7 @@ const WithdrawMethodsList = () => {
                   </td>
                   <td>
                     <strong>
-                      {gateway?.active ? 'Active' : 'Inactive'}
+                      {gateway?.active ? t('Active') : t('Inactive')}
                     </strong>
                   </td>
                   <td width="15%" align="center">

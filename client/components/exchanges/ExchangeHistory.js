@@ -34,7 +34,7 @@ const ExchangeHistory = () => {
                   style={{ textTransform: 'capitalize' }}
                   className={`status ${statusColor(history?.status)}`}
                 >
-                  {history?.status}
+                  {t(history?.status)}
                 </strong>
               </td>
               <td>

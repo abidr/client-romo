@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiSave } from 'react-icons/bi';
 import SortableList from 'react-sortable-dnd-list';
 import { usePageBySlug } from '../../../data/usePages';
@@ -16,6 +17,7 @@ const PageBuilder = ({ slug }) => {
   const [slugBuild, setSlugBuild] = useState();
   const [items, setItems] = useState([]);
   const [actionLoader, setActionLoader] = useState(false);
+  const { t } = useTranslation();
 
   const { data, loading } = usePageBySlug(slug);
 
@@ -30,10 +32,10 @@ const PageBuilder = ({ slug }) => {
     setItems(arr);
   };
 
-  const handleEdit = (id, field, value) => {
+  const handleEdit = async (id, field, value) => {
     const index = items.findIndex((itm) => itm.id === id);
     const arr = [...items];
-    arr[index][field] = value;
+    arr[index].data[field] = value;
     setItems(arr);
   };
 
@@ -51,7 +53,7 @@ const PageBuilder = ({ slug }) => {
     setName(data?.name);
     setSlugBuild(data?.slug);
     setItems(jsonItems);
-  }, [data]);
+  }, [loading]);
 
   if (loading) {
     return <Loader height="200px" />;
@@ -62,38 +64,37 @@ const PageBuilder = ({ slug }) => {
       <div className="row">
         <div className="col-md-4">
           <div className="basic-card">
-            <h4 className="box-title">Page Settings</h4>
+            <h4 className="box-title">{t('Page Settings')}</h4>
             <div className="settings-box">
               <form>
                 <div className="single-profile">
-                  <label htmlFor="pageTitle">Page Title</label>
+                  <label htmlFor="pageTitle">{t('Page Title')}</label>
                   <input
-                    value={name}
+                    defaultValue={name}
                     onChange={(e) => setName(e.target.value)}
                     id="pageTitle"
-                    name="title"
                     type="text"
-                    placeholder="Title"
+                    placeholder={t('Title')}
                     required
                   />
                 </div>
                 <div className="single-profile">
-                  <label htmlFor="pageSlug">Slug</label>
+                  <label htmlFor="pageSlug">{t('Slug')}</label>
                   <input
-                    value={slugBuild}
+                    defaultValue={slugBuild}
                     onChange={(e) => setSlugBuild(e.target.value)}
                     id="pageSlug"
-                    name="slug"
                     type="text"
-                    placeholder="Slug"
+                    placeholder={t('Slug')}
                     required
+                    disabled={slugBuild === 'home'}
                   />
                 </div>
               </form>
             </div>
           </div>
           <div className="basic-card mt-20">
-            <h4 className="box-title">Pick Components</h4>
+            <h4 className="box-title">{t('Pick Components')}</h4>
             <div className="component-wrapper">
               {ComponentsField.map((field) => <BlockAdd key={field.component} field={field} handleAdd={handleAdd} />)}
             </div>
@@ -101,7 +102,7 @@ const PageBuilder = ({ slug }) => {
         </div>
         <div className="col-md-8">
           <div className="basic-card">
-            <h4 className="box-title">Builder</h4>
+            <h4 className="box-title">{t('Builder')}</h4>
             <SortableList
               className="list"
               itemComponent={SortableSection}
@@ -120,12 +121,12 @@ const PageBuilder = ({ slug }) => {
                 <>
                   <Spinner animation="border" role="status" size="sm" />
                   {' '}
-                  Save Changes
+                  {t('Save Changes')}
                 </>
               ) : (
                 <>
                   <BiSave />
-                  Save Changes
+                  {t('Save Changes')}
                 </>
               )}
             </button>

@@ -1,8 +1,10 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import { useTranslation } from 'react-i18next';
 import {
-  BiCog, BiGroup, BiPlusCircle, BiPound, BiPurchaseTag, BiShuffle
+  BiCog, BiGroup, BiPlusCircle, BiPound, BiPurchaseTag, BiSave, BiShuffle
 } from 'react-icons/bi';
 import AdjSettings from '../../../components/admin/settings/AdjSettings';
 import ApiSettings from '../../../components/admin/settings/ApiSettings';
@@ -14,12 +16,19 @@ import TabModule from '../../../components/tabs/TabModule';
 import UserTab from '../../../components/tabs/UserTab';
 import UserHeaderAdmin from '../../../components/UserHeaderAdmin';
 import withAuthAdmin from '../../../hoc/withAuthAdmin';
+import { fetchCurrencyRates } from '../../../lib/currencyRequest';
 
 const Settings = ({ userData, settings }) => {
   const router = useRouter();
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   return (
     <>
+      <Head>
+        <title>
+          {t('Admin Panel')}
+        </title>
+      </Head>
       <UserHeaderAdmin />
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">
@@ -47,6 +56,25 @@ const Settings = ({ userData, settings }) => {
                     >
                       <BiPlusCircle />
                       {t('Add New Wallet')}
+                    </button>
+                    <button
+                      type="button"
+                      className="bttn-mid btn-ylo btn-new"
+                      onClick={() => fetchCurrencyRates(setLoading)}
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <>
+                          <Spinner animation="border" role="status" size="sm" />
+                          {' '}
+                          {t('Fetch Currency Rates')}
+                        </>
+                      ) : (
+                        <>
+                          <BiSave />
+                          {t('Fetch Currency Rates')}
+                        </>
+                      )}
                     </button>
                   </div>
                 </TabModule>

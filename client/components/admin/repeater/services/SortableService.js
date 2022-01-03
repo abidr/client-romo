@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { FiEdit, FiGrid, FiTrash } from 'react-icons/fi';
 import IconUpload from '../IconUpload';
 
@@ -14,6 +15,7 @@ export default function SortableService({
 }) {
   const [active, setActive] = useState(false);
   const handleClose = () => setActive(false);
+  const { t } = useTranslation();
   return (
     <>
       <div
@@ -51,14 +53,14 @@ export default function SortableService({
         <form>
           <Modal.Header closeButton>
             <Modal.Title>
-              Edit Service
+              {t('Edit Service')}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="settings-box">
               <IconUpload id={children?.id} value={children?.icon} handleEdit={handleEdit} />
               <div className="single-profile">
-                <label htmlFor="serTitle">Title</label>
+                <label htmlFor="serTitle">{t('Title')}</label>
                 <input
                   id="serTitle"
                   name="title"
@@ -69,7 +71,7 @@ export default function SortableService({
                 />
               </div>
               <div className="single-profile">
-                <label htmlFor="serContent">Content</label>
+                <label htmlFor="serContent">{t('Content')}</label>
                 <input
                   id="serContent"
                   name="content"
@@ -83,7 +85,7 @@ export default function SortableService({
           </Modal.Body>
           <Modal.Footer>
             <button type="button" className="bttn-mid btn-grey" onClick={handleClose}>
-              Close
+              {t('Close')}
             </button>
           </Modal.Footer>
         </form>

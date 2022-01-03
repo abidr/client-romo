@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
@@ -13,6 +14,11 @@ const Deposits = ({ userData, settings }) => {
   const { t } = useTranslation();
   return (
     <>
+      <Head>
+        <title>
+          {t('Admin Panel')}
+        </title>
+      </Head>
       <UserHeaderAdmin />
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">

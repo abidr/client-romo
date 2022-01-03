@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle } from 'react-icons/bi';
 import ImageUploading from 'react-images-uploading';
 import { logoUpdate } from '../../../lib/settingsUpdate';
@@ -9,6 +10,7 @@ const LogoFavicon = () => {
   const [logo, setLogo] = useState();
   const [favicon, setFavicon] = useState();
   const [actionLoader, setActionLoader] = useState(false);
+  const { t } = useTranslation();
   const handleUpdate = (e) => {
     e.preventDefault();
     const params = {
@@ -21,7 +23,7 @@ const LogoFavicon = () => {
       <div className="settings-box">
         <form onSubmit={handleUpdate}>
           <div className="single-profile">
-            <label>Logo</label>
+            <label>{t('Logo')}</label>
             <ImageUploading
               value={logo}
               onChange={setLogo}
@@ -42,7 +44,7 @@ const LogoFavicon = () => {
                     onClick={onImageUpload}
                     {...dragProps}
                   >
-                    {imageList.length <= 0 ? 'Click or Drop Here (Logo)' : (
+                    {imageList.length <= 0 ? t('Click or Drop Here (Logo)') : (
                       imageList.map((image) => (
                         <div key={image.dataURL} className="image-item">
                           <img src={image.dataURL} alt="" width="100%" />
@@ -55,7 +57,7 @@ const LogoFavicon = () => {
             </ImageUploading>
           </div>
           <div className="single-profile">
-            <label>Favicon</label>
+            <label>{t('Favicon')}</label>
             <ImageUploading
               value={favicon}
               onChange={setFavicon}
@@ -76,7 +78,7 @@ const LogoFavicon = () => {
                     onClick={onImageUpload}
                     {...dragProps}
                   >
-                    {imageList.length <= 0 ? 'Click or Drop Here (Favicon)' : (
+                    {imageList.length <= 0 ? t('Click or Drop Here (Favicon)') : (
                       imageList.map((image) => (
                         <div key={image.dataURL} className="image-item">
                           <img src={image.dataURL} alt="" width="100%" />
@@ -93,12 +95,12 @@ const LogoFavicon = () => {
               <>
                 <Spinner animation="border" role="status" size="sm" />
                 {' '}
-                Update
+                {t('Update')}
               </>
             ) : (
               <>
                 <BiErrorCircle />
-                Update
+                {t('Update')}
               </>
             )}
           </button>

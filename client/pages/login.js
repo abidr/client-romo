@@ -1,9 +1,12 @@
+import Head from 'next/head';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { useTranslation } from 'react-i18next';
+import LanguageSwitch from '../components/LanguageSwitch';
+import Loader from '../components/Loader';
+import useSettings from '../data/useSettings';
 import checkAuthAccess from '../hoc/checkAuthAccess';
-import siteLogo from '../images/weblos-logo.png';
 import { signInRequest } from '../lib/authRequest';
 
 const Login = () => {
@@ -11,6 +14,8 @@ const Login = () => {
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+
+  const { data, loading: settingsLoading } = useSettings();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -20,15 +25,32 @@ const Login = () => {
     signInRequest(params, setLoading);
   };
 
+  if (settingsLoading) {
+    return <Loader height="100vh" />;
+  }
+
   return (
     <>
+      <Head>
+        <title>
+          {t('Login')}
+          {' '}
+          -
+          {' '}
+          {data?.site?.param1}
+        </title>
+        <link rel="icon" href={`${data?.apiUrl?.param1}/public/${data?.logo?.param2}`} />
+      </Head>
       <div>
         <div className="container">
           <div className="row justify-content-center align-items-center vh-100">
             <div className="col-xl-4 col-lg-4 col-md-6 col-12">
               <div className="site-auth">
+                <div className="lng-switch-cont">
+                  <LanguageSwitch />
+                </div>
                 <div className="logo">
-                  <a href="/"><img src={siteLogo.src} alt="sitename" /></a>
+                  <a href="/"><img src={`${data?.apiUrl.param1}/public/${data?.logo?.param1}`} alt="sitename" /></a>
                 </div>
                 <h3>{t('Login Account')}</h3>
                 <form onSubmit={handleLogin}>

@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import { confirmAlert } from 'react-confirm-alert';
+import { useTranslation } from 'react-i18next';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 import useCurrencies from '../../../data/useCurrency';
 import currencyDelete from '../../../lib/currencyRequest';
@@ -11,17 +12,19 @@ const WalletList = ({ settings }) => {
   const { data, loading } = useCurrencies();
   const router = useRouter();
 
+  const { t } = useTranslation();
+
   const deleteInit = (curId, curSymbol, curName) => {
     confirmAlert({
       title: `${curName} - ${curSymbol}`,
-      message: 'Are you sure to remove this currency?',
+      message: t('Are you sure to remove this currency?'),
       buttons: [
         {
-          label: 'Yes',
+          label: t('Yes'),
           onClick: () => currencyDelete(curId)
         },
         {
-          label: 'No',
+          label: t('No'),
         }
       ]
     });
@@ -36,12 +39,16 @@ const WalletList = ({ settings }) => {
           <Table striped hover className="dark-color" responsive>
             <thead>
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Symbol</th>
-                <th scope="col">Crypto</th>
-                <th scope="col">Rate (USD)</th>
-                <th scope="col">Rate From API</th>
-                <th scope="col">Action</th>
+                <th scope="col">{t('Name')}</th>
+                <th scope="col">{t('Symbol')}</th>
+                <th scope="col">{t('Crypto')}</th>
+                <th scope="col">
+                  {t('Rate')}
+                  {' '}
+                  (USD)
+                </th>
+                <th scope="col">{t('Rate From API')}</th>
+                <th scope="col">{t('Action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -62,7 +69,7 @@ const WalletList = ({ settings }) => {
                   </td>
                   <td>
                     <strong>
-                      {cur?.crypto ? 'Yes' : 'No'}
+                      {cur?.crypto ? t('Yes') : t('No')}
                     </strong>
                   </td>
                   <td>
@@ -73,7 +80,7 @@ const WalletList = ({ settings }) => {
                   </td>
                   <td>
                     <strong>
-                      {cur?.ratefromApi ? 'Yes' : 'No'}
+                      {cur?.ratefromApi ? t('Yes') : t('No')}
                     </strong>
                   </td>
                   <td width="15%" align="center">

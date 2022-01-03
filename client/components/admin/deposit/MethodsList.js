@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { FiEdit } from 'react-icons/fi';
 import { useGatewayAdmin } from '../../../data/useGateways';
 import GatewayLogo from '../../deposit/GatewayLogo';
@@ -8,6 +9,7 @@ import Loader from '../../Loader';
 
 const MethodsList = () => {
   const { data, loading } = useGatewayAdmin();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -18,10 +20,10 @@ const MethodsList = () => {
           <Table striped hover className="dark-color" responsive>
             <thead>
               <tr>
-                <th scope="col">Logo</th>
-                <th scope="col">Name</th>
-                <th scope="col">Status</th>
-                <th scope="col">Action</th>
+                <th scope="col">{t('Logo')}</th>
+                <th scope="col">{t('Name')}</th>
+                <th scope="col">{t('Status')}</th>
+                <th scope="col">{t('Action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -37,7 +39,7 @@ const MethodsList = () => {
                   </td>
                   <td>
                     <strong>
-                      {gateway?.active ? 'Active' : 'Inactive'}
+                      {gateway?.active ? t('Active') : t('Inactive')}
                     </strong>
                   </td>
                   <td width="15%" align="center">

@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
@@ -41,6 +42,11 @@ const GatewayEdit = ({ userData, settings }) => {
   }
   return (
     <>
+      <Head>
+        <title>
+          {t('Admin Panel')}
+        </title>
+      </Head>
       <UserHeaderAdmin />
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">

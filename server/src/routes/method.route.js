@@ -9,6 +9,8 @@ const {
 } = require('../controllers/method.controller');
 
 router.get('/methods', withAuth, getAllMethods);
+router.get('/methods/admin', withAuthAdmin, isAdmin, getAllMethods);
+router.get('/methods/:id/admin', withAuthAdmin, isAdmin, getMethodById);
 router.get('/methods/:id', withAuth, getMethodById);
 router.post('/methods', withAuthAdmin, isAdmin, createMethod);
 router.put('/methods/:id', withAuthAdmin, isAdmin, updateMethod);

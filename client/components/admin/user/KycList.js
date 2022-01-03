@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { FiEdit } from 'react-icons/fi';
 import Pagination from 'react-js-pagination';
 import { useKycAll } from '../../../data/useKyc';
@@ -11,12 +12,16 @@ const KycList = () => {
   const [perPage, setPerPage] = useState(25);
 
   const { data, loading } = useKycAll(page, perPage);
-  console.log(data);
+  const { t } = useTranslation();
+
   return (
     <>
       <div className="filter">
         <div className="filter-box">
-          <p>Per Page </p>
+          <p>
+            {t('Per Page')}
+            {' '}
+          </p>
           <select value={perPage} name="status" onChange={(e) => setPerPage(e.target.value)}>
             <option value="20">25</option>
             <option value="50">50</option>
@@ -33,10 +38,10 @@ const KycList = () => {
           <Table striped hover className="dark-color" responsive>
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Status</th>
-                <th scope="col">User</th>
-                <th scope="col">Action</th>
+                <th scope="col">{t('ID')}</th>
+                <th scope="col">{t('Status')}</th>
+                <th scope="col">{t('User')}</th>
+                <th scope="col">{t('Action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -50,7 +55,7 @@ const KycList = () => {
                   </td>
                   <td>
                     <strong style={{ textTransform: 'capitalize' }}>
-                      {history?.status}
+                      {t(history?.status)}
                     </strong>
                   </td>
                   <td>

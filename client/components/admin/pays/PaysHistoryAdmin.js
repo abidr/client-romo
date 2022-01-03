@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import Pagination from 'react-js-pagination';
 import { usePaymentsAdmin } from '../../../data/usePayments';
 import statusColor from '../../../utils/statusColor';
@@ -11,6 +12,7 @@ const PaysHistoryAdmin = () => {
   const [depId, setDepId] = useState('');
   const [status, setStatus] = useState('all');
   const [perPage, setPerPage] = useState(25);
+  const { t } = useTranslation();
 
   const { data, loading } = usePaymentsAdmin(page, perPage, status, depId);
 
@@ -18,19 +20,28 @@ const PaysHistoryAdmin = () => {
     <>
       <div className="filter">
         <div className="filter-box">
-          <p>TRX ID </p>
+          <p>
+            {t('TRX ID')}
+            {' '}
+          </p>
           <input type="text" value={depId} onChange={(e) => setDepId(e.target.value)} />
         </div>
         <div className="filter-box">
-          <p>Status </p>
+          <p>
+            {t('Status')}
+            {' '}
+          </p>
           <select value={status} name="status" onChange={(e) => setStatus(e.target.value)}>
-            <option value="all">All</option>
-            <option value="success">Success</option>
-            <option value="failed">Failed</option>
+            <option value="all">{t('All')}</option>
+            <option value="success">{t('Success')}</option>
+            <option value="failed">{t('Failed')}</option>
           </select>
         </div>
         <div className="filter-box">
-          <p>Per Page </p>
+          <p>
+            {t('Per Page')}
+            {' '}
+          </p>
           <select value={perPage} name="status" onChange={(e) => setPerPage(e.target.value)}>
             <option value="20">25</option>
             <option value="50">50</option>
@@ -47,13 +58,13 @@ const PaysHistoryAdmin = () => {
           <Table striped hover className="dark-color" responsive>
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Date</th>
-                <th scope="col">Status</th>
-                <th scope="col">TRX ID</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Merchant</th>
-                <th scope="col">User</th>
+                <th scope="col">{t('ID')}</th>
+                <th scope="col">{t('Date')}</th>
+                <th scope="col">{t('Status')}</th>
+                <th scope="col">{t('TRX ID')}</th>
+                <th scope="col">{t('Amount')}</th>
+                <th scope="col">{t('Merchant')}</th>
+                <th scope="col">{t('User')}</th>
               </tr>
             </thead>
             <tbody>
@@ -71,7 +82,7 @@ const PaysHistoryAdmin = () => {
                       className={`status ${statusColor(history?.status)}`}
                       style={{ textTransform: 'capitalize' }}
                     >
-                      {history?.status}
+                      {t(history?.status)}
                     </strong>
                   </td>
                   <td>

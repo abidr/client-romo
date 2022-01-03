@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
@@ -12,24 +11,29 @@ import useSettings from '../data/useSettings';
 import checkAuthAccess from '../hoc/checkAuthAccess';
 import { signUpRequest } from '../lib/authRequest';
 
-const Register = () => {
+const RegisterMerchant = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const { data, loading: settingsLoading } = useSettings();
 
-  const router = useRouter();
-  const { refer } = router.query;
-
   const handleRegister = (e) => {
     e.preventDefault();
-    const { name, email, password } = e.target;
+    const {
+      name, email, password,
+      merchantName,
+      merchantEmail, merchantAddress, merchantProof
+    } = e.target;
     const params = {
       name: name?.value,
       email: email?.value,
       password: password?.value,
-      refferedBy: refer
+      merchantName: merchantName?.value,
+      merchantEmail: merchantEmail?.value,
+      merchantAddress: merchantAddress?.value,
+      merchantProof: merchantProof?.value,
+      merchant: true
     };
     signUpRequest(params, setLoading, setSuccess);
   };
@@ -61,16 +65,20 @@ const Register = () => {
                 <div className="logo">
                   <a href="/"><img src={`${data?.apiUrl.param1}/public/${data?.logo?.param1}`} alt="sitename" /></a>
                 </div>
-                <h3>{t('Registration')}</h3>
+                <h3>
+                  {t('Merchant')}
+                  {' '}
+                  {t('Registration')}
+                </h3>
                 <div className="account-type-selector">
                   <Link href="/register">
-                    <a className="selector-item active">
+                    <a className="selector-item">
                       <CgUser />
                       <p>{t('Individual')}</p>
                     </a>
                   </Link>
                   <Link href="/register-merchant">
-                    <a className="selector-item">
+                    <a className="selector-item active">
                       <CgBriefcase />
                       <p>{t('Merchant')}</p>
                     </a>
@@ -82,6 +90,9 @@ const Register = () => {
                     <p className="mb-0">
                       {t('A mail to activate your account has been sent your email address')}
                       .
+                      {' '}
+                      {t('Merchant verification might take some time depending on your application')}
+
                     </p>
                   </Alert>
                 ) : (
@@ -105,6 +116,34 @@ const Register = () => {
                       className="box-input"
                       type="password"
                       placeholder={t('Password')}
+                      required
+                    />
+                    <input
+                      name="merchantName"
+                      className="box-input"
+                      type="text"
+                      placeholder={t('Merchant Name')}
+                      required
+                    />
+                    <input
+                      name="merchantEmail"
+                      className="box-input"
+                      type="email"
+                      placeholder={t('Merchant Email')}
+                      required
+                    />
+                    <input
+                      name="merchantAddress"
+                      className="box-input"
+                      type="text"
+                      placeholder={t('Merchant Address')}
+                      required
+                    />
+                    <input
+                      name="merchantProof"
+                      className="box-input"
+                      type="text"
+                      placeholder={t('Merchant Proof')}
                       required
                     />
                     <button disabled={loading} type="submit" className="bttn-mid btn-ylo w-100">
@@ -131,4 +170,4 @@ const Register = () => {
   );
 };
 
-export default checkAuthAccess(Register);
+export default checkAuthAccess(RegisterMerchant);

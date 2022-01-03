@@ -11,6 +11,7 @@ const {
 router.get('/users/count', withAuthAdmin, isAdmin, countUsers);
 router.get('/users', withAuthAdmin, isAdmin, getAllUsers);
 router.get('/users/me', withAuth, getUserDetails);
+router.get('/users/me/admin', withAuthAdmin, isAdmin, getUserDetails);
 router.get('/users/:id', withAuthAdmin, isAdmin, getUserById);
 router.put('/users/me', withAuth, updateUser);
 router.put('/users/:id', withAuthAdmin, isAdmin, updateUserAdmin);

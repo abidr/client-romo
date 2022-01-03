@@ -96,7 +96,7 @@ const DepositStep = ({ step, setStep, status }) => {
             <label>{t('Amount')}</label>
             <input
               onChange={(e) => setAmount(e.target.value)}
-              value={amount}
+              defaultValue={amount}
               type="text"
               required
             />
@@ -123,14 +123,6 @@ const DepositStep = ({ step, setStep, status }) => {
             <tbody>
               <tr>
                 <td>{t('Amount')}</td>
-                <td style={{ color: 'white', fontWeight: 'bold' }}>
-                  {amount}
-                  {' '}
-                  {selectedCurrency?.symbol}
-                </td>
-              </tr>
-              <tr>
-                <td>{t('Fee')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount}
                   {' '}

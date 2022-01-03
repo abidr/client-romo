@@ -1,9 +1,11 @@
+import Head from 'next/head';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { useTranslation } from 'react-i18next';
+import Loader from '../../components/Loader';
+import useSettings from '../../data/useSettings';
 import checkAuthAccessAdmin from '../../hoc/checkAuthAccessAdmin';
-import siteLogo from '../../images/weblos-logo.png';
 import { signInAdminRequest } from '../../lib/authRequest';
 
 const Login = () => {
@@ -11,6 +13,8 @@ const Login = () => {
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+
+  const { data, loading: settingsLoading } = useSettings();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -20,15 +24,24 @@ const Login = () => {
     signInAdminRequest(params, setLoading);
   };
 
+  if (settingsLoading) {
+    return <Loader height="100vh" />;
+  }
+
   return (
     <>
+      <Head>
+        <title>
+          {t('Admin Panel')}
+        </title>
+      </Head>
       <div>
         <div className="container">
           <div className="row justify-content-center align-items-center vh-100">
             <div className="col-xl-4 col-lg-4 col-md-6 col-12">
               <div className="site-auth">
                 <div className="logo">
-                  <a href="/"><img src={siteLogo.src} alt="sitename" /></a>
+                  <a href="/"><img src={`${data?.apiUrl.param1}/public/${data?.logo?.param1}`} alt="sitename" /></a>
                 </div>
                 <h3>{t('Account Login')}</h3>
                 <form onSubmit={handleLogin}>

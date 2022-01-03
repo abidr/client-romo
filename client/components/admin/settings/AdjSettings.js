@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiErrorCircle } from 'react-icons/bi';
 import { settingsUpdate } from '../../../lib/settingsUpdate';
 import inputNumber from '../../../utils/inputNumber';
 
 const AdjSettings = ({ settings }) => {
   const [actionLoader, setActionLoader] = useState(false);
+  const { t } = useTranslation();
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -20,13 +22,17 @@ const AdjSettings = ({ settings }) => {
       <div className="settings-box">
         <form onSubmit={handleUpdate}>
           <div className="single-profile">
-            <label htmlFor="exchangeFee">Exchange Fee (%)</label>
+            <label htmlFor="exchangeFee">
+              {t('Exchange Fee')}
+              {' '}
+              (%)
+            </label>
             <input
               id="exchangeFee"
               onKeyPress={inputNumber}
               name="param1"
               type="text"
-              placeholder="Exchange Fee"
+              placeholder={t('Exchange Fee')}
               defaultValue={settings?.adjustments?.param1}
             />
           </div>
@@ -35,12 +41,12 @@ const AdjSettings = ({ settings }) => {
               <>
                 <Spinner animation="border" role="status" size="sm" />
                 {' '}
-                Update Settings
+                {t('Update Settings')}
               </>
             ) : (
               <>
                 <BiErrorCircle />
-                Update Settings
+                {t('Update Settings')}
               </>
             )}
           </button>

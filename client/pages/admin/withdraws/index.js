@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +18,11 @@ const Withdraws = ({ userData, settings }) => {
   const { t } = useTranslation();
   return (
     <>
+      <Head>
+        <title>
+          {t('Admin Panel')}
+        </title>
+      </Head>
       <UserHeaderAdmin />
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">

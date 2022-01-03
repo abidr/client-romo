@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { FiEdit, FiGrid, FiTrash } from 'react-icons/fi';
+import fields from '../../ui/editor/ComponentsField';
+import ImageUploadEdit from '../../ui/editor/ImageUploadEdit';
 
 export default function SortableSection({
   dragging,
@@ -13,6 +15,9 @@ export default function SortableSection({
 }) {
   const [active, setActive] = useState(false);
   const handleClose = () => setActive(false);
+
+  const selectedField = fields.find((field) => field?.component === children?.component);
+
   return (
     <>
       <div
@@ -50,33 +55,53 @@ export default function SortableSection({
         <form>
           <Modal.Header closeButton>
             <Modal.Title>
-              Edit Menu
+              Edit Section
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="settings-box">
-              <div className="single-profile">
-                <label htmlFor="menuName">Name</label>
-                <input
-                  id="menuName"
-                  name="name"
-                  type="text"
-                  required
-                  defaultValue={children.name}
-                  onChange={(e) => handleEdit(children.id, 'name', e.target.value)}
-                />
-              </div>
-              <div className="single-profile">
-                <label htmlFor="menuUrl">URL</label>
-                <input
-                  id="menuUrl"
-                  name="url"
-                  type="text"
-                  required
-                  defaultValue={children.url}
-                  onChange={(e) => handleEdit(children.id, 'url', e.target.value)}
-                />
-              </div>
+              {selectedField?.fields.map((input) => {
+                if (input.type === 'image') {
+                  return (
+                    <ImageUploadEdit
+                      input={input}
+                      key={input.name}
+                      defaultValue={children?.data?.[input.name]}
+                      handleEdit={handleEdit}
+                      childrenId={children?.id}
+                      inputName={input?.name}
+                    />
+                  );
+                } if (input.type === 'textarea') {
+                  return (
+                    <div className="single-profile" key={input.name}>
+                      <label>{input.label}</label>
+                      <textarea
+                        name={input.name}
+                        defaultValue={children?.data?.[input.name]}
+                        onChange={(e) => handleEdit(children.id, input.name, e.target.value)}
+                        className="input-box"
+                        row={10}
+                        style={{
+                          width: '100%', height: '100px', paddingTop: '10px', lineHeight: '1.5'
+                        }}
+                        required
+                      />
+                    </div>
+                  );
+                }
+                return (
+                  <div className="single-profile" key={input.name}>
+                    <label>{input.label}</label>
+                    <input
+                      type={input.type}
+                      name={input.name}
+                      defaultValue={children?.data?.[input.name]}
+                      onChange={(e) => handleEdit(children.id, input.name, e.target.value)}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </Modal.Body>
           <Modal.Footer>

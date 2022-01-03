@@ -37,7 +37,7 @@ const DepositHistory = () => {
                   className={`status ${statusColor(history?.status)}`}
                   style={{ textTransform: 'capitalize' }}
                 >
-                  {history.status}
+                  {t(history.status)}
                 </strong>
               </td>
               <td>

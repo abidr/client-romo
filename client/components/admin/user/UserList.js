@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { FiEdit } from 'react-icons/fi';
 import Pagination from 'react-js-pagination';
 import useUsers from '../../../data/useUsers';
@@ -16,45 +17,62 @@ const UserList = () => {
 
   const { data, loading } = useUsers(page, perPage, status, depId, email, role);
 
+  const { t } = useTranslation();
+
   const rolePicker = (roleInt) => {
     if (roleInt === 0) {
-      return 'Admin';
+      return t('Admin');
     } if (roleInt === 2) {
-      return 'Merchant';
+      return t('Merchant');
     }
-    return 'User';
+    return t('User');
   };
 
   return (
     <>
       <div className="filter">
         <div className="filter-box">
-          <p>User ID </p>
+          <p>
+            {t('User ID')}
+            {' '}
+          </p>
           <input type="text" value={depId} onChange={(e) => setDepId(e.target.value)} />
         </div>
         <div className="filter-box">
-          <p>User Email </p>
+          <p>
+            {t('User Email')}
+            {' '}
+          </p>
           <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className="filter-box">
-          <p>Status </p>
+          <p>
+            {t('Status')}
+            {' '}
+          </p>
           <select value={status} name="status" onChange={(e) => setStatus(e.target.value)}>
-            <option value="all">All</option>
-            <option value="1">Active</option>
-            <option value="0">Inactive</option>
+            <option value="all">{t('All')}</option>
+            <option value="1">{t('Active')}</option>
+            <option value="0">{t('Inactive')}</option>
           </select>
         </div>
         <div className="filter-box">
-          <p>Role </p>
+          <p>
+            {t('Role')}
+            {' '}
+          </p>
           <select value={role} name="role" onChange={(e) => setRole(e.target.value)}>
-            <option value="all">All</option>
-            <option value="0">Admin</option>
-            <option value="1">User</option>
-            <option value="2">Merchant</option>
+            <option value="all">{t('All')}</option>
+            <option value="0">{t('Admin')}</option>
+            <option value="1">{t('User')}</option>
+            <option value="2">{t('Merchant')}</option>
           </select>
         </div>
         <div className="filter-box">
-          <p>Per Page </p>
+          <p>
+            {t('Per Page')}
+            {' '}
+          </p>
           <select value={perPage} name="status" onChange={(e) => setPerPage(e.target.value)}>
             <option value="20">25</option>
             <option value="50">50</option>
@@ -71,13 +89,13 @@ const UserList = () => {
           <Table striped hover className="dark-color" responsive>
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Status</th>
-                <th scope="col">Role</th>
-                <th scope="col">KYC</th>
-                <th scope="col">Action</th>
+                <th scope="col">{t('ID')}</th>
+                <th scope="col">{t('Name')}</th>
+                <th scope="col">{t('Email')}</th>
+                <th scope="col">{t('Status')}</th>
+                <th scope="col">{t('Role')}</th>
+                <th scope="col">{t('KYC')}</th>
+                <th scope="col">{t('Action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -101,7 +119,7 @@ const UserList = () => {
                   </td>
                   <td>
                     <strong>
-                      {history?.active ? 'Active' : 'Inactive'}
+                      {history?.active ? t('Active') : t('Inactive')}
                     </strong>
                   </td>
                   <td>
@@ -111,7 +129,7 @@ const UserList = () => {
                   </td>
                   <td>
                     <strong>
-                      {history?.kyc ? 'Verified' : 'Pending'}
+                      {history?.kyc ? t('Verified') : t('Pending')}
                     </strong>
                   </td>
                   <td width="15%" align="center">

@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Spinner } from 'react-bootstrap';
@@ -10,7 +11,7 @@ import Loader from '../../../../components/Loader';
 import SidebarAdmin from '../../../../components/SidebarAdmin';
 import UserHeaderAdmin from '../../../../components/UserHeaderAdmin';
 import useCurrency from '../../../../data/useCurrency';
-import { useMethodById } from '../../../../data/useMethods';
+import { useMethodByIdAdmin } from '../../../../data/useMethods';
 import withAuthAdmin from '../../../../hoc/withAuthAdmin';
 import methodUpdate from '../../../../lib/methodUpdate';
 import inputNumber from '../../../../utils/inputNumber';
@@ -23,7 +24,7 @@ const MethodEdit = ({ userData, settings }) => {
 
   const [actionLoader, setActionLoader] = useState(false);
 
-  const { data, loading } = useMethodById(id);
+  const { data, loading } = useMethodByIdAdmin(id);
   const { data: curData, loading: curLoading } = useCurrency();
 
   const { t } = useTranslation();
@@ -69,6 +70,11 @@ const MethodEdit = ({ userData, settings }) => {
 
   return (
     <>
+      <Head>
+        <title>
+          {t('Admin Panel')}
+        </title>
+      </Head>
       <UserHeaderAdmin />
       <SidebarAdmin userData={userData} settings={settings} />
       <div className="content-body">

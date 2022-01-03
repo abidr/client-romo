@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { BiPlusCircle, BiSave } from 'react-icons/bi';
 import SortableList from 'react-sortable-dnd-list';
 import { v1 as uuidv1 } from 'uuid';
@@ -11,6 +12,7 @@ import SortableItem from './SortableItem';
 const MenuBuilder = () => {
   const [items, setItems] = useState([]);
   const [actionLoader, setActionLoader] = useState(false);
+  const { t } = useTranslation();
 
   const { data, loading } = useInfo();
 
@@ -64,7 +66,7 @@ const MenuBuilder = () => {
         onClick={() => handleAdd({ id: uuidv1(), name: 'New Item', url: '/' })}
       >
         <BiPlusCircle />
-        Add New Menu
+        {t('Add New Menu')}
       </button>
       <button
         type="button"
@@ -76,12 +78,12 @@ const MenuBuilder = () => {
           <>
             <Spinner animation="border" role="status" size="sm" />
             {' '}
-            Save Changes
+            {t('Save Changes')}
           </>
         ) : (
           <>
             <BiSave />
-            Save Changes
+            {t('Save Changes')}
           </>
         )}
       </button>

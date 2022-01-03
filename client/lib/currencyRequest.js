@@ -14,6 +14,20 @@ export default async function currencyDelete(id) {
   }
   return null;
 }
+export async function fetchCurrencyRates(setLoading) {
+  setLoading(true);
+  try {
+    const { data } = await request.post('/fetchrates');
+    mutate('/currencies');
+    cogoToast.success(data.message, { position: 'bottom-center' });
+    setLoading(false);
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}
 export async function currencyAdd(params, setActionLoader) {
   setActionLoader(true);
   try {
