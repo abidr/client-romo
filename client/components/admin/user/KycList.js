@@ -71,7 +71,7 @@ const KycList = () => {
                     </strong>
                   </td>
                   <td width="15%" align="center">
-                    <Link href={`/admin/users/${history?.user?.id}`}>
+                    <Link href={`/admin/users/${history?.user?.id}?tab=2`}>
                       <a className="action-btn">
                         <FiEdit />
                       </a>

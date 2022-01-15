@@ -21,7 +21,7 @@ exports.coingatePayment = async (value, id, currency) => {
       order_id: id,
       price_amount: value.toFixed(2),
       price_currency: currency,
-      receive_currency: currency,
+      receive_currency: 'DO_NOT_CONVERT',
       callback_url: `${apiUrl.param1}/payments/coingate`,
       success_url: `${appUrl.param1}/add-money?status=success`,
       cancel_url: `${appUrl.param1}/add-money?status=failed`,

@@ -7,14 +7,14 @@ import Loader from '../../components/Loader';
 import SidebarAdmin from '../../components/SidebarAdmin';
 import UserHeaderAdmin from '../../components/UserHeaderAdmin';
 import useDashboard from '../../data/useDashboard';
-import useUsers from '../../data/useUsers';
+import { useUsersDashboard } from '../../data/useUsers';
 import withAuthAdmin from '../../hoc/withAuthAdmin';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const Dashboard = ({ userData, settings }) => {
   const { data, loading } = useDashboard();
-  const { data: userList, loading: userLoading } = useUsers(1, 10, 'active', '', '', 1);
+  const { data: userList, loading: userLoading } = useUsersDashboard(1, 10);
 
   const { t } = useTranslation();
 

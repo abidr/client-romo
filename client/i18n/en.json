@@ -328,6 +328,10 @@
     "Activation Link Sent": "Activation Link Sent",
     "Merchant Proof": "Merchant Proof",
     "Merchant verification might take some time depending on your application": "Merchant verification might take some time depending on your application",
-    "Fetch Currency Rates": "Fetch Currency Rates"
+    "Fetch Currency Rates": "Fetch Currency Rates",
+    "Convert To Merchant": "Convert To Merchant",
+    "Balance": "Balance",
+    "Add Balance": "Add Balance",
+    "Subtract Balance": "Subtract Balance"
   }
 }

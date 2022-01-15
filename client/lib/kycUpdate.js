@@ -7,7 +7,9 @@ export default async function kycUpdate(params, setActionLoader) {
   try {
     const formData = new FormData();
     formData.append('front', params.front[0].file, params.front[0].file.name);
-    formData.append('back', params.back[0].file, params.back[0].file.name);
+    if (params.back) {
+      formData.append('back', params.back[0].file, params.back[0].file.name);
+    }
     formData.append('selfie', params.selfie[0].file, params.selfie[0].file.name);
     formData.append('type', params.type);
     const { data } = await request.post('/kyc', formData);
@@ -16,6 +18,7 @@ export default async function kycUpdate(params, setActionLoader) {
     cogoToast.success(data.message, { position: 'bottom-center' });
     return data;
   } catch (error) {
+    console.log(error);
     const { data } = error.response;
     setActionLoader(false);
     cogoToast.error(data.message, { position: 'bottom-center' });

@@ -5,6 +5,7 @@ const db = require('../config/db.config');
 const fieldData = require('../config/gateway.config');
 const { Last7Days, getDay } = require('../utils/dates');
 const mailer = require('../utils/mailer');
+const { addBalance, removeBalance } = require('../utils/wallet');
 
 const queryParser = sequelizeQuery(db);
 
@@ -167,6 +168,8 @@ exports.updateGateways = async (req, res) => {
         email: req.body.email,
         isCrypto: req.body.isCrypto,
         active: req.body.active,
+        ex1: req.body.ex1,
+        ex2: req.body.ex2,
       }, { where: { value } });
     } else {
       await Gateway.create({
@@ -176,6 +179,8 @@ exports.updateGateways = async (req, res) => {
         email: req.body.email,
         isCrypto: req.body.isCrypto,
         active: req.body.active,
+        ex1: req.body.ex1,
+        ex2: req.body.ex2,
       });
     }
     return res.json({ message: 'Gateway Updated' });
@@ -285,6 +290,21 @@ exports.updateLogoFav = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
+exports.balanceManage = async (req, res) => {
+  try {
+    const {
+      userId, currency, amount, type,
+    } = req.body;
+    if (type === 'add') {
+      await addBalance(amount, currency, userId);
+    } else {
+      await removeBalance(amount, currency, userId);
+    }
+    return res.json({ message: 'Balance Updated' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
 
 const last7daysData = async (last7days, type) => {
   const getData = async (day) => {
@@ -294,8 +314,8 @@ const last7daysData = async (last7days, type) => {
           [Op.lt]: getDay(day, 0),
           [Op.gt]: getDay(day, 1),
         },
+        status: 'success',
       },
-      status: 'success',
     };
     let data;
     if (type === 'deposit') {

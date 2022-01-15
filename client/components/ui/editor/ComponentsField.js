@@ -29,6 +29,18 @@ const fields = [
     ]
   },
   {
+    label: 'Page Title',
+    component: 'PageTitle',
+    icon: <BiText />,
+    fields: [
+      {
+        label: 'Heading',
+        name: 'content',
+        type: 'text',
+      },
+    ]
+  },
+  {
     label: 'Contact Section',
     component: 'ContactSection',
     icon: <BiDetail />,

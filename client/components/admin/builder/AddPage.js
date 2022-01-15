@@ -10,9 +10,10 @@ const AddPage = ({ active, setActive }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const slug = e.target?.slug?.value.replace(/[^\w\s]/gi, '');
     const params = {
       name: e.target?.name?.value,
-      slug: e.target?.slug?.value,
+      slug,
       type: 'landing',
       content: []
     };

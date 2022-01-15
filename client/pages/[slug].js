@@ -43,6 +43,11 @@ export async function getServerSideProps(context) {
   const { origin } = absoluteUrl(req);
   const { data: pageData } = await axios.get(`${origin}/api/pages/${slug}`);
   const { data } = await axios.get(`${origin}/api/info`);
+  if (!pageData) {
+    return {
+      notFound: true,
+    };
+  }
   return {
     props: {
       pageData,

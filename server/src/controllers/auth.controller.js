@@ -150,7 +150,7 @@ exports.signUpAdmin = async (req, res) => {
 exports.signIn = async (req, res) => {
   const user = await User.findOne({
     where: {
-      email: req.body.email,
+      email: req.body.email || null,
       active: true,
     },
     include: ['merchant'],

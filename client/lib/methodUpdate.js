@@ -32,3 +32,16 @@ export async function methodCreate(params, setActionLoader) {
   }
   return null;
 }
+export async function methodDelete(id) {
+  try {
+    const { data } = await request.delete(`/methods/${id}`);
+    mutate('/methods');
+    mutate('/methods/admin');
+    cogoToast.success('Method Deleted Successfully', { position: 'bottom-center' });
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}

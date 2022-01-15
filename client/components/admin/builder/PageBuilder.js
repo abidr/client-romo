@@ -40,9 +40,10 @@ const PageBuilder = ({ slug }) => {
   };
 
   const handleSubmit = () => {
+    const slugRefined = slugBuild.replace(/[^\w\s]/gi, '');
     const params = {
       name,
-      slug: slugBuild,
+      slug: slugRefined,
       content: items
     };
     pageUpdate(slug, params, setActionLoader);

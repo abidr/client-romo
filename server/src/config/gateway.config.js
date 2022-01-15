@@ -21,7 +21,7 @@ const fieldData = {
     email: false,
     ex1: { status: false, label: 'N/A' },
     ex2: { status: false, label: 'N/A' },
-    supportedCurrencies: ['BTC', 'ETH'],
+    supportedCurrencies: ['BTC', 'ETH', 'USDC', 'XRP', 'USDT', 'SOL', 'BNB'],
   },
   coingate: {
     apiKey: true,
@@ -29,7 +29,7 @@ const fieldData = {
     email: false,
     ex1: { status: true, label: 'Mode' },
     ex2: { status: false, label: 'N/A' },
-    supportedCurrencies: ['BTC', 'ETH'],
+    supportedCurrencies: ['BTC', 'ETH', 'XRP', 'BNB', 'USDT', 'USDC', 'SOL', 'ADA'],
   },
   paypal: {
     apiKey: true,
@@ -37,7 +37,7 @@ const fieldData = {
     email: false,
     ex1: { status: true, label: 'Environment' },
     ex2: { status: false, label: 'N/A' },
-    supportedCurrencies: ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'SGD'],
+    supportedCurrencies: ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'SGD', 'JPY', 'INR'],
   },
   stripe: {
     apiKey: true,
@@ -45,7 +45,7 @@ const fieldData = {
     email: false,
     ex1: { status: true, label: 'Signing Secret' },
     ex2: { status: false, label: 'N/A' },
-    supportedCurrencies: ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'SGD'],
+    supportedCurrencies: ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'SGD', 'JPY', 'NGN', 'INR'],
   },
   paystack: {
     apiKey: true,

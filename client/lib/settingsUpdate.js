@@ -94,6 +94,21 @@ export async function sendMail(params, setActionLoader) {
   }
   return null;
 }
+export async function balanceManage(params, setActionLoader) {
+  setActionLoader(true);
+  try {
+    const { data } = await request.post('/balance', { ...params });
+    setActionLoader(false);
+    mutate(`/wallets/${params?.userId}`);
+    cogoToast.success(data.message, { position: 'bottom-center' });
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    setActionLoader(false);
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}
 export async function imageUpload(params, setActionLoader) {
   setActionLoader(true);
   try {

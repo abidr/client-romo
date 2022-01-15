@@ -16,7 +16,7 @@ const ProfileSettings = ({ userData }) => {
       name: e.target?.fullName?.value,
       phone: e.target?.phone?.value,
       address: e.target?.address?.value,
-      password: e.target?.password?.value,
+      password: e.target?.password?.value || undefined,
     };
     profileUpdate(params, setActionLoader);
   };

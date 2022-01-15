@@ -132,16 +132,30 @@ exports.createCurrency = async (req, res) => {
 exports.updateCurrency = async (req, res) => {
   const { id } = req.params;
   try {
-    const data = await Currency.findByPk(id);
-    const prevRate = data.rate_usd;
-
     const {
-      name, symbol, icon, rate_usd, active, wallet_id, rate_from_api, custom,
+      name,
+      symbol,
+      rateUsd,
+      active,
+      rateFromApi,
+      crypto,
     } = req.body;
 
+    const currency = await Currency.findOne({ where: { id } });
+    if (!currency) {
+      return res.status(400).json({
+        message: 'Currency Does not Exists',
+      });
+    }
+
     const num = await Currency.update({
-      // eslint-disable-next-line max-len
-      name, symbol, icon, rate_usd, active, wallet_id, rate_usd_prev: prevRate, rate_from_api, custom,
+      name,
+      symbol,
+      icon: req.file ? req.file.filename : undefined,
+      rateUsd,
+      active,
+      rateFromApi,
+      crypto,
     }, { where: { id } });
     const ifUpdated = parseInt(num, 10);
     if (ifUpdated === 1) {

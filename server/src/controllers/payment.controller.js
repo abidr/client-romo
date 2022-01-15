@@ -122,12 +122,12 @@ exports.verifyCoingate = async (req, res) => {
   const clientMain = data.ex1 === 'sandbox' ? testCongate : coingate;
 
   try {
-    const dataOrder = await clientMain.getOrder(req.body.order_id);
+    const dataOrder = await clientMain.getOrder(req.body.id);
     if (dataOrder.status === 'paid') {
-      const depositData = await Deposit.findByPk(req.body.order_id);
+      const depositData = await Deposit.findByPk(dataOrder.order_id);
       await addBalance(depositData.amount, depositData.currency, depositData.userId);
-      await Deposit.update({ payment_status: true, status: 'success' }, { where: { id: req.body.order_id } });
-      await Log.create({ message: `Stripe confirmed payment for Deposit #${req.body.order_id}` });
+      await Deposit.update({ payment_status: true, status: 'success' }, { where: { id: dataOrder.order_id } });
+      await Log.create({ message: `Stripe confirmed payment for Deposit #${dataOrder.order_id}` });
       firstDeposit(depositData.id);
     }
     return res.json({ message: 'Payment verified' });

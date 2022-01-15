@@ -8,4 +8,12 @@ function useWallet() {
     error,
   };
 }
+export function useWalletByUserId(id) {
+  const { data, error } = useSWR(`/wallets/${id}`);
+  return {
+    data,
+    loading: !data && !error,
+    error,
+  };
+}
 export default useWallet;

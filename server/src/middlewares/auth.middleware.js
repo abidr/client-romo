@@ -59,6 +59,11 @@ exports.checkAuth = async (req, res) => {
       id: req.user.id,
     },
   });
+  if (!user) {
+    return res.status(401).json({
+      message: 'Invalid Token',
+    });
+  }
   if (user.passUpdate && user.passUpdate > req.user.iat) {
     return res.status(401).json({
       message: 'Invalid Token',
@@ -98,6 +103,11 @@ exports.checkAuthAdmin = async (req, res) => {
       role: 0,
     },
   });
+  if (!user) {
+    return res.status(401).json({
+      message: 'Invalid Token',
+    });
+  }
   if (user.passUpdate && user.passUpdate > req.user.iat) {
     return res.status(401).json({
       message: 'Invalid Token',

@@ -76,11 +76,12 @@ export async function updatePassword(params, setLoading) {
 export async function activationRequest(params) {
   try {
     const { data } = await request.post('/activate', { ...params });
-    window.location.href = '/';
+    window.location.href = '/login';
     return data;
   } catch (error) {
     const { data } = error.response;
     cogoToast.error(data.message || data.error, { position: 'bottom-center' });
+    window.location.href = '/login';
   }
   return null;
 }

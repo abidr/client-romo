@@ -27,6 +27,14 @@ const fiatData = [
     name: 'Nigerian Naira',
     symbol: 'NGN',
   },
+  {
+    name: 'Japanese Yen',
+    symbol: 'JPY',
+  },
+  {
+    name: 'Indian Rupee',
+    symbol: 'INR',
+  },
 ];
 
 module.exports = fiatData;

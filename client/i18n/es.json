@@ -328,6 +328,10 @@
     "Activation Link Sent": "Enlace de activación enviado",
     "Merchant Proof": "Prueba de comerciante",
     "Merchant verification might take some time depending on your application": "La verificación del comerciante puede llevar algún tiempo dependiendo de su aplicación",
-    "Fetch Currency Rates": "Obtener tipos de cambio"
+    "Fetch Currency Rates": "Obtener tipos de cambio",
+    "Convert To Merchant": "Convertir en comerciante",
+    "Balance": "Equilibrio",
+    "Add Balance": "Agregar saldo",
+    "Subtract Balance": "Restar saldo"
   }
 }

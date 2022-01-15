@@ -12,6 +12,14 @@ export default function useUsers(page, limit, status, id, email, role) {
     error,
   };
 }
+export function useUsersDashboard(page, limit) {
+  const { data, error } = useSWR(`/users?sort_by=createdAt.desc&offset=${page - 1}&limit=${limit}`);
+  return {
+    data,
+    loading: !data && !error,
+    error,
+  };
+}
 export function useUserById(id) {
   const { data, error } = useSWR(`/users/${id}`);
   return {

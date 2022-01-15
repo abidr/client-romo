@@ -1,14 +1,32 @@
 import Link from 'next/link';
 import React from 'react';
 import { Table } from 'react-bootstrap';
+import { confirmAlert } from 'react-confirm-alert';
 import { useTranslation } from 'react-i18next';
-import { FiEdit } from 'react-icons/fi';
+import { FiEdit, FiTrash } from 'react-icons/fi';
 import { useMethodsAdmin } from '../../../data/useMethods';
+import { methodDelete } from '../../../lib/methodUpdate';
 import Loader from '../../Loader';
 
 const WithdrawMethodsList = () => {
   const { data, loading } = useMethodsAdmin();
   const { t } = useTranslation();
+
+  const deleteInit = (id, name) => {
+    confirmAlert({
+      title: `${name}`,
+      message: t('Are you sure to remove this method?'),
+      buttons: [
+        {
+          label: t('Yes'),
+          onClick: () => methodDelete(id)
+        },
+        {
+          label: t('No'),
+        }
+      ]
+    });
+  };
 
   return (
     <>
@@ -67,11 +85,20 @@ const WithdrawMethodsList = () => {
                     </strong>
                   </td>
                   <td width="15%" align="center">
-                    <Link href={`/admin/withdraws/method/${gateway?.id}`}>
-                      <a className="action-btn">
-                        <FiEdit />
-                      </a>
-                    </Link>
+                    <div className="d-flex">
+                      <Link href={`/admin/withdraws/method/${gateway?.id}`}>
+                        <a className="action-btn">
+                          <FiEdit />
+                        </a>
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => deleteInit(gateway?.id, `${gateway?.name} - ${gateway?.currency}`)}
+                        className="action-btn danger ml-10"
+                      >
+                        <FiTrash />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
