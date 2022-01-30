@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "npm run build && next start"
+    "start": "next start"
   },
   "dependencies": {
     "@dnd-kit/core": "^4.0.0",
@@ -37,6 +37,7 @@
     "react-sortable-dnd-list": "^1.0.1",
     "react-toggle": "^4.1.2",
     "sass": "^1.45.1",
+    "sharp": "^0.29.3",
     "swr": "^1.0.1",
     "uuid": "^8.3.2",
     "zustand": "^3.5.12"
