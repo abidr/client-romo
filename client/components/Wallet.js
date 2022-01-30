@@ -15,7 +15,13 @@ const Wallet = () => {
             {wallet?.icon && (
             <img src={wallet?.icon} alt="" />
             )}
-            <h5 className="d-inline-block">{wallet?.currency}</h5>
+            <h5 className="d-inline-block">
+              {wallet?.currency}
+              {' '}
+              (
+              {wallet?.walletCode}
+              )
+            </h5>
           </div>
           <h4>
             {wallet?.balance.toFixed(6)}

@@ -97,12 +97,12 @@ const TransferStep = ({ step, setStep }) => {
             <label>
               {t('Recipients')}
               {' '}
-              {t('Email')}
+              {t('Wallet ID')}
             </label>
             <input
               onChange={(e) => setEmail(e.target.value)}
               value={email}
-              type="email"
+              type="text"
               required
             />
           </div>

@@ -278,7 +278,7 @@ exports.forgotPassword = async (req, res) => {
   const mailOptions = {
     user: user.id,
     subject: 'Password Reset',
-    html: `<p>Link to reset your password: <a href="${appUrl.param1}/reset/${randomId}">${appUrl.param1}/reset/${randomId}</a></p>`,
+    message: `<p>Link to reset your password: <a href="${appUrl.param1}/reset/${randomId}">${appUrl.param1}/reset/${randomId}</a></p>`,
   };
 
   mailer(mailOptions);

@@ -35,6 +35,10 @@ const fiatData = [
     name: 'Indian Rupee',
     symbol: 'INR',
   },
+  {
+    name: 'West African CFA franc',
+    symbol: 'XOF',
+  },
 ];
 
 module.exports = fiatData;

@@ -10,6 +10,7 @@ const Transfer = db.transfers;
 const User = db.users;
 const Log = db.logs;
 const Wallet = db.wallets;
+const Currency = db.currencies;
 
 exports.getAllTransfers = async (req, res) => {
   const query = await queryParser.parse(req);
@@ -71,6 +72,7 @@ exports.createTransfer = async (req, res) => {
     const sendingUser = await User.findByPk(id);
 
     const wallet = await Wallet.findOne({ where: { userId: id, currency } });
+    const curData = await Currency.findOne({ where: { symbol: currency } });
 
     if (!sendingUser.kyc) {
       return res.status(403).json({ message: 'Please verify KYC to debit from account' });
@@ -83,7 +85,9 @@ exports.createTransfer = async (req, res) => {
       return res.status(400).json({ message: 'Insufficient balance' });
     }
 
-    const receivingUser = await User.findOne({ where: { email } });
+    const receivingWallet = parseInt(email.slice(1), 10);
+    const receivingUserId = receivingWallet - 150000 - curData.id;
+    const receivingUser = await User.findOne({ where: { id: receivingUserId } });
 
     if (receivingUser) {
       await addBalance(amount, currency, receivingUser.id);

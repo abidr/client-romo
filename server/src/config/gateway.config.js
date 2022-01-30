@@ -13,7 +13,7 @@ const fieldData = {
     email: false,
     ex1: { status: false, label: 'N/A' },
     ex2: { status: false, label: 'N/A' },
-    supportedCurrencies: ['USD'],
+    supportedCurrencies: ['USD', 'EUR'],
   },
   coinpayments: {
     apiKey: true,
@@ -62,6 +62,30 @@ const fieldData = {
     ex1: { status: true, label: 'Merchant ID' },
     ex2: { status: false, label: 'N/A' },
     supportedCurrencies: ['USD', 'NGN', 'EUR', 'GBP', 'ZAR', 'JPY', 'INR', 'AUD'],
+  },
+  perfectmoney: {
+    apiKey: false,
+    secretKey: false,
+    email: false,
+    ex1: { status: true, label: 'USD Wallet' },
+    ex2: { status: true, label: 'BTC Wallet' },
+    supportedCurrencies: ['USD', 'BTC'],
+  },
+  paydunya: {
+    apiKey: true,
+    secretKey: true,
+    email: false,
+    ex1: { status: true, label: 'Master Key' },
+    ex2: { status: true, label: 'Token' },
+    supportedCurrencies: ['XOF'],
+  },
+  om: {
+    apiKey: false,
+    secretKey: false,
+    email: false,
+    ex1: { status: false, label: 'Username' },
+    ex2: { status: false, label: 'Password' },
+    supportedCurrencies: ['XOF'],
   },
 };
 

@@ -194,3 +194,45 @@ exports.verifyVoguePay = async (req, res) => {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 };
+exports.verifyPerfectMoney = async (req, res) => {
+  try {
+    const depositData = await Deposit.findByPk(req.body.PAYMENT_ID);
+    await addBalance(depositData.amount, depositData.currency, depositData.userId);
+    await Deposit.update({ payment_status: true, status: 'success' }, { where: { id: depositData.id } });
+    await Log.create({ message: `PerfectMoney confirmed payment for deposit #${depositData.id}` });
+    firstDeposit(depositData.id);
+    return res.json({ message: 'Payment verified' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.verifyPayDunya = async (req, res) => {
+  try {
+    const depositData = await Deposit.findByPk(req.body.custom_data.depositId);
+    if (req.body.status === 'completed') {
+      await addBalance(depositData.amount, depositData.currency, depositData.userId);
+      await Deposit.update({ payment_status: true, status: 'success' }, { where: { id: depositData.id } });
+      await Log.create({ message: `PayDunya confirmed payment for deposit #${depositData.id}` });
+      firstDeposit(depositData.id);
+      return res.json({ message: 'Payment verified' });
+    }
+    return res.json({ message: 'Payment not verified' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.verifyTouchPay = async (req, res) => {
+  try {
+    const depositData = await Deposit.findByPk(req.body.partner_transaction_id);
+    if (req.body.status === 'SUCCESSFUL') {
+      await addBalance(depositData.amount, depositData.currency, depositData.userId);
+      await Deposit.update({ payment_status: true, status: 'success' }, { where: { id: depositData.id } });
+      await Log.create({ message: `TouchPay confirmed payment for deposit #${depositData.id}` });
+      firstDeposit(depositData.id);
+      return res.json({ message: 'Payment verified' });
+    }
+    return res.json({ message: 'Payment not verified' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};

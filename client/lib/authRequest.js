@@ -64,7 +64,7 @@ export async function updatePassword(params, setLoading) {
   try {
     const { data } = await request.post('/reset', { ...params });
     setLoading(false);
-    window.location.href = '/';
+    window.location.href = '/login';
     return data;
   } catch (error) {
     const { data } = error.response;

@@ -17,6 +17,9 @@ const { stripePayment } = require('../utils/payments/stripe');
 const { coingatePayment } = require('../utils/payments/coingate');
 const { paystackPayment } = require('../utils/payments/paystack');
 const { voguePayment } = require('../utils/payments/voguepay');
+const { PerfectMoney } = require('../utils/payments/perfectmoney');
+const { payDunya } = require('../utils/payments/paydunya');
+const { omPayment } = require('../utils/payments/om');
 
 exports.getAllDeposits = async (req, res) => {
   const query = await queryParser.parse(req);
@@ -145,6 +148,15 @@ exports.createDeposit = async (req, res) => {
       returnedObj = { ...data.dataValues, redirect: payment };
     } else if (payment_method === 'voguepay') {
       const payment = await voguePayment(data, user);
+      returnedObj = { ...data.dataValues, redirect: payment };
+    } else if (payment_method === 'perfectmoney') {
+      const payment = await PerfectMoney(data, user);
+      returnedObj = { ...data.dataValues, payment };
+    } else if (payment_method === 'paydunya') {
+      const payment = await payDunya(amount, data.id, currency);
+      returnedObj = { ...data.dataValues, redirect: payment };
+    } else if (payment_method === 'om') {
+      const payment = await omPayment(data, user, 'PAIEMENTMARCHANDOMPAYCI');
       returnedObj = { ...data.dataValues, redirect: payment };
     }
 

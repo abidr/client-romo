@@ -2,6 +2,7 @@
 const sequelizeQuery = require('sequelize-query');
 const db = require('../config/db.config');
 const mailer = require('../utils/mailer');
+const { creditPayDunya } = require('../utils/payments/paydunya');
 
 const queryParser = sequelizeQuery(db);
 const Withdraw = db.withdraws;
@@ -109,6 +110,7 @@ exports.createWithdraw = async (req, res) => {
   const { id } = req.user;
   const { methodId, amount, currency } = req.body;
   try {
+    let status = 'pending';
     const user = await User.findByPk(id);
     const wallet = await Wallet.findOne({ where: { currency, userId: id } });
     const method = await Method.findByPk(methodId);
@@ -151,7 +153,17 @@ exports.createWithdraw = async (req, res) => {
 
     const calculateAmount = amount - fee;
 
+    if (method.name === 'Paydunya') {
+      const credit = await creditPayDunya(linkedAcc.params[0].value, calculateAmount);
+
+      if (!(credit === 'Transaction completed successfully')) {
+        return res.status(500).json({ message: credit.data.response_text });
+      }
+      status = 'success';
+    }
+
     const data = await Withdraw.create({
+      status,
       method: method.name,
       params: linkedAcc.params,
       amount,
