@@ -15,7 +15,6 @@ exports.payDunya = async (value, id) => {
       token: data.ex2,
       privateKey: data.secretKey,
       publicKey: data.apiKey,
-      mode: 'test',
     });
 
     const store = new paydunya.Store({
