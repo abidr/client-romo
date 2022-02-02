@@ -158,6 +158,12 @@ exports.createDeposit = async (req, res) => {
     } else if (payment_method === 'om') {
       const payment = await omPayment(data, user, 'PAIEMENTMARCHANDOMPAYCI');
       returnedObj = { ...data.dataValues, redirect: payment };
+    } else if (payment_method === 'mtn') {
+      const payment = await omPayment(data, user, 'PAIEMENTMARCHAND_MTN_CI');
+      returnedObj = { ...data.dataValues, redirect: payment };
+    } else if (payment_method === 'moov') {
+      const payment = await omPayment(data, user, 'PAIEMENTMARCHAND_MOOV_CI');
+      returnedObj = { ...data.dataValues, redirect: payment };
     }
 
     await Log.create({ message: `User #${id} requested deposit of ${amount} ${currency} via ${payment_method}` });

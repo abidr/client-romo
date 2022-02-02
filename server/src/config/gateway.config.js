@@ -87,6 +87,22 @@ const fieldData = {
     ex2: { status: false, label: 'Password' },
     supportedCurrencies: ['XOF'],
   },
+  mtn: {
+    apiKey: false,
+    secretKey: false,
+    email: false,
+    ex1: { status: false, label: 'Username' },
+    ex2: { status: false, label: 'Password' },
+    supportedCurrencies: ['XOF'],
+  },
+  moov: {
+    apiKey: false,
+    secretKey: false,
+    email: false,
+    ex1: { status: false, label: 'Username' },
+    ex2: { status: false, label: 'Password' },
+    supportedCurrencies: ['XOF'],
+  },
 };
 
 module.exports = fieldData;

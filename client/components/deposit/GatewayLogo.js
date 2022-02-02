@@ -3,6 +3,8 @@ import Coinbase from '../../images/gateway/coinbase.svg';
 import Coingate from '../../images/gateway/coingate.png';
 import Coinpayments from '../../images/gateway/coinpayments.png';
 import Mollie from '../../images/gateway/mollie.svg';
+import Moov from '../../images/gateway/moov.png';
+import Mtn from '../../images/gateway/mtnmoney.png';
 import Om from '../../images/gateway/om.png';
 import Paydunya from '../../images/gateway/paydunya.png';
 import Paypal from '../../images/gateway/paypal.svg';
@@ -34,6 +36,10 @@ const GatewayLogo = ({ name }) => {
     return <img src={Paydunya.src} alt={name} />;
   } if (name === 'om') {
     return <img src={Om.src} alt={name} />;
+  } if (name === 'mtn') {
+    return <img src={Mtn.src} alt={name} style={{ filter: 'none', height: '55px' }} />;
+  } if (name === 'moov') {
+    return <img src={Moov.src} alt={name} style={{ filter: 'none', height: '55px' }} />;
   }
   return <img src="" alt="" />;
 };
