@@ -11,6 +11,7 @@ const Log = db.logs;
 const Wallet = db.wallets;
 const Linked = db.linkeds;
 const Method = db.methods;
+const Merchant = db.merchants;
 
 const { addBalance, removeBalance } = require('../utils/wallet');
 
@@ -112,6 +113,17 @@ exports.createWithdraw = async (req, res) => {
   try {
     let status = 'pending';
     const user = await User.findByPk(id);
+    let merchant;
+    if (user.role === 2) {
+      merchant = await Merchant.findOne({ where: { userId: user.id } });
+    }
+    if (merchant) {
+      if (merchant?.suspended) {
+        return res.status(400).json({
+          message: 'Your account is currently on hold. Please contact support.',
+        });
+      }
+    }
     const wallet = await Wallet.findOne({ where: { currency, userId: id } });
     const method = await Method.findByPk(methodId);
     const linkedAcc = await Linked.findOne({ where: { methodId, userId: id } });

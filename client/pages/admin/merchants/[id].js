@@ -6,6 +6,7 @@ import { Spinner, Table } from 'react-bootstrap';
 import { confirmAlert } from 'react-confirm-alert';
 import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiTrash } from 'react-icons/bi';
+import Toggle from 'react-toggle';
 import EditorHeader from '../../../components/admin/EditorHeader';
 import Loader from '../../../components/Loader';
 import SidebarAdmin from '../../../components/SidebarAdmin';
@@ -31,6 +32,7 @@ const MerchantEdit = ({ userData, settings }) => {
       email: e.target?.email?.value,
       address: e.target?.address?.value,
       status: e.target?.status?.value,
+      suspend: e.target?.suspend?.checked
     };
     merchantUpdate(id, params, setActionLoader);
   };
@@ -120,6 +122,13 @@ const MerchantEdit = ({ userData, settings }) => {
                         <option value="pending">{t('Pending')}</option>
                         <option value="verified">{t('Verified')}</option>
                       </select>
+                    </div>
+                    <div className="single-profile">
+                      <label>{t('Suspend')}</label>
+                      <Toggle
+                        defaultChecked={data?.suspend}
+                        name="suspend"
+                      />
                     </div>
                     <button type="submit" className="bttn-mid btn-ylo" disabled={actionLoader}>
                       {actionLoader ? (

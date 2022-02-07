@@ -80,6 +80,7 @@ exports.updateMerchantAdmin = async (req, res) => {
       email: req.body.email,
       address: req.body.address,
       status: req.body.status,
+      suspend: req.body.suspend,
     };
     const num = await Merchant.update(updateObj, { where: { id } });
     const ifUpdated = parseInt(num, 10);

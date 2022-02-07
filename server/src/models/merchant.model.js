@@ -22,6 +22,10 @@ module.exports = (sequelize) => {
     proof: {
       type: DataTypes.STRING,
     },
+    suspend: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   });
   return Merchant;
 };
