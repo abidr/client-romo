@@ -113,12 +113,9 @@ exports.createWithdraw = async (req, res) => {
   try {
     let status = 'pending';
     const user = await User.findByPk(id);
-    let merchant;
     if (user.role === 2) {
-      merchant = await Merchant.findOne({ where: { userId: user.id } });
-    }
-    if (merchant) {
-      if (merchant?.suspended) {
+      const merchant = await Merchant.findOne({ where: { userId: user.id } });
+      if (merchant.suspend) {
         return res.status(400).json({
           message: 'Your account is currently on hold. Please contact support.',
         });

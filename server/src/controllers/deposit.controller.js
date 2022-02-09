@@ -115,20 +115,16 @@ exports.createDeposit = async (req, res) => {
   const { id } = req.user;
   const { payment_method, amount, currency } = req.body;
   const user = await User.findByPk(id);
-  let merchant;
   if (user.role === 2) {
-    merchant = await Merchant.findOne({ where: { userId: user.id } });
+    const merchant = await Merchant.findOne({ where: { userId: user.id } });
+    if (merchant.suspend) {
+      return res.status(400).json({
+        message: 'Your account is currently on hold. Please contact support.',
+      });
+    }
   }
   try {
     let returnedObj;
-
-    if (merchant) {
-      if (merchant?.suspended) {
-        return res.status(400).json({
-          message: 'Your account is currently on hold. Please contact support.',
-        });
-      }
-    }
 
     const data = await Deposit.create({
       payment_method,
