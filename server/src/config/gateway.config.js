@@ -68,8 +68,8 @@ const fieldData = {
     secretKey: false,
     email: false,
     ex1: { status: true, label: 'USD Wallet' },
-    ex2: { status: true, label: 'BTC Wallet' },
-    supportedCurrencies: ['USD', 'BTC'],
+    ex2: { status: true, label: 'EUR Wallet' },
+    supportedCurrencies: ['USD', 'EUR'],
   },
   paydunya: {
     apiKey: true,

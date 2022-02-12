@@ -14,7 +14,7 @@ exports.PerfectMoney = async (value, id, currency) => {
       depositId: id,
       currency,
       usdWallet: data?.ex1,
-      btcWallet: data?.ex2,
+      eurWallet: data?.ex2,
       appUrl,
       site,
     };

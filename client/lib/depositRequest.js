@@ -12,7 +12,7 @@ export default async function depositRequest(params, setActionLoader) {
     }
     if (data?.payment_method === 'perfectmoney') {
       postRedirect('https://perfectmoney.is/api/step1.asp', {
-        PAYEE_ACCOUNT: data?.currency === 'USD' ? data?.payment?.usdWallet : data?.payment?.btcWallet,
+        PAYEE_ACCOUNT: data?.currency === 'USD' ? data?.payment?.usdWallet : data?.payment?.eurWallet,
         PAYEE_NAME: data?.payment?.site?.param1,
         PAYMENT_AMOUNT: data?.amount,
         PAYMENT_UNITS: data?.currency,
