@@ -10,6 +10,15 @@ export default async function depositRequest(params, setActionLoader) {
     if (data?.payment_method === 'paydunya' && data?.amount < 200) {
       return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
     }
+    if (data?.payment_method === 'om' && data?.amount < 200) {
+      return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
+    }
+    if (data?.payment_method === 'mtn' && data?.amount < 200) {
+      return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
+    }
+    if (data?.payment_method === 'moov' && data?.amount < 200) {
+      return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
+    }
     if (data?.payment_method === 'perfectmoney') {
       postRedirect('https://perfectmoney.is/api/step1.asp', {
         PAYEE_ACCOUNT: data?.currency === 'USD' ? data?.payment?.usdWallet : data?.payment?.eurWallet,
