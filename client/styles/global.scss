@@ -1873,3 +1873,20 @@
     color: $white;
   }
 }
+
+.react-tel-input {
+  input {
+    padding-left: 70px !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+.react-tel-input .country-list .country-name {
+  color: #000;
+}
+.react-tel-input .selected-flag {
+  width: 60px;
+  height: 100%;
+  padding: 0 0px 0 20px;
+}

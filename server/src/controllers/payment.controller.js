@@ -5,6 +5,7 @@ const {
 } = require('coingate-v2');
 const PayStack = require('paystack-node');
 const rp = require('request-promise');
+const Flutterwave = require('flutterwave-node-v3');
 const db = require('../config/db.config');
 
 const Gateway = db.gateways;
@@ -235,4 +236,30 @@ exports.verifyTouchPay = async (req, res) => {
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
+};
+exports.verifyFlutterWave = async (req, res) => {
+  const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
+  if (req.query.status === 'successful') {
+    const depData = await Deposit.findByPk(req.query.tx_ref);
+    const gateway = await Gateway.findOne({ where: { value: 'flutterwave' } });
+    const flw = new Flutterwave(gateway.apiKey, gateway.secretKey);
+    const response = await flw.Transaction.verify({ id: req.query.transaction_id });
+    if (depData.status === 'success') {
+      return res.redirect(`${appUrl.param1}/add-money?status=success`);
+    }
+    if (
+      response.data.status === 'successful'
+        && response.data.amount === depData.amount) {
+      await addBalance(depData.amount, depData.currency, depData.userId);
+      await Deposit.update({ payment_status: true, status: 'success' },
+        { where: { id: depData.id } });
+      await Log.create({ message: `Flutterwave confirmed payment for Deposit #${req.query.tx_ref}` });
+      firstDeposit(depData.id);
+      return res.redirect(`${appUrl.param1}/add-money?status=success`);
+    }
+    await Deposit.update({ payment_status: false, status: 'failed' },
+      { where: { id: depData.id } });
+    return res.redirect(`${appUrl.param1}/add-money?status=failed`);
+  }
+  return res.redirect(`${appUrl.param1}/add-money?status=failed`);
 };

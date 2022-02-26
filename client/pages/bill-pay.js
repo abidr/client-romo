@@ -1,11 +1,9 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
-import DepositHistory from '../components/deposit/DepositHistory';
-import DepositStep from '../components/deposit/DepositStep';
+import BillHistory from '../components/bill/BillHistory';
+import TopUpStep from '../components/bill/TopUpStep';
 import Sidebar from '../components/Sidebar';
 import TabModule from '../components/tabs/TabModule';
 import UserTab from '../components/tabs/UserTab';
@@ -13,24 +11,14 @@ import TransactionSteps from '../components/TransactionSteps';
 import UserHeader from '../components/UserHeader';
 import withAuth from '../hoc/withAuth';
 
-const AddMoney = ({ userData, settings }) => {
+const BillPay = ({ userData, settings }) => {
   const [step, setStep] = useState(1);
-  const router = useRouter();
-  const { status } = router.query;
-
   const { t } = useTranslation();
-
-  useEffect(() => {
-    if (status === 'success' || status === 'failed' || status === 'successful') {
-      setStep(3);
-    }
-  }, []);
-
   return (
     <>
       <Head>
         <title>
-          {t('Deposit')}
+          {t('Payment')}
           {' '}
           -
           {' '}
@@ -45,19 +33,19 @@ const AddMoney = ({ userData, settings }) => {
           <div className="row">
             <div className="col">
               <UserTab
-                title={t('Add Money')}
-                description={t('Add money to your wallet by using different payment methods')}
+                title={t('Utility Bill')}
+                description={t('Make payment to different utility bills')}
               >
-                <TabModule icon={<BiWallet />} name={t('Deposit')}>
+                <TabModule icon={<BiWallet />} name={t('Top-up')}>
                   <div className="deposit-box basic-card">
                     <TransactionSteps step={step} />
-                    <DepositStep step={step} setStep={setStep} status={status} />
+                    <TopUpStep step={step} setStep={setStep} />
                   </div>
                 </TabModule>
-                <TabModule icon={<BiErrorCircle />} name={t('History')}>
+                <TabModule icon={<BiErrorCircle />} name={t('Bill Pay Logs')}>
                   <div className="basic-card">
-                    <h4 className="box-title">{t('Deposit Logs')}</h4>
-                    <DepositHistory />
+                    <h4 className="box-title">{t('Bill Pay Logs')}</h4>
+                    <BillHistory />
                   </div>
                 </TabModule>
               </UserTab>
@@ -69,4 +57,4 @@ const AddMoney = ({ userData, settings }) => {
   );
 };
 
-export default withAuth(AddMoney);
+export default withAuth(BillPay);

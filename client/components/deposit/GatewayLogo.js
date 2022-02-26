@@ -2,6 +2,7 @@ import React from 'react';
 import Coinbase from '../../images/gateway/coinbase.svg';
 import Coingate from '../../images/gateway/coingate.png';
 import Coinpayments from '../../images/gateway/coinpayments.png';
+import Flutterwave from '../../images/gateway/flutterwave.png';
 import Mollie from '../../images/gateway/mollie.svg';
 import Moov from '../../images/gateway/moov.png';
 import Mtn from '../../images/gateway/mtnmoney.png';
@@ -40,6 +41,8 @@ const GatewayLogo = ({ name }) => {
     return <img src={Mtn.src} alt={name} style={{ filter: 'none', height: '55px' }} />;
   } if (name === 'moov') {
     return <img src={Moov.src} alt={name} style={{ filter: 'none', height: '55px' }} />;
+  } if (name === 'flutterwave') {
+    return <img src={Flutterwave.src} alt={name} />;
   }
   return <img src="" alt="" />;
 };

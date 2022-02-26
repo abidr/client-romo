@@ -35,6 +35,7 @@ const merchantRoutes = require('./src/routes/merchant.route');
 const requestRoutes = require('./src/routes/request.route');
 const payRoutes = require('./src/routes/pay.route');
 const pageRoutes = require('./src/routes/page.route');
+const billRoutes = require('./src/routes/bill.route');
 
 server.use('/', authRoutes);
 server.use('/', userRoutes);
@@ -53,6 +54,7 @@ server.use('/', merchantRoutes);
 server.use('/', requestRoutes);
 server.use('/', payRoutes);
 server.use('/', pageRoutes);
+server.use('/', billRoutes);
 
 const port = process.env.PORT || 8000;
 

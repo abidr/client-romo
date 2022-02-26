@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  BiCog, BiDollarCircle, BiHomeSmile, BiPaperPlane, BiPlusCircle, BiStore, BiTransferAlt, BiWallet
+  BiCog, BiDollarCircle, BiHomeSmile, BiNotepad,
+  BiPaperPlane, BiPlusCircle, BiStore, BiTransferAlt, BiWallet
 } from 'react-icons/bi';
 import useSidebar from '../data/useSidebar';
 import SidebarMenu from './SidebarMenu';
@@ -50,6 +51,10 @@ const Sidebar = ({ userData, settings }) => {
             <SidebarMenu href="/make-payment">
               <BiDollarCircle />
               <span>{t('Payment')}</span>
+            </SidebarMenu>
+            <SidebarMenu href="/bill-pay">
+              <BiNotepad />
+              <span>{t('Utility Bill')}</span>
             </SidebarMenu>
             {userData?.role === 2 && (
             <SidebarMenu href="/merchant">

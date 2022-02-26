@@ -1,34 +1,33 @@
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import cogoToast from 'cogo-toast';
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Image, Table } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import { useTranslation } from 'react-i18next';
 import {
-  BiCheckCircle, BiLeftArrowAlt, BiRightArrowAlt, BiXCircle
+  BiCheckCircle, BiLeftArrowAlt, BiRightArrowAlt
 } from 'react-icons/bi';
+import PhoneInput from 'react-phone-input-2';
 import useCurrency from '../../data/useCurrency';
-import useGateways, { useGatewayCurrencies } from '../../data/useGateways';
 import useWallet from '../../data/useWallet';
-import depositRequest from '../../lib/depositRequest';
+import topUpRequest, { topUpReviewRequest } from '../../lib/billRequest';
 import Loader from '../Loader';
-import GatewayLogo from './GatewayLogo';
 
-const DepositStep = ({ step, setStep, status }) => {
+const TopUpStep = ({ step, setStep }) => {
   const [selectedCurrency, setSelectedCurrency] = useState();
   const [currentBalance, setCurrentBalance] = useState(0);
   const [amount, setAmount] = useState();
-  const [payment, setPayment] = useState();
+  const [rates, setRates] = useState();
+  const [number, setNumber] = useState('225');
+  const [country, setCountry] = useState('ci');
   const [actionLoader, setActionLoader] = useState(false);
   const { data, loading } = useCurrency();
   const { data: walletData, loading: walletLoading } = useWallet();
-  const { data: gatewayData, loading: gatewayLoading } = useGateways();
-  const { data: currencyData, loading: currencyLoading } = useGatewayCurrencies();
   const { t } = useTranslation();
 
   useEffect(() => {
-    setSelectedCurrency(data?.data[0]);
+    const findIndex = data?.data?.findIndex((item) => item.symbol === 'XOF');
+    setSelectedCurrency(data?.data[findIndex]);
   }, [data]);
 
   useEffect(() => {
@@ -38,24 +37,28 @@ const DepositStep = ({ step, setStep, status }) => {
 
   const handleNext = (e) => {
     e.preventDefault();
-    setStep(step + 1);
+    topUpReviewRequest({
+      country: country.toUpperCase(),
+      number,
+      amount: parseFloat(amount, 10),
+      currency: 'XOF',
+    }, setActionLoader, setStep, setRates);
   };
 
-  const handleDeposit = () => {
-    if (payment) {
-      depositRequest({
-        payment_method: payment,
-        amount: parseFloat(amount, 10),
-        currency: selectedCurrency?.symbol
-      }, setActionLoader);
-    } else {
-      cogoToast.error(t('Please select a payment method'), { position: 'bottom-center' });
-    }
+  const handleSubmit = () => {
+    topUpRequest({
+      country: country.toUpperCase(),
+      number,
+      amount: parseFloat(amount, 10),
+      currency: 'XOF',
+    }, setActionLoader, setStep);
   };
 
-  if (loading || walletLoading || gatewayLoading || currencyLoading) {
-    return <Loader height="200px" />;
+  if (loading || walletLoading) {
+    return <Loader />;
   }
+
+  console.log(number);
 
   if (step === 1) {
     return (
@@ -68,18 +71,6 @@ const DepositStep = ({ step, setStep, status }) => {
                 <Image src={selectedCurrency?.icon} rounded />
                 {selectedCurrency?.symbol}
               </Dropdown.Toggle>
-
-              <Dropdown.Menu>
-                {data?.data?.map((currency) => (
-                  <Dropdown.Item
-                    key={currency.id}
-                    onClick={() => setSelectedCurrency(currency)}
-                  >
-                    <Image src={currency.icon} rounded />
-                    {currency.symbol}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
               <p className="available-balance">
                 {t('Available Balance')}
                 :
@@ -96,9 +87,22 @@ const DepositStep = ({ step, setStep, status }) => {
             <label>{t('Amount')}</label>
             <input
               onChange={(e) => setAmount(e.target.value)}
-              defaultValue={amount}
+              value={amount}
               type="text"
               required
+            />
+          </div>
+
+          <div className="currency-amount">
+            <label>{t('Phone Number')}</label>
+            <PhoneInput
+              enableLongNumbers
+              country="ci"
+              value={number}
+              onChange={(value, count) => {
+                setNumber(value);
+                setCountry(count.countryCode);
+              }}
             />
           </div>
 
@@ -106,9 +110,20 @@ const DepositStep = ({ step, setStep, status }) => {
             <button
               type="submit"
               className="bttn-mid btn-ylo"
+              disabled={actionLoader}
             >
-              <BiRightArrowAlt />
-              {t('Next')}
+              {actionLoader ? (
+                <>
+                  <Spinner animation="border" role="status" size="sm" />
+                  {' '}
+                  {t('Processing')}
+                </>
+              ) : (
+                <>
+                  <BiRightArrowAlt />
+                  {t('Next')}
+                </>
+              )}
             </button>
           </div>
         </form>
@@ -122,6 +137,18 @@ const DepositStep = ({ step, setStep, status }) => {
           <Table striped hover responsive className="dark-color">
             <tbody>
               <tr>
+                <td>{t('Phone Number')}</td>
+                <td style={{ color: 'white', fontWeight: 'bold' }}>
+                  {number}
+                </td>
+              </tr>
+              <tr>
+                <td>{t('Operator')}</td>
+                <td style={{ color: 'white', fontWeight: 'bold' }}>
+                  {rates?.name}
+                </td>
+              </tr>
+              <tr>
                 <td>{t('Amount')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
                   {amount}
@@ -130,35 +157,35 @@ const DepositStep = ({ step, setStep, status }) => {
                 </td>
               </tr>
               <tr>
-                <td>{t('Total')}</td>
+                <td>{t('Exchange Rate')}</td>
                 <td style={{ color: 'white', fontWeight: 'bold' }}>
-                  {amount}
+                  {rates?.fxRate}
                   {' '}
-                  {selectedCurrency?.symbol}
+                  {rates?.currencyCode}
+                </td>
+              </tr>
+              <tr>
+                <td>{t('Fee')}</td>
+                <td style={{ color: 'white', fontWeight: 'bold' }}>
+                  {rates?.fee}
+                  {' '}
+                  {rates?.currencyCode}
+                </td>
+              </tr>
+              <tr>
+                <td>{t('Receiving (Tentative)')}</td>
+                <td style={{ color: 'white', fontWeight: 'bold' }}>
+                  {rates?.receiving}
+                  {' '}
+                  {rates?.currencyCode}
                 </td>
               </tr>
             </tbody>
           </Table>
-          <div className="payment-method">
-            <h4>{t('Payment Method')}</h4>
-            {gatewayData?.map((gateway) => {
-              const isCurrencyAvailable = currencyData[gateway?.value].supportedCurrencies.some((cur) => cur === selectedCurrency?.symbol);
-              if (isCurrencyAvailable) {
-                return (
-                  <button
-                    type="button"
-                    onClick={() => setPayment(gateway.value)}
-                    className={`gateway ${(payment === gateway.value) ? 'active' : ''}`}
-                    key={gateway?.value}
-                  >
-                    <GatewayLogo name={gateway.value} />
-                  </button>
-                );
-              }
-              return <React.Fragment key={gateway?.value} />;
-            })}
-          </div>
         </div>
+        <p style={{ paddingTop: '15px' }}>
+          {t("Please Note: You'll receive top up in your local currency but we'll deduct your wallet balance.")}
+        </p>
         <div className="bttns mt-30">
           <button
             type="button"
@@ -170,7 +197,7 @@ const DepositStep = ({ step, setStep, status }) => {
           </button>
           <button
             type="button"
-            onClick={() => handleDeposit()}
+            onClick={() => handleSubmit()}
             className="bttn-mid btn-ylo"
             disabled={actionLoader}
           >
@@ -183,7 +210,7 @@ const DepositStep = ({ step, setStep, status }) => {
             ) : (
               <>
                 <BiRightArrowAlt />
-                {t('Make Payment')}
+                {t('Confirm')}
               </>
             )}
           </button>
@@ -193,32 +220,23 @@ const DepositStep = ({ step, setStep, status }) => {
   } if (step === 3) {
     return (
       <div className="transaction-success">
-        {(status === 'success') || (status === 'successful') ? (
-          <BiCheckCircle color="green" size={70} />
-        ) : (
-          <BiXCircle color="red" size={70} />)}
+        <BiCheckCircle color="green" size={70} />
         <h2>
-          {t('Deposit')}
-          {' '}
-          {(status === 'success' || status === 'successful') ? 'Successful' : 'Failed'}
+          {t('TopUp Successful')}
         </h2>
-        {(status === 'success' || status === 'successful') ? (
-          <p>
-            {t('Your requested amount has been added to your desired wallet')}
-            .
-          </p>
-        ) : (
-          <p>
-            {t('Your deposit request declined by the payment gateway')}
-            .
-          </p>
-        )}
+        <p>
+          {amount}
+          {' '}
+          {selectedCurrency?.symbol}
+          {' '}
+          {t('top-up successful')}
+        </p>
         <button
           type="button"
           onClick={() => setStep(1)}
           className="bttn-mid btn-ylo"
         >
-          {t('Make Another Deposit')}
+          {t('Make Another TopUp')}
         </button>
       </div>
     );
@@ -226,4 +244,4 @@ const DepositStep = ({ step, setStep, status }) => {
   return <></>;
 };
 
-export default DepositStep;
+export default TopUpStep;

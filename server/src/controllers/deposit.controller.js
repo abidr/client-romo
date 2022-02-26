@@ -21,6 +21,7 @@ const { voguePayment } = require('../utils/payments/voguepay');
 const { PerfectMoney } = require('../utils/payments/perfectmoney');
 const { payDunya } = require('../utils/payments/paydunya');
 const { omPayment } = require('../utils/payments/om');
+const { flutterWavePayment } = require('../utils/payments/flutterwave');
 
 exports.getAllDeposits = async (req, res) => {
   const query = await queryParser.parse(req);
@@ -166,12 +167,18 @@ exports.createDeposit = async (req, res) => {
       returnedObj = { ...data.dataValues, redirect: payment };
     } else if (payment_method === 'om') {
       const payment = await omPayment(data, user, 'PAIEMENTMARCHANDOMPAYCI');
+      console.log(payment);
       returnedObj = { ...data.dataValues, redirect: payment };
     } else if (payment_method === 'mtn') {
       const payment = await omPayment(data, user, 'PAIEMENTMARCHAND_MTN_CI');
+      console.log(payment);
       returnedObj = { ...data.dataValues, redirect: payment };
     } else if (payment_method === 'moov') {
       const payment = await omPayment(data, user, 'PAIEMENTMARCHAND_MOOV_CI');
+      console.log(payment);
+      returnedObj = { ...data.dataValues, redirect: payment };
+    } else if (payment_method === 'flutterwave') {
+      const payment = await flutterWavePayment(data, user);
       returnedObj = { ...data.dataValues, redirect: payment };
     }
 

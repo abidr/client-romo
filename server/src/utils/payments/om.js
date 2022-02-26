@@ -2,9 +2,21 @@ const rp = require('request-promise');
 const db = require('../../config/db.config');
 
 const Setting = db.settings;
+const Gateway = db.gateways;
 
 exports.omPayment = async (data, user, serviceCode) => {
   try {
+    let recipientNumber;
+    if (serviceCode === 'PAIEMENTMARCHANDOMPAYCI') {
+      const gateway = await Gateway.findOne({ where: { value: 'om' } });
+      recipientNumber = gateway.ex1;
+    } else if (serviceCode === 'PAIEMENTMARCHAND_MTN_CI') {
+      const gateway = await Gateway.findOne({ where: { value: 'mtn' } });
+      recipientNumber = gateway.ex1;
+    } else if (serviceCode === 'PAIEMENTMARCHAND_MOOV_CI') {
+      const gateway = await Gateway.findOne({ where: { value: 'moov' } });
+      recipientNumber = gateway.ex1;
+    }
     const apiUrl = await Setting.findOne({ where: { value: 'apiUrl' } });
 
     const apiData = await rp({
@@ -21,7 +33,7 @@ exports.omPayment = async (data, user, serviceCode) => {
         },
         amount: data.amount,
         callback: `${apiUrl.param1}/payments/touchpay`,
-        recipientNumber: '345345345',
+        recipientNumber,
         serviceCode,
       },
       headers: { Accept: 'application/json' },
@@ -31,6 +43,7 @@ exports.omPayment = async (data, user, serviceCode) => {
         sendImmediately: false,
       },
     });
+    console.log(apiData);
     return apiData.payment_url;
   } catch (err) {
     return err;

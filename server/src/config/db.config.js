@@ -46,6 +46,7 @@ db.merchants = require('../models/merchant.model')(sequelize);
 db.requests = require('../models/request.model')(sequelize);
 db.pays = require('../models/pay.model')(sequelize);
 db.pages = require('../models/page.model')(sequelize);
+db.bills = require('../models/bill.model')(sequelize);
 
 // Withdraw Relation
 db.users.hasMany(db.withdraws, { as: 'withdraws' });
@@ -108,6 +109,12 @@ db.requests.belongsTo(db.merchants, {
 // Pays Relation
 db.users.hasMany(db.pays, { as: 'pays' });
 db.pays.belongsTo(db.users, {
+  foreignKey: 'userId',
+  as: 'user',
+});
+// Bill Relation
+db.users.hasMany(db.bills, { as: 'bills' });
+db.bills.belongsTo(db.users, {
   foreignKey: 'userId',
   as: 'user',
 });
