@@ -3,7 +3,9 @@ const express = require('express');
 const router = express.Router();
 const multerInstance = require('../config/multer.config');
 
-const { withAuth, isAdmin, withAuthAdmin } = require('../middlewares/auth.middleware');
+const {
+  withAuth, isAdmin, withAuthAdmin, withOptionalAuth,
+} = require('../middlewares/auth.middleware');
 
 const {
   updateFees, updateGateways, getSettingByValue, getSettings, getDashboard, updateSettingByValue,
@@ -12,7 +14,7 @@ const {
   getBasicInfo, updateLogoFav, handleImageUpload, sendUserEmail, updateRepeater, balanceManage,
 } = require('../controllers/setting.controller');
 
-router.get('/settings', getSettings);
+router.get('/settings', withOptionalAuth, getSettings);
 router.get('/dashboard', withAuthAdmin, isAdmin, getDashboard);
 router.get('/dashboard/me', withAuth, getDashboardUser);
 router.get('/logs', withAuthAdmin, isAdmin, getLogs);

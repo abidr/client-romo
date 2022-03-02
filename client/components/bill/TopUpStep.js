@@ -58,8 +58,6 @@ const TopUpStep = ({ step, setStep }) => {
     return <Loader />;
   }
 
-  console.log(number);
-
   if (step === 1) {
     return (
       <>

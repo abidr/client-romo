@@ -1,8 +1,10 @@
+import cogoToast from 'cogo-toast';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useTranslation } from 'react-i18next';
 import { CgBriefcase, CgUser } from 'react-icons/cg';
 import LanguageSwitch from '../components/LanguageSwitch';
@@ -12,14 +14,21 @@ import checkAuthAccess from '../hoc/checkAuthAccess';
 import { signUpRequest } from '../lib/authRequest';
 
 const RegisterMerchant = () => {
+  const recaptchaRef = useRef(null);
+
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [captcha, setCaptcha] = useState('');
 
   const { data, loading: settingsLoading } = useSettings();
 
   const handleRegister = (e) => {
     e.preventDefault();
+    if (!captcha) {
+      cogoToast.error(t('Please Verify Captcha'), { position: 'bottom-center' });
+      return null;
+    }
     const {
       name, email, password,
       merchantName,
@@ -33,9 +42,13 @@ const RegisterMerchant = () => {
       merchantEmail: merchantEmail?.value,
       merchantAddress: merchantAddress?.value,
       merchantProof: merchantProof?.value,
-      merchant: true
+      merchant: true,
+      captcha
     };
     signUpRequest(params, setLoading, setSuccess);
+    recaptchaRef.current.reset();
+    setCaptcha('');
+    return null;
   };
 
   if (settingsLoading) {
@@ -146,7 +159,15 @@ const RegisterMerchant = () => {
                       placeholder={t('Merchant Proof')}
                       required
                     />
-                    <button disabled={loading} type="submit" className="bttn-mid btn-ylo w-100">
+                    <center>
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey={data?.recaptcha?.param1}
+                        onChange={(value) => setCaptcha(value)}
+                        theme="dark"
+                      />
+                    </center>
+                    <button disabled={loading} type="submit" className="bttn-mid btn-ylo w-100 mt-20">
                       {loading ? (
                         <Spinner animation="border" role="status" size="sm" />
                       ) : t('Register Now')}

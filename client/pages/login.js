@@ -1,7 +1,9 @@
+import cogoToast from 'cogo-toast';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitch from '../components/LanguageSwitch';
 import Loader from '../components/Loader';
@@ -10,8 +12,10 @@ import checkAuthAccess from '../hoc/checkAuthAccess';
 import { signInRequest } from '../lib/authRequest';
 
 const Login = () => {
+  const recaptchaRef = useRef(null);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [captcha, setCaptcha] = useState('');
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
@@ -19,10 +23,17 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    if (!captcha) {
+      cogoToast.error(t('Please Verify Captcha'), { position: 'bottom-center' });
+      return null;
+    }
     const params = {
-      email, password,
+      email, password, captcha
     };
     signInRequest(params, setLoading);
+    recaptchaRef.current.reset();
+    setCaptcha('');
+    return null;
   };
 
   if (settingsLoading) {
@@ -66,7 +77,15 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder={t('Password')}
                   />
-                  <button disabled={loading} type="submit" className="bttn-mid btn-ylo w-100">
+                  <center>
+                    <ReCAPTCHA
+                      ref={recaptchaRef}
+                      sitekey={data?.recaptcha?.param1}
+                      onChange={(value) => setCaptcha(value)}
+                      theme="dark"
+                    />
+                  </center>
+                  <button disabled={loading} type="submit" className="bttn-mid btn-ylo w-100 mt-20">
                     {loading ? (
                       <Spinner animation="border" role="status" size="sm" />
                     ) : t('Account Login')}

@@ -332,6 +332,13 @@
     "Convert To Merchant": "Convert To Merchant",
     "Balance": "Balance",
     "Add Balance": "Add Balance",
-    "Subtract Balance": "Subtract Balance"
+    "Subtract Balance": "Subtract Balance",
+    "Please Verify Captcha": "Please Verify Captcha",
+    "Utility Bill": "Utility Bill",
+    "Make payment to different utility bills": "Make payment to different utility bills",
+    "Top-up": "Top-up",
+    "Bill Pay Logs": "Bill Pay Logs",
+    "Service": "Service",
+    "Narration": "Narration"
   }
 }

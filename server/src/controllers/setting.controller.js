@@ -35,6 +35,12 @@ exports.getLogs = async (req, res) => {
 };
 exports.getSettings = async (req, res) => {
   try {
+    let admin = false;
+    if (req.user) {
+      if (req.user.role === 0) {
+        admin = true;
+      }
+    }
     const logo = await Setting.findOne({ where: { value: 'logo' } });
     const appUrl = await Setting.findOne({ where: { value: 'appUrl' } });
     const apiUrl = await Setting.findOne({ where: { value: 'apiUrl' } });
@@ -43,6 +49,8 @@ exports.getSettings = async (req, res) => {
     const adjustments = await Setting.findOne({ where: { value: 'adjustments' } });
     const tawk = await Setting.findOne({ where: { value: 'tawk' } });
     const freecurrencyapi = await Setting.findOne({ where: { value: 'freecurrencyapi' } });
+    const recaptcha = await Setting.findOne({ where: { value: 'recaptcha' } });
+    const reloadly = await Setting.findOne({ where: { value: 'reloadly' } });
     return res.json({
       logo,
       appUrl,
@@ -51,7 +59,9 @@ exports.getSettings = async (req, res) => {
       refferal,
       adjustments,
       tawk,
-      freecurrencyapi,
+      freecurrencyapi: admin ? freecurrencyapi : null,
+      recaptcha,
+      reloadly: admin ? reloadly : null,
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });

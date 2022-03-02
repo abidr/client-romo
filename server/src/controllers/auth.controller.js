@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
 const { customAlphabet } = require('nanoid');
+const rp = require('request-promise');
 const db = require('../config/db.config');
 const mailer = require('../utils/mailer');
 
@@ -12,6 +13,18 @@ const Setting = db.settings;
 const Log = db.logs;
 
 exports.signUp = async (req, res) => {
+  const recaptcha = await Setting.findOne({ where: { value: 'recaptcha' } });
+  const captcha = await rp({
+    method: 'POST',
+    uri: `https://www.google.com/recaptcha/api/siteverify?secret=${recaptcha.param2}&response=${req.body.captcha}`,
+    json: true,
+  });
+
+  if (!captcha.success) {
+    return res.status(401).json({
+      message: 'Invalid Captcha',
+    });
+  }
   // Validating the form
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -148,6 +161,19 @@ exports.signUpAdmin = async (req, res) => {
 };
 
 exports.signIn = async (req, res) => {
+  const recaptcha = await Setting.findOne({ where: { value: 'recaptcha' } });
+  const captcha = await rp({
+    method: 'POST',
+    uri: `https://www.google.com/recaptcha/api/siteverify?secret=${recaptcha.param2}&response=${req.body.captcha}`,
+    json: true,
+  });
+
+  if (!captcha.success) {
+    return res.status(401).json({
+      message: 'Invalid Captcha',
+    });
+  }
+
   const user = await User.findOne({
     where: {
       email: req.body.email || null,

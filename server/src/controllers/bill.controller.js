@@ -7,6 +7,7 @@ const { removeBalance } = require('../utils/wallet');
 
 const queryParser = sequelizeQuery(db);
 const Bill = db.bills;
+const Setting = db.settings;
 const Wallet = db.wallets;
 
 exports.getAllBills = async (req, res) => {
@@ -56,6 +57,7 @@ exports.createTopUp = async (req, res) => {
     const nanoId = customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 12);
     const trxId = nanoId();
 
+    const reloadly = await Setting.findOne({ where: { value: 'reloadly' } });
     const wallet = await Wallet.findOne({ where: { userId: id, currency } });
 
     if (!wallet) {
@@ -70,8 +72,8 @@ exports.createTopUp = async (req, res) => {
       uri: 'https://auth.reloadly.com/oauth/token',
       json: true,
       body: {
-        client_id: '6sk9ZmrFeYmciLwonMDZBxQ7bto03XJr',
-        client_secret: '3vccI7Xmh4-ByqqyXWl3WLe57yZxEd-QgLayxpqjHqTGYkyyRerUBRBx6ZIrokX',
+        client_id: reloadly.param1,
+        client_secret: reloadly.param2,
         grant_type: 'client_credentials',
         audience: 'https://topups.reloadly.com',
       },
@@ -145,13 +147,15 @@ exports.topUpReview = async (req, res) => {
     number, amount, country,
   } = req.body;
   try {
+    const reloadly = await Setting.findOne({ where: { value: 'reloadly' } });
+
     const accessToken = await rp({
       method: 'POST',
       uri: 'https://auth.reloadly.com/oauth/token',
       json: true,
       body: {
-        client_id: '6sk9ZmrFeYmciLwonMDZBxQ7bto03XJr',
-        client_secret: '3vccI7Xmh4-ByqqyXWl3WLe57yZxEd-QgLayxpqjHqTGYkyyRerUBRBx6ZIrokX',
+        client_id: reloadly.param1,
+        client_secret: reloadly.param2,
         grant_type: 'client_credentials',
         audience: 'https://topups.reloadly.com',
       },

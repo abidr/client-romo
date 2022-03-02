@@ -18,7 +18,7 @@ const BillPay = ({ userData, settings }) => {
     <>
       <Head>
         <title>
-          {t('Payment')}
+          {t('Utility Bill')}
           {' '}
           -
           {' '}

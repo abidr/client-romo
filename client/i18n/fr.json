@@ -332,6 +332,13 @@
     "Convert To Merchant": "Convertir en marchand",
     "Balance": "Équilibre",
     "Add Balance": "Ajouter un solde",
-    "Subtract Balance": "Soustraire le solde"
+    "Subtract Balance": "Soustraire le solde",
+    "Please Verify Captcha": "Veuillez vérifier le captcha",
+    "Utility Bill": "Paiement de factures",
+    "Make payment to different utility bills": "Effectuer le paiement de différentes factures de services publics",
+    "Top-up": "Recharge",
+    "Bill Pay Logs": "Journaux de paiement des factures",
+    "Service": "Service",
+    "Narration": "Narration"
   }
 }

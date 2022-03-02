@@ -17,13 +17,15 @@ export default async function generalUpdate(params, setActionLoader) {
   }
   return null;
 }
-export async function settingsUpdate(value, params, setActionLoader) {
+export async function settingsUpdate(value, params, setActionLoader, cogo) {
   setActionLoader(true);
   try {
     const { data } = await request.put(`/settings/byvalue/${value}`, { ...params });
     setActionLoader(false);
     mutate('/settings');
-    cogoToast.success(data.message, { position: 'bottom-center' });
+    if (cogo) {
+      cogoToast.success(data.message, { position: 'bottom-center' });
+    }
     return data;
   } catch (error) {
     const { data } = error.response;

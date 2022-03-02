@@ -1,4 +1,5 @@
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   BiCog, BiDollarCircle, BiHomeSmile, BiPaintRoll,
@@ -10,6 +11,15 @@ import SidebarMenu from './SidebarMenu';
 const SidebarAdmin = ({ settings }) => {
   const sidebar = useSidebar();
   const { t } = useTranslation();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (sidebar?.visible) {
+      sidebar?.toggle();
+    }
+  }, [router.asPath]);
+
   return (
     <>
       <div

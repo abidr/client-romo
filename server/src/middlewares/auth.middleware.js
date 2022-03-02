@@ -22,6 +22,17 @@ exports.withAuth = (req, res, next) => {
   });
 };
 
+exports.withOptionalAuth = (req, res, next) => {
+  const { adminToken } = req.cookies;
+  jwt.verify(adminToken, process.env.SECRET, (err, user) => {
+    if (err) {
+      return next();
+    }
+    req.user = user;
+    return next();
+  });
+};
+
 exports.withAuthAdmin = (req, res, next) => {
   const { adminToken } = req.cookies;
   jwt.verify(adminToken, process.env.SECRET, (err, user) => {
