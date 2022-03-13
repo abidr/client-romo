@@ -10,6 +10,7 @@ import {
 import useCurrency from '../../data/useCurrency';
 import useWallet from '../../data/useWallet';
 import exchangeRequest from '../../lib/exchangeRequest';
+import inputNumber from '../../utils/inputNumber';
 import Loader from '../Loader';
 
 const ExchangeStep = ({ step, setStep, settings }) => {
@@ -133,6 +134,7 @@ const ExchangeStep = ({ step, setStep, settings }) => {
               value={amount}
               type="text"
               required
+              onPress={inputNumber}
             />
           </div>
           <div className="bttns mt-30">

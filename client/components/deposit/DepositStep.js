@@ -12,6 +12,7 @@ import useCurrency from '../../data/useCurrency';
 import useGateways, { useGatewayCurrencies } from '../../data/useGateways';
 import useWallet from '../../data/useWallet';
 import depositRequest from '../../lib/depositRequest';
+import inputNumber from '../../utils/inputNumber';
 import Loader from '../Loader';
 import GatewayLogo from './GatewayLogo';
 
@@ -99,6 +100,7 @@ const DepositStep = ({ step, setStep, status }) => {
               defaultValue={amount}
               type="text"
               required
+              onPress={inputNumber}
             />
           </div>
 

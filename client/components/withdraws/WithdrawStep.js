@@ -11,6 +11,7 @@ import useCurrency from '../../data/useCurrency';
 import useMethods from '../../data/useMethods';
 import useWallet from '../../data/useWallet';
 import withdrawRequest from '../../lib/withdrawRequest';
+import inputNumber from '../../utils/inputNumber';
 import Loader from '../Loader';
 
 const WithdrawStep = ({ step, setStep }) => {
@@ -93,6 +94,7 @@ const WithdrawStep = ({ step, setStep }) => {
               value={amount}
               type="text"
               required
+              onPress={inputNumber}
             />
           </div>
           <div className="currency-amount">

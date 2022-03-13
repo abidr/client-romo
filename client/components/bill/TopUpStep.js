@@ -11,6 +11,7 @@ import PhoneInput from 'react-phone-input-2';
 import useCurrency from '../../data/useCurrency';
 import useWallet from '../../data/useWallet';
 import topUpRequest, { topUpReviewRequest } from '../../lib/billRequest';
+import inputNumber from '../../utils/inputNumber';
 import Loader from '../Loader';
 
 const TopUpStep = ({ step, setStep }) => {
@@ -88,6 +89,7 @@ const TopUpStep = ({ step, setStep }) => {
               value={amount}
               type="text"
               required
+              onPress={inputNumber}
             />
           </div>
 

@@ -10,6 +10,7 @@ import {
 import useCurrency from '../../data/useCurrency';
 import useWallet from '../../data/useWallet';
 import transferRequest from '../../lib/transferRequest';
+import inputNumber from '../../utils/inputNumber';
 import Loader from '../Loader';
 
 const TransferStep = ({ step, setStep }) => {
@@ -90,6 +91,7 @@ const TransferStep = ({ step, setStep }) => {
               value={amount}
               type="text"
               required
+              onPress={inputNumber}
             />
           </div>
 

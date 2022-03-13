@@ -10,6 +10,7 @@ import {
 import useCurrency from '../../data/useCurrency';
 import useWallet from '../../data/useWallet';
 import paymentRequest from '../../lib/paymentRequest';
+import inputNumber from '../../utils/inputNumber';
 import Loader from '../Loader';
 
 const PaymentStep = ({ step, setStep }) => {
@@ -90,6 +91,7 @@ const PaymentStep = ({ step, setStep }) => {
               value={amount}
               type="text"
               required
+              onPress={inputNumber}
             />
           </div>
 
