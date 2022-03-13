@@ -129,14 +129,14 @@ exports.acceptExchange = async (req, res) => {
     const num = await Exchange.update({ status: 'success' }, { where: { id } });
     const ifUpdated = parseInt(num, 10);
     if (ifUpdated === 1) {
-      await addBalance(exchange.amount_to, exchange.to, exchange.userId);
+      await addBalance(exchange.amountTo, exchange.to, exchange.userId);
       await Log.create({ message: `Admin #${req.user.id} accepted Exchange #${id}` });
       return res.json({ message: 'Exchange Succeed' });
     }
     mailer({
       user: exchange.userId,
       subject: 'Exchange Accepted',
-      message: `Your exchange request of ${exchange.amount_from} ${exchange.from} to ${exchange.amount_to} ${exchange.to} has been accepted`,
+      message: `Your exchange request of ${exchange.amountFrom} ${exchange.from} to ${exchange.amountTo} ${exchange.to} has been accepted`,
     });
 
     return res.status(500).json({ message: 'Could not update exchange' });

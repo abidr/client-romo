@@ -17,7 +17,6 @@ module.exports = (sequelize) => {
     },
     trxId: {
       type: DataTypes.STRING,
-      unique: true,
     },
   });
   return Transfer;
