@@ -104,7 +104,9 @@ exports.createExchange = async (req, res) => {
     }
 
     await removeBalance(amountFrom, from, id);
+    await addBalance(total, to, id);
     const data = await Exchange.create({
+      status: 'success',
       userId: id,
       from,
       to,
