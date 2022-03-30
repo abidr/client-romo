@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import {
   BiCheckCircle, BiLeftArrowAlt, BiRightArrowAlt, BiXCircle
 } from 'react-icons/bi';
+import PhoneInput from 'react-phone-input-2';
 import useCurrency from '../../data/useCurrency';
 import useGateways, { useGatewayCurrencies } from '../../data/useGateways';
 import useWallet from '../../data/useWallet';
@@ -19,6 +20,7 @@ import GatewayLogo from './GatewayLogo';
 const DepositStep = ({ step, setStep, status }) => {
   const [selectedCurrency, setSelectedCurrency] = useState();
   const [currentBalance, setCurrentBalance] = useState(0);
+  const [number, setNumber] = useState();
   const [amount, setAmount] = useState();
   const [payment, setPayment] = useState();
   const [actionLoader, setActionLoader] = useState(false);
@@ -47,7 +49,8 @@ const DepositStep = ({ step, setStep, status }) => {
       depositRequest({
         payment_method: payment,
         amount: parseFloat(amount, 10),
-        currency: selectedCurrency?.symbol
+        currency: selectedCurrency?.symbol,
+        number
       }, setActionLoader);
     } else {
       cogoToast.error(t('Please select a payment method'), { position: 'bottom-center' });
@@ -160,6 +163,20 @@ const DepositStep = ({ step, setStep, status }) => {
               return <React.Fragment key={gateway?.value} />;
             })}
           </div>
+          {payment === 'mtn' && (
+          <div className="currency-amount mt-20 mb-10">
+            <label>{t('Phone Number')}</label>
+            <PhoneInput
+              onlyCountries={['ci']}
+              enableLongNumbers
+              country="ci"
+              value={number}
+              onChange={(value) => {
+                setNumber(value);
+              }}
+            />
+          </div>
+          )}
         </div>
         <div className="bttns mt-30">
           <button

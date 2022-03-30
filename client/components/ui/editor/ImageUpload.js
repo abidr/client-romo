@@ -9,7 +9,7 @@ const ImageUpload = ({ input }) => {
   const [actionLoader, setActionLoader] = useState(false);
   const handleUpload = async (e) => {
     const data = await imageUpload(e.target.files[0], setActionLoader);
-    inputEl.current.value = data.path;
+    inputEl.current.value = `public/${data.file}`;
   };
   return (
     <div className="single-profile" key={name}>

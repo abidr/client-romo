@@ -8,7 +8,7 @@ const IconUpload = ({ id, value, handleEdit }) => {
   const [actionLoader, setActionLoader] = useState(false);
   const handleUpload = async (e) => {
     const data = await imageUpload(e.target.files[0], setActionLoader);
-    handleEdit(id, 'icon', data.path);
+    handleEdit(id, 'icon', `public/${data.file}`);
   };
   const { t } = useTranslation();
   return (

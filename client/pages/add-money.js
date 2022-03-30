@@ -21,7 +21,7 @@ const AddMoney = ({ userData, settings }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (status === 'success' || status === 'failed' || status === 'successful') {
+    if (status === 'success' || status === 'failed' || status === 'successful' || status === 'pending') {
       setStep(3);
     }
   }, []);

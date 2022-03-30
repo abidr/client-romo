@@ -5,20 +5,28 @@ import postRedirect from '../utils/postRedirect';
 export default async function depositRequest(params, setActionLoader) {
   setActionLoader(true);
   try {
+    if (params?.payment_method === 'paydunya' && params?.amount < 200) {
+      setActionLoader(false);
+      return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
+    }
+    if (params?.payment_method === 'om' && params?.amount < 200) {
+      setActionLoader(false);
+      return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
+    }
+    if (params?.payment_method === 'mtn' && params?.amount < 200) {
+      setActionLoader(false);
+      return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
+    }
+    if (params?.payment_method === 'moov' && params?.amount < 200) {
+      setActionLoader(false);
+      return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
+    }
+    if (params?.payment_method === 'mtn' && !params?.number) {
+      setActionLoader(false);
+      return cogoToast.error('Number must be provided', { position: 'bottom-center' });
+    }
     const { data } = await request.post('/deposits', { ...params });
     setActionLoader(false);
-    if (data?.payment_method === 'paydunya' && data?.amount < 200) {
-      return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
-    }
-    if (data?.payment_method === 'om' && data?.amount < 200) {
-      return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
-    }
-    if (data?.payment_method === 'mtn' && data?.amount < 200) {
-      return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
-    }
-    if (data?.payment_method === 'moov' && data?.amount < 200) {
-      return cogoToast.error('Amount must be greater than 200', { position: 'bottom-center' });
-    }
     if (data?.payment_method === 'perfectmoney') {
       postRedirect('https://perfectmoney.is/api/step1.asp', {
         PAYEE_ACCOUNT: data?.currency === 'USD' ? data?.payment?.usdWallet : data?.payment?.eurWallet,

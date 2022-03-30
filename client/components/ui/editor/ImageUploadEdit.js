@@ -11,8 +11,8 @@ const ImageUploadEdit = ({
   const [actionLoader, setActionLoader] = useState(false);
   const handleUpload = async (e) => {
     const data = await imageUpload(e.target.files[0], setActionLoader);
-    handleEdit(childrenId, name, data.path);
-    inputEl.current.value = data.path;
+    handleEdit(childrenId, name, `public/${data.file}`);
+    inputEl.current.value = `public/${data.file}`;
   };
   return (
     <div className="single-profile" key={name}>
