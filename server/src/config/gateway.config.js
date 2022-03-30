@@ -91,8 +91,8 @@ const fieldData = {
     apiKey: true,
     secretKey: true,
     email: false,
-    ex1: { status: true, label: 'Subscription Key' },
-    ex2: { status: false, label: 'Password' },
+    ex1: { status: true, label: 'Collection Subscription Key' },
+    ex2: { status: true, label: 'Disbursement Subscription Key' },
     supportedCurrencies: ['XOF'],
   },
   moov: {

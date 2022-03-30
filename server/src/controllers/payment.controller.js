@@ -9,6 +9,7 @@ const Flutterwave = require('flutterwave-node-v3');
 const db = require('../config/db.config');
 
 const Gateway = db.gateways;
+const Withdraw = db.withdraws;
 const Deposit = db.deposits;
 const Log = db.logs;
 const Setting = db.settings;
@@ -277,6 +278,21 @@ exports.verifyMtn = async (req, res) => {
     await Log.create({ message: `MTN declined payment for deposit #${depositData.id}` });
     firstDeposit(depositData.id);
     return res.json({ message: 'Payment declined' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.verifyWithdrawMtn = async (req, res) => {
+  try {
+    const depositData = await Withdraw.findByPk(req.body.externalId);
+    if (req.body.status === 'SUCCESSFUL') {
+      await Withdraw.update({ status: 'success' }, { where: { id: depositData.id } });
+      await Log.create({ message: `MTN confirmed withdraw for withdraw #${depositData.id}` });
+      return res.json({ message: 'Withdraw verified' });
+    }
+    await Withdraw.update({ status: 'failed' }, { where: { id: depositData.id } });
+    await Log.create({ message: `MTN declined withdraw for withdraw #${depositData.id}` });
+    return res.json({ message: 'Withdraw declined' });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

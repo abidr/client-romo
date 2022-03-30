@@ -2,6 +2,7 @@
 const sequelizeQuery = require('sequelize-query');
 const db = require('../config/db.config');
 const mailer = require('../utils/mailer');
+const { creditMtnPayment } = require('../utils/payments/mtn');
 const { creditPayDunya } = require('../utils/payments/paydunya');
 
 const queryParser = sequelizeQuery(db);
@@ -181,6 +182,19 @@ exports.createWithdraw = async (req, res) => {
       total: calculateAmount,
       userId: id,
     });
+
+    if (method.name === 'MTN Money') {
+      const credit = await creditMtnPayment({
+        amount: calculateAmount,
+        currency,
+        id: data.id,
+        number: linkedAcc.params[0].value,
+      });
+      if (!(credit === 'success')) {
+        await Withdraw.destroy({ where: { id: data.id } });
+        return res.status(500).json({ message: 'Something Went Wrong!' });
+      }
+    }
     await Log.create({ message: `User #${id} requested withdrawal of ${amount} ${currency}` });
     await removeBalance(amount, currency, id);
     return res.json(data);
