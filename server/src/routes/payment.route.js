@@ -18,8 +18,8 @@ router.post('/payments/perfectmoney', verifyPerfectMoney);
 router.post('/payments/paydunya', verifyPayDunya);
 router.get('/payments/paystack', verifyPaystack);
 router.get('/payments/flutterwave', verifyFlutterWave);
-router.get('/payments/mtn', verifyMtn);
-router.post('/payments/mtn', verifyMtn);
-router.put('/payments/mtn', verifyMtn);
+router.get('/payments/verifymtn', verifyMtn);
+router.post('/payments/verifymtn', verifyMtn);
+router.put('/payments/verifymtn', verifyMtn);
 
 module.exports = router;

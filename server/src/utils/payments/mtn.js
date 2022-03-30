@@ -45,7 +45,7 @@ exports.mtnPayment = async (data, user, number) => {
         'Ocp-Apim-Subscription-Key': gateway.ex1,
         'X-Target-Environment': 'mtnivorycoast',
         'X-Reference-Id': reference,
-        'X-Callback-Url': `${appUrl.param1}/api/payments/mtn`,
+        'X-Callback-Url': `${appUrl.param1}/api/payments/verifymtn`,
       },
     });
     return '/add-money?status=success';
