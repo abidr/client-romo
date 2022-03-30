@@ -88,10 +88,10 @@ const fieldData = {
     supportedCurrencies: ['XOF'],
   },
   mtn: {
-    apiKey: false,
-    secretKey: false,
+    apiKey: true,
+    secretKey: true,
     email: false,
-    ex1: { status: true, label: 'Phone Number' },
+    ex1: { status: true, label: 'Subscription Key' },
     ex2: { status: false, label: 'Password' },
     supportedCurrencies: ['XOF'],
   },

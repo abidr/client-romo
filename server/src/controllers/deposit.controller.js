@@ -22,6 +22,7 @@ const { PerfectMoney } = require('../utils/payments/perfectmoney');
 const { payDunya } = require('../utils/payments/paydunya');
 const { omPayment } = require('../utils/payments/om');
 const { flutterWavePayment } = require('../utils/payments/flutterwave');
+const { mtnPayment } = require('../utils/payments/mtn');
 
 exports.getAllDeposits = async (req, res) => {
   const query = await queryParser.parse(req);
@@ -114,7 +115,9 @@ exports.getAllDepositsByUser = async (req, res) => {
 
 exports.createDeposit = async (req, res) => {
   const { id } = req.user;
-  const { payment_method, amount, currency } = req.body;
+  const {
+    payment_method, amount, currency, number,
+  } = req.body;
   const user = await User.findByPk(id);
   if (user.role === 2) {
     const merchant = await Merchant.findOne({ where: { userId: user.id } });
@@ -170,8 +173,7 @@ exports.createDeposit = async (req, res) => {
       console.log(payment);
       returnedObj = { ...data.dataValues, redirect: payment };
     } else if (payment_method === 'mtn') {
-      const payment = await omPayment(data, user, 'PAIEMENTMARCHAND_MTN_CI');
-      console.log(payment);
+      const payment = await mtnPayment(data, user, number);
       returnedObj = { ...data.dataValues, redirect: payment };
     } else if (payment_method === 'moov') {
       const payment = await omPayment(data, user, 'PAIEMENTMARCHAND_MOOV_CI');

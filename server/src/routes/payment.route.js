@@ -5,7 +5,7 @@ const router = express.Router();
 const {
   verifyMollie, verifyCoinbase, verifyCoinPayments, verifyPaypal, verifyStripe, verifyPaystack,
   verifyCoingate, verifyPayDunya, verifyFlutterWave,
-  verifyPerfectMoney,
+  verifyPerfectMoney, verifyMtn,
 } = require('../controllers/payment.controller');
 
 router.post('/payments/mollie', verifyMollie);
@@ -18,5 +18,8 @@ router.post('/payments/perfectmoney', verifyPerfectMoney);
 router.post('/payments/paydunya', verifyPayDunya);
 router.get('/payments/paystack', verifyPaystack);
 router.get('/payments/flutterwave', verifyFlutterWave);
+router.get('/payments/mtn', verifyMtn);
+router.post('/payments/mtn', verifyMtn);
+router.put('/payments/mtn', verifyMtn);
 
 module.exports = router;

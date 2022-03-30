@@ -263,3 +263,21 @@ exports.verifyFlutterWave = async (req, res) => {
   }
   return res.redirect(`${appUrl.param1}/add-money?status=failed`);
 };
+exports.verifyMtn = async (req, res) => {
+  try {
+    const depositData = await Deposit.findByPk(req.body.externalId);
+    if (req.body.status === 'SUCCESSFUL') {
+      await addBalance(depositData.amount, depositData.currency, depositData.userId);
+      await Deposit.update({ payment_status: true, status: 'success' }, { where: { id: depositData.id } });
+      await Log.create({ message: `MTN confirmed payment for deposit #${depositData.id}` });
+      firstDeposit(depositData.id);
+      return res.json({ message: 'Payment verified' });
+    }
+    await Deposit.update({ payment_status: false, status: 'failed' }, { where: { id: depositData.id } });
+    await Log.create({ message: `MTN declined payment for deposit #${depositData.id}` });
+    firstDeposit(depositData.id);
+    return res.json({ message: 'Payment declined' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
