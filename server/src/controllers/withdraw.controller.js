@@ -13,6 +13,9 @@ const Wallet = db.wallets;
 const Linked = db.linkeds;
 const Method = db.methods;
 const Merchant = db.merchants;
+const Agent = db.agents;
+const Setting = db.settings;
+const Trx = db.agentTrxs;
 
 const { addBalance, removeBalance } = require('../utils/wallet');
 
@@ -96,6 +99,34 @@ exports.getAllWithdrawsByUser = async (req, res) => {
       }],
     });
     const count = await Withdraw.count({
+      ...query,
+      where: {
+        userId: id,
+        ...query.where,
+      },
+    });
+    return res.json({ count, data });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.getAllWithdrawsByAgent = async (req, res) => {
+  const { id } = req.user;
+  const query = await queryParser.parse(req);
+  try {
+    const data = await Trx.findAll({
+      ...query,
+      where: {
+        userId: id,
+        ...query.where,
+      },
+      include: [{
+        model: User,
+        as: 'user',
+        attributes: { exclude: ['password'] },
+      }],
+    });
+    const count = await Trx.count({
       ...query,
       where: {
         userId: id,
@@ -242,6 +273,66 @@ exports.declineWithdraw = async (req, res) => {
       return res.json({ message: 'Withdraw Declined' });
     }
     return res.status(500).json({ message: 'Could not update withdraw' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+exports.createWithdrawAgent = async (req, res) => {
+  const { id } = req.user;
+  const { agentId, amount, currency } = req.body;
+  try {
+    const user = await User.findByPk(id);
+    const setting = await Setting.findOne({ where: { value: 'adjustments' } });
+    const agent = await Agent.findOne({ where: { agentId } });
+    if (user.role === 2) {
+      const merchant = await Merchant.findOne({ where: { userId: user.id } });
+      if (merchant.suspend) {
+        return res.status(400).json({
+          message: 'Your account is currently on hold. Please contact support.',
+        });
+      }
+    }
+    const wallet = await Wallet.findOne({ where: { currency, userId: id } });
+
+    const percentageCharge = (setting.param2 / 100) || 0;
+
+    if (!user.kyc) {
+      return res.status(403).json({ message: 'Please verify KYC to debit from account' });
+    }
+
+    if (!wallet || (wallet.balance < amount)) {
+      return res.status(400).json({
+        message: 'Insufficient balance',
+      });
+    }
+
+    const fee = amount * percentageCharge;
+
+    const deduction = amount + fee;
+
+    const data = await Withdraw.create({
+      status: 'success',
+      method: 'Agent',
+      params: [],
+      amount: deduction,
+      currency,
+      fee,
+      total: amount,
+      userId: id,
+    });
+    await Trx.create({
+      status: 'success',
+      userEmail: user.email,
+      amount,
+      currency,
+      total: amount,
+      userId: agent.userId,
+    });
+    await Log.create({ message: `User #${id} requested withdrawal of ${amount} ${currency}` });
+    await addBalance(amount, currency, agent.userId);
+    await removeBalance(amount, currency, id);
+    return res.json(data);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

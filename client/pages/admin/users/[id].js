@@ -21,7 +21,9 @@ import { useUserById } from '../../../data/useUsers';
 import { useWalletByUserId } from '../../../data/useWallet';
 import withAuthAdmin from '../../../hoc/withAuthAdmin';
 import { kycAdminAction } from '../../../lib/kycUpdate';
-import { merchantCreate, merchantDeleteFromUser } from '../../../lib/merchantUpdate';
+import {
+  agentCreate, AgentDeleteFromUser, merchantCreate, merchantDeleteFromUser
+} from '../../../lib/merchantUpdate';
 import { profileUpdateAdmin, userDelete } from '../../../lib/profileUpdate';
 import { sendMail } from '../../../lib/settingsUpdate';
 
@@ -63,6 +65,15 @@ const UserEdit = ({ userData, settings }) => {
     };
     merchantCreate(params, setActionLoader);
   };
+  const handleUpdateAgent = (e) => {
+    e.preventDefault();
+    const params = {
+      name: e.target?.name?.value,
+      address: e.target?.address?.value,
+      userId: id
+    };
+    agentCreate(params, setActionLoader);
+  };
 
   const handleMail = (e) => {
     e.preventDefault();
@@ -102,6 +113,21 @@ const UserEdit = ({ userData, settings }) => {
         {
           label: t('Yes'),
           onClick: () => merchantDeleteFromUser(id, data?.merchant?.id, setActionLoader)
+        },
+        {
+          label: t('No'),
+        }
+      ]
+    });
+  };
+  const deleteInitAgent = () => {
+    confirmAlert({
+      title: `#${data?.id} - ${data?.name}`,
+      message: t('Are you sure to remove this user as agent?'),
+      buttons: [
+        {
+          label: t('Yes'),
+          onClick: () => AgentDeleteFromUser(id, data?.agent?.id, setActionLoader)
         },
         {
           label: t('No'),
@@ -381,6 +407,106 @@ const UserEdit = ({ userData, settings }) => {
                           </>
                         )}
                       </button>
+                    </form>
+                  </div>
+                </div>
+              </TabModule>
+              <TabModule icon={<BiSync />} name={t('Convert To Agent')}>
+                <div className="basic-card">
+                  <h4 className="box-title">{t('Convert To Agent')}</h4>
+                  <div className="settings-box">
+                    <form onSubmit={handleUpdateAgent}>
+                      {data?.role === 3 ? (
+                        <>
+                          <div className="single-profile">
+                            <label htmlFor="agUID">{t('Agent ID')}</label>
+                            <input
+                              id="agUID"
+                              name="name"
+                              type="text"
+                              disabled
+                              placeholder={t('Agent ID')}
+                              defaultValue={data?.agent?.agentId}
+                            />
+                          </div>
+                          <div className="single-profile">
+                            <label htmlFor="agName">{t('Agent Name')}</label>
+                            <input
+                              id="agName"
+                              name="name"
+                              type="text"
+                              disabled
+                              placeholder={t('Agent Name')}
+                              defaultValue={data?.agent?.name}
+                            />
+                          </div>
+                          <div className="single-profile">
+                            <label htmlFor="agAdd">{t('Agent Address')}</label>
+                            <input
+                              id="agAdd"
+                              name="address"
+                              type="text"
+                              disabled
+                              placeholder={t('Address')}
+                              defaultValue={data?.agent?.address}
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            className="bttn-mid btn-danger ml-10"
+                            onClick={() => deleteInitAgent()}
+                            disabled={actionLoader}
+                          >
+                            {actionLoader ? (
+                              <>
+                                <Spinner animation="border" role="status" size="sm" />
+                                {' '}
+                                {t('Remove Agent')}
+                              </>
+                            ) : (
+                              <>
+                                <BiTrash />
+                                {t('Remove Agent')}
+                              </>
+                            )}
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <div className="single-profile">
+                            <label htmlFor="agName">{t('Agent Name')}</label>
+                            <input
+                              id="agName"
+                              name="name"
+                              type="text"
+                              placeholder={t('Agent Name')}
+                            />
+                          </div>
+                          <div className="single-profile">
+                            <label htmlFor="agAdd">{t('Agent Address')}</label>
+                            <input
+                              id="agAdd"
+                              name="address"
+                              type="text"
+                              placeholder={t('Address')}
+                            />
+                          </div>
+                          <button type="submit" className="bttn-mid btn-ylo" disabled={actionLoader}>
+                            {actionLoader ? (
+                              <>
+                                <Spinner animation="border" role="status" size="sm" />
+                                {' '}
+                                {t('Convert To Agent')}
+                              </>
+                            ) : (
+                              <>
+                                <BiErrorCircle />
+                                {t('Convert To Agent')}
+                              </>
+                            )}
+                          </button>
+                        </>
+                      )}
                     </form>
                   </div>
                 </div>

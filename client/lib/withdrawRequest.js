@@ -19,3 +19,21 @@ export default async function withdrawRequest(params, setActionLoader, setStep) 
   }
   return null;
 }
+
+export async function withdrawRequestAgent(params, setActionLoader, setStep) {
+  setActionLoader(true);
+  try {
+    const { data } = await request.post('/withdraws/agent', { ...params });
+    setActionLoader(false);
+    setStep(3);
+    mutate('/users/me');
+    mutate('/wallets/me');
+    mutate('/withdraws?sort_by=createdAt.desc&offset=0&limit=10');
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    setActionLoader(false);
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}

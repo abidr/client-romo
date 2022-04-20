@@ -14,6 +14,7 @@ const AdjSettings = ({ settings }) => {
     e.preventDefault();
     const params = {
       param1: e.target?.param1?.value,
+      param2: e.target?.param2?.value,
     };
     settingsUpdate('adjustments', params, setActionLoader);
   };
@@ -34,6 +35,21 @@ const AdjSettings = ({ settings }) => {
               type="text"
               placeholder={t('Exchange Fee')}
               defaultValue={settings?.adjustments?.param1}
+            />
+          </div>
+          <div className="single-profile">
+            <label htmlFor="agFee">
+              {t('Agent Withdraw Fee')}
+              {' '}
+              (%)
+            </label>
+            <input
+              id="agFee"
+              onKeyPress={inputNumber}
+              name="param2"
+              type="text"
+              placeholder={t('Agent Withdraw Fee')}
+              defaultValue={settings?.adjustments?.param2}
             />
           </div>
           <button type="submit" className="bttn-mid btn-ylo" disabled={actionLoader}>

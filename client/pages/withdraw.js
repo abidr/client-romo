@@ -8,12 +8,14 @@ import TabModule from '../components/tabs/TabModule';
 import UserTab from '../components/tabs/UserTab';
 import TransactionSteps from '../components/TransactionSteps';
 import UserHeader from '../components/UserHeader';
+import WithdrawAgentStep from '../components/withdraws/WithdrawAgentStep';
 import WithdrawHistory from '../components/withdraws/WithdrawHistory';
 import WithdrawStep from '../components/withdraws/WithdrawStep';
 import withAuth from '../hoc/withAuth';
 
 const Withdraw = ({ userData, settings }) => {
   const [step, setStep] = useState(1);
+  const [step2, setStep2] = useState(1);
   const { t } = useTranslation();
   return (
     <>
@@ -41,6 +43,12 @@ const Withdraw = ({ userData, settings }) => {
                   <div className="deposit-box basic-card">
                     <TransactionSteps step={step} />
                     <WithdrawStep step={step} setStep={setStep} />
+                  </div>
+                </TabModule>
+                <TabModule icon={<BiWallet />} name={t('Withdraw To Agent')}>
+                  <div className="deposit-box basic-card">
+                    <TransactionSteps step={step2} />
+                    <WithdrawAgentStep step={step2} setStep={setStep2} />
                   </div>
                 </TabModule>
                 <TabModule icon={<BiErrorCircle />} name={t('Withdraw Logs')}>

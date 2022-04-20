@@ -47,7 +47,15 @@ db.requests = require('../models/request.model')(sequelize);
 db.pays = require('../models/pay.model')(sequelize);
 db.pages = require('../models/page.model')(sequelize);
 db.bills = require('../models/bill.model')(sequelize);
+db.agents = require('../models/agent.model')(sequelize);
+db.agentTrxs = require('../models/agentTrx.model')(sequelize);
 
+// Agent TRX Relation
+db.users.hasMany(db.agentTrxs, { as: 'agentTrxs' });
+db.agentTrxs.belongsTo(db.users, {
+  foreignKey: 'userId',
+  as: 'user',
+});
 // Withdraw Relation
 db.users.hasMany(db.withdraws, { as: 'withdraws' });
 db.withdraws.belongsTo(db.users, {
@@ -97,6 +105,12 @@ db.linkeds.belongsTo(db.methods, {
 // Merchant Relation
 db.users.hasOne(db.merchants, { as: 'merchant', foreignKey: 'userId' });
 db.merchants.belongsTo(db.users, {
+  foreignKey: 'userId',
+  as: 'user',
+});
+// Agent Relation
+db.users.hasOne(db.agents, { as: 'agent', foreignKey: 'userId' });
+db.agents.belongsTo(db.users, {
   foreignKey: 'userId',
   as: 'user',
 });

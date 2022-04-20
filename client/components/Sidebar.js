@@ -65,6 +65,12 @@ const Sidebar = ({ userData, settings }) => {
               <BiNotepad />
               <span>{t('Utility Bill')}</span>
             </SidebarMenu>
+            {userData?.role === 3 && (
+            <SidebarMenu href="/agent">
+              <BiStore />
+              <span>{t('Agent Panel')}</span>
+            </SidebarMenu>
+            )}
             {userData?.role === 2 && (
             <SidebarMenu href="/merchant">
               <BiStore />

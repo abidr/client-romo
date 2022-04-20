@@ -24,6 +24,8 @@ const UserList = () => {
       return t('Admin');
     } if (roleInt === 2) {
       return t('Merchant');
+    } if (roleInt === 3) {
+      return t('Agent');
     }
     return t('User');
   };
@@ -65,6 +67,7 @@ const UserList = () => {
             <option value="all">{t('All')}</option>
             <option value="0">{t('Admin')}</option>
             <option value="1">{t('User')}</option>
+            <option value="3">{t('Agent')}</option>
             <option value="2">{t('Merchant')}</option>
           </select>
         </div>

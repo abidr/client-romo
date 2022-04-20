@@ -33,7 +33,7 @@ exports.getUserDetails = async (req, res) => {
       attributes: {
         exclude: ['password'],
       },
-      include: ['merchant'],
+      include: ['merchant', 'agent'],
     });
     const referCount = await User.count({ where: { refferedBy: id } });
     return res.json({ ...data.dataValues, referCount });
@@ -47,7 +47,7 @@ exports.getUserById = async (req, res) => {
   try {
     const data = await User.findByPk(id, {
       attributes: { exclude: ['password'] },
-      include: ['merchant'],
+      include: ['merchant', 'agent'],
     });
     const referCount = await User.count({ where: { refferedBy: id } });
     return res.json({ ...data.dataValues, referCount });

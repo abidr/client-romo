@@ -47,6 +47,21 @@ export async function merchantDeleteFromUser(userId, id, setActionLoader) {
   }
   return null;
 }
+export async function AgentDeleteFromUser(userId, id, setActionLoader) {
+  setActionLoader(true);
+  try {
+    const { data } = await request.delete(`/agents/${id}`);
+    setActionLoader(false);
+    window.location.href = `/admin/users/${userId}`;
+    cogoToast.success('Agent Removed', { position: 'bottom-center' });
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    setActionLoader(false);
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}
 export async function merchantCreate(params, setActionLoader) {
   setActionLoader(true);
   try {
@@ -54,6 +69,22 @@ export async function merchantCreate(params, setActionLoader) {
     setActionLoader(false);
     mutate(`/users/${params?.userId}`);
     cogoToast.success('User Converted To Merchant', { position: 'bottom-center' });
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    setActionLoader(false);
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}
+
+export async function agentCreate(params, setActionLoader) {
+  setActionLoader(true);
+  try {
+    const { data } = await request.post('/agents', { ...params });
+    setActionLoader(false);
+    mutate(`/users/${params?.userId}`);
+    cogoToast.success('User Converted To Agent', { position: 'bottom-center' });
     return data;
   } catch (error) {
     const { data } = error.response;
