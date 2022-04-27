@@ -1,12 +1,23 @@
 const sequelizeQuery = require('sequelize-query');
-const { customAlphabet } = require('nanoid');
+const { customAlphabet, nanoid } = require('nanoid');
+const bcrypt = require('bcryptjs');
+const { Op } = require('sequelize');
+const rp = require('request-promise');
 const db = require('../config/db.config');
+const mailer = require('../utils/mailer');
+const { addMinutes } = require('../utils/dates');
+const { addBalance, removeBalance } = require('../utils/wallet');
 
 const queryParser = sequelizeQuery(db);
 const Merchant = db.merchants;
 const User = db.users;
 const Agent = db.agents;
 const Setting = db.settings;
+const Api = db.apis;
+const ApiPayment = db.apiPayments;
+const Request = db.requests;
+const ApiOtp = db.apiOtps;
+const Wallet = db.wallets;
 
 exports.getAllMerchants = async (req, res) => {
   const query = await queryParser.parse(req);
@@ -154,5 +165,301 @@ exports.confirmAgent = async (req, res) => {
     return res.json({ agent, fee, total: parseFloat(total, 10) });
   } catch (err) {
     return res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getApi = async (req, res) => {
+  const { id } = req.user;
+  try {
+    const data = await Api.findOne({ where: { userId: id } }, {
+      include: ['user'],
+    });
+    if (!data) {
+      return res.json({ error: true, message: 'API Not Found' });
+    }
+    return res.json(data);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.generateApi = async (req, res) => {
+  const secretKey = nanoid();
+  const publicKey = nanoid();
+  const { id } = req.user;
+  try {
+    const existing = await Api.findOne({ userId: id });
+    if (existing) {
+      await Api.update({ secret: secretKey, public: publicKey }, { where: { id: existing.id } });
+      return res.json({ message: 'Regeneration Successful' });
+    }
+    await Api.create({ secret: secretKey, public: publicKey, userId: id });
+    return res.json({ message: 'Generation Successful' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.initPayment = async (req, res) => {
+  const secretKey = req.headers.authorization ? req.headers.authorization.split(' ')[1] : '';
+  const {
+    amount, currency, customIdentifier, callbackUrl, successUrl, failedUrl, logo,
+  } = req.body;
+  try {
+    if (!secretKey) {
+      return res.status(400).json({ success: false, message: 'No API Key headers were provided' });
+    }
+    const data = await Api.findOne({ where: { secret: secretKey } });
+    const user = await User.findOne({ where: { id: data.userId }, include: ['merchant'] });
+    const settings = await Setting.findOne({ where: { value: 'appUrl' } });
+    if (!data) {
+      return res.status(400).json({ success: false, message: 'Invalid API Keys Provided' });
+    }
+    if (!amount || !currency || !customIdentifier || !callbackUrl || !successUrl || !failedUrl) {
+      return res.status(400).json({ success: false, message: 'Please provide all of the required fields' });
+    }
+    const nanoId = customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 12);
+    const trxId = nanoId();
+
+    await ApiPayment.create({
+      trxId,
+      amount,
+      currency,
+      customIdentifier,
+      callbackUrl,
+      successUrl,
+      failedUrl,
+      logo,
+      userId: data.userId,
+    });
+
+    await Request.create({
+      status: 'pending', trxId, customer: `API Payment #${customIdentifier}`, amount, currency, merchantId: user.merchant.id,
+    });
+
+    return res.json({ success: true, message: 'Generated Checkout Link', redirectUrl: `${settings.param1}/checkoutv2?trxId=${trxId}` });
+  } catch (err) {
+    return res.status(500).json({ succcess: false, message: err.message });
+  }
+};
+exports.sendOtp = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        email: req.body.email || null,
+        active: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        message: 'Wrong Credentials',
+      });
+    }
+
+    if (user.role === 2) {
+      return res.status(403).json({
+        message: 'Merchants are not allowed to pay.',
+      });
+    }
+
+    const matchPassword = await bcrypt.compare(req.body.password, user.password);
+
+    if (!matchPassword) {
+      return res.status(401).json({
+        message: 'Wrong Credentials',
+      });
+    }
+
+    const nanoId = customAlphabet('1234567890', 6);
+    const otp = nanoId();
+    const date = addMinutes(new Date(), 2);
+
+    const data = await ApiOtp.findOne({ where: { trxId: req.body.trxId } });
+
+    if (data) {
+      await ApiOtp.destroy({ where: { trxId: req.body.trxId } });
+    }
+
+    await ApiOtp.create({
+      trxId: req.body.trxId, otp, expires: Math.floor(date / 1000), userId: user.id,
+    });
+
+    const mailOptions = {
+      user: user.id,
+      subject: 'Payment Verification OTP',
+      message: `<h3>Payment Verification OTP</h3><br/>
+      <p>Please use this OTP for your payment Trx ${req.body.trxId}: <strong>${otp}</strong><br/>
+      <i>Note: The OTP will expire in 2 minutes.</i>
+      </p>`,
+    };
+
+    mailer(mailOptions);
+
+    return res.json({ success: true, message: 'OTP Sent' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.sendPayment = async (req, res) => {
+  const { otpCode, trxId } = req.body;
+  try {
+    const currentDate = Math.floor(Date.now() / 1000);
+    const otpData = await ApiOtp.findOne({
+      where: {
+        trxId,
+        otp: otpCode,
+        expires: {
+          [Op.gt]: currentDate,
+        },
+      },
+    });
+    if (!otpData) {
+      return res.status(401).json({
+        message: 'Invalid OTP',
+      });
+    }
+    await ApiOtp.destroy({
+      where: {
+        otp: otpCode,
+        trxId,
+      },
+    });
+    const user = await User.findOne({
+      where: {
+        id: otpData.userId,
+      },
+    });
+    const paymentData = await ApiPayment.findOne({
+      where: {
+        trxId,
+      },
+    });
+    const wallet = await Wallet.findOne({
+      where: {
+        userId: user.id,
+        currency: paymentData.currency,
+      },
+    });
+
+    if (!wallet) {
+      return res.status(400).json({ message: 'Insufficient balance' });
+    }
+    if (!(wallet.balance >= paymentData.amount)) {
+      return res.status(400).json({ message: 'Insufficient balance' });
+    }
+    await removeBalance(paymentData.amount, paymentData.currency, user.id);
+    await addBalance(paymentData.amount, paymentData.currency, paymentData.userId);
+    await ApiPayment.update({
+      status: 'success',
+      paidBy: user.email,
+    }, {
+      where: {
+        trxId,
+      },
+    });
+    await Request.update({
+      status: 'success',
+    }, {
+      where: {
+        trxId,
+      },
+    });
+    const data = await ApiPayment.findByPk(paymentData.id);
+    rp({
+      method: 'POST',
+      uri: data.callbackUrl,
+      json: true,
+      body: {
+        status: data.status,
+        trxId: data.trxId,
+        amount: data.amount,
+        currency: data.currency,
+        customIdentifier: data.customIdentifier,
+        paidBy: data.paidBy,
+        timestamp: data.updatedAt,
+      },
+    });
+    if (data.status === 'success') {
+      return res.json({ success: true, redirect: data.successUrl });
+    }
+    return res.json({ success: false, redirect: data.failedUrl });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+exports.verifyPayment = async (req, res) => {
+  const secretKey = req.headers.authorization ? req.headers.authorization.split(' ')[1] : '';
+  const {
+    customIdentifier, trxId,
+  } = req.query;
+  try {
+    if (!secretKey) {
+      return res.status(400).json({ success: false, message: 'No API Key headers were provided' });
+    }
+    const data = await Api.findOne({ where: { secret: secretKey } });
+    if (!data) {
+      return res.status(400).json({ success: false, message: 'Invalid API Keys Provided' });
+    }
+    if (customIdentifier) {
+      const paymentData = await ApiPayment.findOne({
+        where: {
+          customIdentifier,
+          userId: data.userId,
+        },
+        attributes: { exclude: ['id', 'createdAt', 'userId', 'callbackUrl', 'successUrl', 'failedUrl', 'logo'] },
+      });
+      if (paymentData) {
+        return res.json(paymentData);
+      }
+    }
+    if (trxId) {
+      const paymentData = await ApiPayment.findOne({
+        where: {
+          trxId,
+          userId: data.userId,
+        },
+        attributes: { exclude: ['id', 'createdAt', 'userId', 'callbackUrl', 'successUrl', 'failedUrl', 'logo'] },
+      });
+      if (paymentData) {
+        return res.json(paymentData);
+      }
+    }
+    return res.status(404).json({ success: false, message: 'Nothing Found' });
+  } catch (err) {
+    return res.status(500).json({ succcess: false, message: err.message });
+  }
+};
+exports.findPayment = async (req, res) => {
+  const {
+    trxId,
+  } = req.query;
+  try {
+    if (trxId) {
+      const paymentData = await ApiPayment.findOne({
+        where: {
+          trxId,
+          status: 'pending',
+        },
+        attributes: { exclude: ['callbackUrl', 'successUrl', 'failedUrl'] },
+      });
+      if (!paymentData) {
+        return res.json({ success: false, message: 'Nothing Found' });
+      }
+      const merchant = await Merchant.findOne({
+        where: {
+          userId: paymentData.userId,
+        },
+        attributes: { exclude: ['proof', 'suspend', 'status'] },
+      });
+      if (paymentData) {
+        return res.json({
+          success: true,
+          data: { ...paymentData.dataValues, ...merchant.dataValues },
+        });
+      }
+    }
+    return res.json({ success: false, message: 'Nothing Found' });
+  } catch (err) {
+    return res.status(500).json({ succcess: false, message: err.message });
   }
 };

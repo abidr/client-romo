@@ -49,10 +49,29 @@ db.pages = require('../models/page.model')(sequelize);
 db.bills = require('../models/bill.model')(sequelize);
 db.agents = require('../models/agent.model')(sequelize);
 db.agentTrxs = require('../models/agentTrx.model')(sequelize);
+db.settlements = require('../models/settlement.model')(sequelize);
+db.apis = require('../models/api.model')(sequelize);
+db.apiPayments = require('../models/apiPayment.model')(sequelize);
+db.apiOtps = require('../models/apiOtp.model')(sequelize);
 
+db.users.hasMany(db.apis, { as: 'apis' });
+db.apis.belongsTo(db.users, {
+  foreignKey: 'userId',
+  as: 'user',
+});
+db.users.hasMany(db.apiOtps, { as: 'apiOtps' });
+db.apiOtps.belongsTo(db.users, {
+  foreignKey: 'userId',
+  as: 'user',
+});
 // Agent TRX Relation
 db.users.hasMany(db.agentTrxs, { as: 'agentTrxs' });
 db.agentTrxs.belongsTo(db.users, {
+  foreignKey: 'userId',
+  as: 'user',
+});
+db.users.hasMany(db.settlements, { as: 'settlements' });
+db.settlements.belongsTo(db.users, {
   foreignKey: 'userId',
   as: 'user',
 });
@@ -119,6 +138,12 @@ db.merchants.hasMany(db.requests, { as: 'requests' });
 db.requests.belongsTo(db.merchants, {
   foreignKey: 'merchantId',
   as: 'merchant',
+});
+// Api Payments Relation
+db.users.hasMany(db.apiPayments, { as: 'apiPayments' });
+db.apiPayments.belongsTo(db.users, {
+  foreignKey: 'userId',
+  as: 'user',
 });
 // Pays Relation
 db.users.hasMany(db.pays, { as: 'pays' });

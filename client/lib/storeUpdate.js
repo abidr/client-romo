@@ -17,3 +17,18 @@ export default async function storeUpdate(params, setActionLoader) {
   }
   return null;
 }
+export async function apiGenerate(setActionLoader) {
+  setActionLoader(true);
+  try {
+    const { data } = await request.post('/api-key/generate');
+    setActionLoader(false);
+    mutate('/api-key');
+    cogoToast.success(data.message, { position: 'bottom-center' });
+    return data;
+  } catch (error) {
+    const { data } = error.response;
+    setActionLoader(false);
+    cogoToast.error(data.message, { position: 'bottom-center' });
+  }
+  return null;
+}

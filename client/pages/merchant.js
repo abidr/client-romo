@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { BiErrorCircle, BiWallet } from 'react-icons/bi';
+import ApiSettings from '../components/merchant/ApiSettings';
 import RequestPayment from '../components/merchant/RequestPayment';
 import StoreSettings from '../components/merchant/StoreSettings';
 import TransactionHistory from '../components/merchant/TransactionHistory';
@@ -52,6 +53,9 @@ const Merchant = ({ userData, settings }) => {
                 </TabModule>
                 <TabModule icon={<BiErrorCircle />} name={t('Store Settings')}>
                   <StoreSettings userData={userData} />
+                </TabModule>
+                <TabModule icon={<BiErrorCircle />} name={t('API Settings')}>
+                  <ApiSettings userData={userData} />
                 </TabModule>
               </UserTab>
             </div>

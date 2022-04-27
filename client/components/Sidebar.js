@@ -41,30 +41,40 @@ const Sidebar = ({ userData, settings }) => {
               <BiHomeSmile />
               <span>{t('Dashboard')}</span>
             </SidebarMenu>
+            {!(userData?.role === 3) && (
             <SidebarMenu href="/add-money">
               <BiPlusCircle />
               <span>{t('Add Money')}</span>
             </SidebarMenu>
+            )}
+            {!(userData?.role === 3) && (
             <SidebarMenu href="/send-money">
               <BiPaperPlane />
               <span>{t('Transfer')}</span>
             </SidebarMenu>
+            )}
+            {!(userData?.role === 3) && (
             <SidebarMenu href="/withdraw">
               <BiWallet />
               <span>{t('Withdraw')}</span>
             </SidebarMenu>
+            )}
             <SidebarMenu href="/exchange">
               <BiTransferAlt />
               <span>{t('Exchange')}</span>
             </SidebarMenu>
+            {!(userData?.role === 3) && (
             <SidebarMenu href="/make-payment">
               <BiDollarCircle />
               <span>{t('Payment')}</span>
             </SidebarMenu>
+            )}
+            {!(userData?.role === 3) && (
             <SidebarMenu href="/bill-pay">
               <BiNotepad />
               <span>{t('Utility Bill')}</span>
             </SidebarMenu>
+            )}
             {userData?.role === 3 && (
             <SidebarMenu href="/agent">
               <BiStore />

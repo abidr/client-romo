@@ -18,6 +18,7 @@ const Withdraw = db.withdraws;
 const Exchange = db.exchanges;
 const Buy = db.buys;
 const Sell = db.sells;
+const Settlement = db.settlements;
 
 exports.getLogs = async (req, res) => {
   const query = await queryParser.parse(req);
@@ -305,9 +306,26 @@ exports.balanceManage = async (req, res) => {
     const {
       userId, currency, amount, type,
     } = req.body;
+    const user = await User.findByPk(userId);
     if (type === 'add') {
+      if (user.role === 3) {
+        await Settlement.create({
+          type: 'credit',
+          amount,
+          currency,
+          userId,
+        });
+      }
       await addBalance(amount, currency, userId);
     } else {
+      if (user.role === 3) {
+        await Settlement.create({
+          type: 'debit',
+          amount,
+          currency,
+          userId,
+        });
+      }
       await removeBalance(amount, currency, userId);
     }
     return res.json({ message: 'Balance Updated' });

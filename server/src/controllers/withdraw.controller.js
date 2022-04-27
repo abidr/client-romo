@@ -16,6 +16,7 @@ const Merchant = db.merchants;
 const Agent = db.agents;
 const Setting = db.settings;
 const Trx = db.agentTrxs;
+const Settlement = db.settlements;
 
 const { addBalance, removeBalance } = require('../utils/wallet');
 
@@ -127,6 +128,34 @@ exports.getAllWithdrawsByAgent = async (req, res) => {
       }],
     });
     const count = await Trx.count({
+      ...query,
+      where: {
+        userId: id,
+        ...query.where,
+      },
+    });
+    return res.json({ count, data });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+exports.getAllSettlementsByAgent = async (req, res) => {
+  const { id } = req.user;
+  const query = await queryParser.parse(req);
+  try {
+    const data = await Settlement.findAll({
+      ...query,
+      where: {
+        userId: id,
+        ...query.where,
+      },
+      include: [{
+        model: User,
+        as: 'user',
+        attributes: { exclude: ['password'] },
+      }],
+    });
+    const count = await Settlement.count({
       ...query,
       where: {
         userId: id,

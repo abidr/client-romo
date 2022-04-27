@@ -26,3 +26,5 @@ exports.getDay = (day, start) => {
   }
   return new Date(date.setHours(23, 59, 59, 999));
 };
+
+exports.addMinutes = (date, minutes) => new Date(date.getTime() + minutes * 60000);

@@ -24,7 +24,7 @@ const Wallet = () => {
             </h5>
           </div>
           <h4>
-            {wallet?.balance}
+            {wallet?.balance?.toFixed(2)}
             {' '}
             {wallet?.currency}
           </h4>

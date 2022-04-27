@@ -6,7 +6,8 @@ const { withAuth, isAdmin, withAuthAdmin } = require('../middlewares/auth.middle
 
 const {
   updateMerchant, updateMerchantAdmin, getAllMerchants, getMerchantById,
-  deleteMerchant, createMerchant, createAgent, deleteAgent, confirmAgent,
+  deleteMerchant, createMerchant, createAgent, deleteAgent, confirmAgent, generateApi, getApi,
+  initPayment, sendOtp, sendPayment, verifyPayment, findPayment,
 } = require('../controllers/merchant.controller');
 
 router.get('/merchants', withAuthAdmin, isAdmin, getAllMerchants);
@@ -18,5 +19,12 @@ router.put('/merchants/me', withAuth, updateMerchant);
 router.put('/merchants/:id', withAuthAdmin, isAdmin, updateMerchantAdmin);
 router.delete('/merchants/:id', withAuthAdmin, isAdmin, deleteMerchant);
 router.delete('/agents/:id', withAuthAdmin, isAdmin, deleteAgent);
+router.get('/api-key', withAuth, getApi);
+router.post('/api-key/generate', withAuth, generateApi);
+router.post('/checkout/v2/initiate', initPayment);
+router.post('/checkout/v2/customer/otp', sendOtp);
+router.post('/checkout/v2/customer/pay', sendPayment);
+router.get('/checkout/v2/verify', verifyPayment);
+router.get('/checkout/v2/find', findPayment);
 
 module.exports = router;

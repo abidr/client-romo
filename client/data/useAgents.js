@@ -8,3 +8,11 @@ export default function useAgentLogs(page, limit) {
     error,
   };
 }
+export function useAgentSettleLogs(page, limit) {
+  const { data, error } = useSWR(`/withdraws/agents/settlements?sort_by=createdAt.desc&offset=${page - 1}&limit=${limit}`);
+  return {
+    data,
+    loading: !data && !error,
+    error,
+  };
+}

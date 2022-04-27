@@ -18,3 +18,11 @@ export function useMerchantById(id) {
     error,
   };
 }
+export function useApiKey() {
+  const { data, error } = useSWR('/api-key');
+  return {
+    data,
+    loading: !data && !error,
+    error,
+  };
+}

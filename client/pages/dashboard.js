@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import AgentHistory from '../components/agent/AgentHistory';
 import DepositHistory from '../components/deposit/DepositHistory';
 import TransactionHistory from '../components/merchant/TransactionHistory';
 import Refferal from '../components/Refferal';
@@ -49,14 +50,23 @@ const Dashboard = ({ userData, settings }) => {
                 <Wallet />
               </div>
             </div>
-            {userData?.role === 2 ? (
+            {userData?.role === 3 && (
+              <div className="col-xl-9 col-lg-9 col-sm-12">
+                <div className="basic-card">
+                  <h4 className="box-title">{t('Recently Received')}</h4>
+                  <AgentHistory />
+                </div>
+              </div>
+            )}
+            {userData?.role === 2 && (
               <div className="col-xl-9 col-lg-9 col-sm-12">
                 <div className="basic-card">
                   <h4 className="box-title">{t('Recent Transactions')}</h4>
                   <TransactionHistory />
                 </div>
               </div>
-            ) : (
+            )}
+            {userData?.role === 1 && (
               <div className="col-xl-9 col-lg-9 col-sm-12">
                 <div className="basic-card">
                   <h4 className="box-title">{t('Recent Deposits')}</h4>
