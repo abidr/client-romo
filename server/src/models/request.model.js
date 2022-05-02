@@ -6,6 +6,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       defaultValue: 'pending',
     },
+    type: {
+      type: DataTypes.STRING,
+      defaultValue: 'credit',
+    },
     trxId: {
       type: DataTypes.STRING,
     },

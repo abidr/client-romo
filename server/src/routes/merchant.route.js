@@ -8,6 +8,7 @@ const {
   updateMerchant, updateMerchantAdmin, getAllMerchants, getMerchantById,
   deleteMerchant, createMerchant, createAgent, deleteAgent, confirmAgent, generateApi, getApi,
   initPayment, sendOtp, sendPayment, verifyPayment, findPayment,
+  initDisbursement, checkDisbursement,
 } = require('../controllers/merchant.controller');
 
 router.get('/merchants', withAuthAdmin, isAdmin, getAllMerchants);
@@ -26,5 +27,7 @@ router.post('/checkout/v2/customer/otp', sendOtp);
 router.post('/checkout/v2/customer/pay', sendPayment);
 router.get('/checkout/v2/verify', verifyPayment);
 router.get('/checkout/v2/find', findPayment);
+router.post('/disbursement/v2/initiate', initDisbursement);
+router.get('/disbursement/v2/check', checkDisbursement);
 
 module.exports = router;

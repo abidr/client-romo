@@ -18,6 +18,7 @@ const TransactionHistory = () => {
           <tr>
             <th scope="col">{t('Date')}</th>
             <th scope="col">{t('Status')}</th>
+            <th scope="col">{t('Type')}</th>
             <th scope="col">{t('Customer')}</th>
             <th scope="col">{t('Trx ID')}</th>
             <th scope="col">{t('Amount')}</th>
@@ -36,6 +37,13 @@ const TransactionHistory = () => {
                 </strong>
               </td>
               <td>
+                <strong
+                  style={{ textTransform: 'capitalize' }}
+                >
+                  {history?.type}
+                </strong>
+              </td>
+              <td>
                 <strong>
                   {history?.customer}
                 </strong>
@@ -46,8 +54,8 @@ const TransactionHistory = () => {
                 </strong>
               </td>
               <td>
-                <strong className="cl-green">
-                  +
+                <strong className={history?.type === 'credit' ? 'cl-green' : 'cl-red'}>
+                  {history.type === 'credit' ? '+' : '-'}
                   {history?.amount}
                   {' '}
                   {history?.currency}

@@ -463,3 +463,86 @@ exports.findPayment = async (req, res) => {
     return res.status(500).json({ succcess: false, message: err.message });
   }
 };
+
+exports.initDisbursement = async (req, res) => {
+  const secretKey = req.headers.authorization ? req.headers.authorization.split(' ')[1] : '';
+  const {
+    amount, currency, customerEmail,
+  } = req.body;
+  try {
+    if (!secretKey) {
+      return res.status(400).json({ success: false, message: 'No API Key headers were provided' });
+    }
+    const data = await Api.findOne({ where: { secret: secretKey } });
+    const user = await User.findOne({ where: { email: customerEmail } });
+    const merchant = await User.findOne({ where: { id: data.userId }, include: ['merchant'] });
+    const wallet = await Wallet.findOne({ where: { currency, userId: data.userId } });
+    if (!data) {
+      return res.status(400).json({ success: false, message: 'Invalid API Keys Provided' });
+    }
+    if (!amount || !currency || !customerEmail) {
+      return res.status(400).json({ success: false, message: 'Please provide all of the required fields' });
+    }
+    if (!user) {
+      return res.status(400).json({ success: false, message: 'Invalid user email provided' });
+    }
+    if (!wallet || (wallet.balance < amount)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Insufficient balance',
+      });
+    }
+    removeBalance(amount, currency, data.userId);
+    addBalance(amount, currency, user.id);
+
+    const nanoId = customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 12);
+    const trxId = nanoId();
+
+    await Request.create({
+      status: 'success', type: 'debit', trxId, customer: customerEmail, amount, currency, merchantId: merchant.merchant.id,
+    });
+
+    return res.json({
+      success: true,
+      message: 'User credited with the balance',
+      data: {
+        trxId, amount, currency, customer: customerEmail,
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({ succcess: false, message: err.message });
+  }
+};
+
+exports.checkDisbursement = async (req, res) => {
+  const secretKey = req.headers.authorization ? req.headers.authorization.split(' ')[1] : '';
+  const {
+    trxId,
+  } = req.query;
+  try {
+    if (!secretKey) {
+      return res.status(400).json({ success: false, message: 'No API Key headers were provided' });
+    }
+    const data = await Api.findOne({ where: { secret: secretKey } });
+    const merchant = await User.findOne({ where: { id: data.userId }, include: ['merchant'] });
+    if (!data) {
+      return res.status(400).json({ success: false, message: 'Invalid API Keys Provided' });
+    }
+    if (trxId) {
+      const paymentData = await Request.findOne({
+        where: {
+          trxId,
+          merchantId: merchant.merchant.id,
+          type: 'debit',
+        },
+        attributes: { exclude: ['id', 'createdAt', 'merchantId'] },
+      });
+      if (paymentData) {
+        return res.json(paymentData);
+      }
+    }
+    return res.status(404).json({ success: false, message: 'Nothing Found' });
+  } catch (err) {
+    return res.status(500).json({ succcess: false, message: err.message });
+  }
+};
