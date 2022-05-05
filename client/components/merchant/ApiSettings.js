@@ -32,6 +32,9 @@ const ApiSettings = () => {
                 <label htmlFor="secret">{t('API Key (Token)')}</label>
                 <input id="secret" name="secret" type="text" disabled placeholder={t('API Key')} defaultValue={data?.secret} />
               </div>
+              <p>
+                <a target="_blank" href="https://app.swaggerhub.com/apis-docs/awdpay-v2/awdpay-v2/2.0.0#/" rel="noreferrer">API Documentation</a>
+              </p>
             </>
           )}
           <button type="submit" className="bttn-mid btn-ylo" disabled={actionLoader}>
