@@ -187,7 +187,7 @@ exports.generateApi = async (req, res) => {
   const publicKey = nanoid();
   const { id } = req.user;
   try {
-    const existing = await Api.findOne({ userId: id });
+    const existing = await Api.findOne({ where: { userId: id } });
     if (existing) {
       await Api.update({ secret: secretKey, public: publicKey }, { where: { id: existing.id } });
       return res.json({ message: 'Regeneration Successful' });
