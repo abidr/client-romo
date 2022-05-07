@@ -37,6 +37,10 @@ module.exports = (sequelize) => {
     paidBy: {
       type: DataTypes.STRING,
     },
+    test: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   });
   return ApiPayment;
 };

@@ -201,7 +201,7 @@ exports.generateApi = async (req, res) => {
 exports.initPayment = async (req, res) => {
   const secretKey = req.headers.authorization ? req.headers.authorization.split(' ')[1] : '';
   const {
-    amount, currency, customIdentifier, callbackUrl, successUrl, failedUrl, logo,
+    amount, currency, customIdentifier, callbackUrl, successUrl, failedUrl, logo, test,
   } = req.body;
   try {
     if (!secretKey) {
@@ -229,10 +229,11 @@ exports.initPayment = async (req, res) => {
       failedUrl,
       logo,
       userId: data.userId,
+      test,
     });
 
     await Request.create({
-      status: 'pending', trxId, customer: `API Payment #${customIdentifier}`, amount, currency, merchantId: user.merchant.id,
+      status: 'pending', trxId, customer: `${test ? 'TEST' : 'API'} Payment #${customIdentifier}`, amount, currency, merchantId: user.merchant.id,
     });
 
     return res.json({ success: true, message: 'Generated Checkout Link', redirectUrl: `${settings.param1}/checkoutv2?trxId=${trxId}` });
@@ -242,6 +243,10 @@ exports.initPayment = async (req, res) => {
 };
 exports.sendOtp = async (req, res) => {
   try {
+    const testData = await ApiPayment.findOne({ where: { trxId: req.body.trxId } });
+    if (testData.test) {
+      return res.json({ success: true, message: 'OTP Sent' });
+    }
     const user = await User.findOne({
       where: {
         email: req.body.email || null,
@@ -302,6 +307,48 @@ exports.sendOtp = async (req, res) => {
 exports.sendPayment = async (req, res) => {
   const { otpCode, trxId } = req.body;
   try {
+    const paymentData = await ApiPayment.findOne({
+      where: {
+        trxId,
+      },
+    });
+    if (paymentData.test) {
+      await ApiPayment.update({
+        status: 'success',
+        paidBy: 'test@awdpay.com',
+      }, {
+        where: {
+          trxId,
+        },
+      });
+      await Request.update({
+        status: 'success',
+      }, {
+        where: {
+          trxId,
+        },
+      });
+
+      const data = await ApiPayment.findByPk(paymentData.id);
+      rp({
+        method: 'POST',
+        uri: data.callbackUrl,
+        json: true,
+        body: {
+          status: data.status,
+          trxId: data.trxId,
+          amount: data.amount,
+          currency: data.currency,
+          customIdentifier: data.customIdentifier,
+          paidBy: data.paidBy,
+          timestamp: data.updatedAt,
+        },
+      });
+      if (data.status === 'success') {
+        return res.json({ success: true, redirect: data.successUrl });
+      }
+      return res.json({ success: false, redirect: data.failedUrl });
+    }
     const currentDate = Math.floor(Date.now() / 1000);
     const otpData = await ApiOtp.findOne({
       where: {
@@ -326,11 +373,6 @@ exports.sendPayment = async (req, res) => {
     const user = await User.findOne({
       where: {
         id: otpData.userId,
-      },
-    });
-    const paymentData = await ApiPayment.findOne({
-      where: {
-        trxId,
       },
     });
     const wallet = await Wallet.findOne({
