@@ -20,7 +20,6 @@ module.exports = (sequelize) => {
     },
     customIdentifier: {
       type: DataTypes.STRING,
-      unique: true,
     },
     logo: {
       type: DataTypes.STRING,

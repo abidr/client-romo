@@ -509,7 +509,7 @@ exports.findPayment = async (req, res) => {
 exports.initDisbursement = async (req, res) => {
   const secretKey = req.headers.authorization ? req.headers.authorization.split(' ')[1] : '';
   const {
-    amount, currency, customerEmail,
+    amount, currency, customerEmail, test,
   } = req.body;
   try {
     if (!secretKey) {
@@ -525,6 +525,23 @@ exports.initDisbursement = async (req, res) => {
     if (!amount || !currency || !customerEmail) {
       return res.status(400).json({ success: false, message: 'Please provide all of the required fields' });
     }
+
+    const nanoId = customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 12);
+    const trxId = nanoId();
+
+    if (test) {
+      await Request.create({
+        status: 'success', type: 'debit', trxId, customer: customerEmail, amount, currency, merchantId: merchant.merchant.id,
+      });
+      return res.json({
+        success: true,
+        message: 'User credited with the balance',
+        data: {
+          trxId, amount, currency, customer: customerEmail,
+        },
+      });
+    }
+
     if (!user) {
       return res.status(400).json({ success: false, message: 'Invalid user email provided' });
     }
@@ -536,9 +553,6 @@ exports.initDisbursement = async (req, res) => {
     }
     removeBalance(amount, currency, data.userId);
     addBalance(amount, currency, user.id);
-
-    const nanoId = customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 12);
-    const trxId = nanoId();
 
     await Request.create({
       status: 'success', type: 'debit', trxId, customer: customerEmail, amount, currency, merchantId: merchant.merchant.id,
