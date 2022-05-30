@@ -170,7 +170,8 @@ exports.getAllSettlementsByAgent = async (req, res) => {
 
 exports.createWithdraw = async (req, res) => {
   const { id } = req.user;
-  const { methodId, amount, currency } = req.body;
+  const { methodId, currency } = req.body;
+  const amount = parseFloat(req.body.amount, 10);
   try {
     let status = 'pending';
     const user = await User.findByPk(id);
@@ -309,7 +310,8 @@ exports.declineWithdraw = async (req, res) => {
 
 exports.createWithdrawAgent = async (req, res) => {
   const { id } = req.user;
-  const { agentId, amount, currency } = req.body;
+  const { agentId, currency } = req.body;
+  const amount = parseFloat(req.body.amount, 10);
   try {
     const user = await User.findByPk(id);
     const setting = await Setting.findOne({ where: { value: 'adjustments' } });
