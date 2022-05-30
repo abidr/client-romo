@@ -47,12 +47,10 @@ const Sidebar = ({ userData, settings }) => {
               <span>{t('Add Money')}</span>
             </SidebarMenu>
             )}
-            {!(userData?.role === 3) && (
             <SidebarMenu href="/send-money">
               <BiPaperPlane />
               <span>{t('Transfer')}</span>
             </SidebarMenu>
-            )}
             {!(userData?.role === 3) && (
             <SidebarMenu href="/withdraw">
               <BiWallet />
