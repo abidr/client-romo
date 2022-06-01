@@ -201,8 +201,9 @@ exports.generateApi = async (req, res) => {
 exports.initPayment = async (req, res) => {
   const secretKey = req.headers.authorization ? req.headers.authorization.split(' ')[1] : '';
   const {
-    amount, currency, customIdentifier, callbackUrl, successUrl, failedUrl, logo, test,
+    currency, customIdentifier, callbackUrl, successUrl, failedUrl, logo, test,
   } = req.body;
+  const amount = parseFloat(req.body.amount, 10);
   try {
     if (!secretKey) {
       return res.status(400).json({ success: false, message: 'No API Key headers were provided' });
@@ -509,8 +510,9 @@ exports.findPayment = async (req, res) => {
 exports.initDisbursement = async (req, res) => {
   const secretKey = req.headers.authorization ? req.headers.authorization.split(' ')[1] : '';
   const {
-    amount, currency, customerEmail, test,
+    currency, customerEmail, test,
   } = req.body;
+  const amount = parseFloat(req.body.amount, 10);
   try {
     if (!secretKey) {
       return res.status(400).json({ success: false, message: 'No API Key headers were provided' });
